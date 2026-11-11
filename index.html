@@ -1783,7 +1783,7 @@ KPIS.forEach(k=>{k.h=ROLEHOW[k.n]||{}; k.r=ALL.filter(r=>k.h[r]);});
 
 /* ===================== catalogue: operational meaning of each KPI (computed from the data) ===================== */
 (function(){
-  const n0=x=>nf(x,0), n1=x=>nf(x,1), n2=x=>nf(x,2), wk=d=>{const w=Math.round(d/7*2)/2;return Number.isInteger(w)?String(w):Math.floor(w)+"½";}, k$=x=>"$"+nf(x*1e6,0), A=D.segA, Bg=D.segB, Y=D.ytd, R=D.roic, P=E.prj;
+  const n0=x=>nf(x,0), n1=x=>nf(x,1), n2=x=>nf(x,2), wk=d=>{const w=Math.round(d/7*2)/2;return Number.isInteger(w)?String(w):Math.floor(w)+"½";}, k$=x=>"$"+nf(Math.round(x*1000)*1000,0), A=D.segA, Bg=D.segB, Y=D.ytd, R=D.roic, P=E.prj;
   const fcfYear=Y.fcf/9*12, growthAbs=D.guide.revMid-FY.sales, beMonth=E.breakeven/E.sales*12;
   const lossA=100-E.avail, lossP=E.avail*(100-E.perf)/100, lossQ=E.avail*E.perf/100*(100-E.qual)/100;
   const MEAN={
