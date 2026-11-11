@@ -166,6 +166,9 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
     <tr><td>Adjusted EBITDA margin</td><td class="n" data-v="q.adjEbitdaMargin" data-f="p"></td><td class="n" data-v="q.adjEbitdaMarginPrior" data-f="p"></td><td>Operating earning power before depreciation and one-offs</td></tr>
     <tr><td>Diluted earnings per share</td><td class="n" data-v="q.eps" data-f="d2"></td><td class="n" data-v="q.epsPrior" data-f="d2"></td><td>Net profit attributable to one share</td></tr>
     <tr><td>Free cash flow (nine months)</td><td class="n" data-v="ytd.fcf" data-f="m"></td><td class="n" data-v="ytd.fcfPrior" data-f="m"></td><td>Cash left after running and investing in the business</td></tr>
+    <tr><td>Net present value (NPV)</td><td>Today's value of all future cash flows of an investment minus its cost, discounted at the cost of capital.</td></tr>
+    <tr><td>NOPAT</td><td>Net operating profit after tax: operating profit less the tax that would be due on it, before interest.</td></tr>
+    <tr><td>Absorption costing</td><td>Valuing inventory including a share of fixed production overhead. The reason building stock lifts reported profit.</td></tr>
     <tr><td>Net leverage</td><td class="n" data-v="q.netLeverage" data-f="x"></td><td class="n" data-v="q.netLeveragePrior" data-f="x"></td><td>Net debt in years of adjusted EBITDA</td></tr>
   </table></div>
   <p>By the end you should be able to explain every line of this table, say what moved it, and name two things in your own job that influence it.</p>
@@ -184,7 +187,7 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
     <tr><td>Net sales</td><td class="n" data-v="fy.sales" data-f="n"></td><td class="n">100.0%</td><td>Invoiced products and services</td></tr>
     <tr><td>Cost of sales</td><td class="n" data-v="fy.cogs" data-f="neg"></td><td class="n" data-v="fy.cogsPct" data-f="p"></td><td>Material, labour and factory cost of what was sold</td></tr>
     <tr class="tot"><td>Gross profit</td><td class="n" data-v="fy.gp" data-f="n"></td><td class="n" data-v="fy.gm" data-f="p"></td><td>What is left to pay for everything else</td></tr>
-    <tr><td>Selling, general and administrative (SG&amp;A)</td><td class="n" data-v="fy.sga" data-f="neg"></td><td class="n" data-v="fy.sgaPct" data-f="p"></td><td>Sales force, R&amp;D, administration, amortisation of acquired intangibles</td></tr>
+    <tr><td>Selling, general and administrative (SG&amp;A)</td><td class="n" data-v="fy.sga" data-f="neg"></td><td class="n" data-v="fy.sgaPct" data-f="p"></td><td>Sales force, administration, usually development, and amortisation of acquired intangibles</td></tr>
     <tr><td>Other operating expense</td><td class="n" data-v="fy.otherOp" data-f="neg"></td><td class="n"></td><td>Restructuring, impairments</td></tr>
     <tr class="tot"><td>Operating income</td><td class="n" data-v="fy.opInc" data-f="n"></td><td class="n" data-v="fy.opMargin" data-f="p"></td><td>Profit from running the business</td></tr>
     <tr><td>Interest, loss on sale of a business, other (net)</td><td class="n" data-v="fy.belowOp" data-f="neg"></td><td class="n"></td><td>Financing and non-operating items</td></tr>
@@ -457,7 +460,7 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
     <tr><td>DPO, days payables outstanding</td><td>Payables ÷ cost of sales × 91</td><td class="n" data-v="wc.dpo" data-f="d0"></td><td>Days until we pay suppliers</td></tr>
     <tr class="tot"><td>Cash conversion cycle</td><td>DSO + DIO − DPO</td><td class="n" data-v="wc.ccc" data-f="d0"></td><td>Days our cash is tied up per cycle</td></tr>
   </table></div>
-  <p><span class="tag own">own calculation</span> These use quarter-end balances and one quarter of sales, a simplification. Acquisitions and seasonality distort them; trends matter more than the absolute level.</p>
+  <p><span class="tag own">own calculation</span> These use quarter-end balances and one quarter of sales, a simplification. Strictly, DPO relates payables to purchases; cost of sales is the usual approximation when purchases are not disclosed. Acquisitions and seasonality distort them; trends matter more than the absolute level.</p>
 
   <div class="calc" id="calcWc">
     <b>Try it: what is one day worth?</b> <span class="tag own">illustration</span>
@@ -547,7 +550,8 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
   <h2>Earnings per share, reported and adjusted</h2>
   <p class="lead">The number investors watch most closely, and one of the three figures in the example group's guidance.</p>
 
-  <div class="formula">Diluted EPS = net income ÷ diluted number of shares</div>
+  <div class="formula">Diluted EPS = net income attributable to shareholders ÷ weighted average diluted shares</div>
+  <p>"Diluted" means the share count includes shares that would arise from options and similar rights. The average over the period is used, not the count on the last day.</p>
   <div class="tblwrap"><table>
     <tr><th>Q3 2026</th><th class="n">Reported (GAAP)</th><th class="n">Adjusted</th></tr>
     <tr><td>Net income, $ million</td><td class="n" data-v="q.ni" data-f="n"></td><td class="n" data-v="q.adjNi" data-f="n"></td></tr>
@@ -580,7 +584,7 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
 <div class="tblwrap"><table class="dec">
   <tr><th>Decision</th><th>Effect on EPS</th><th>What else it does</th></tr>
   <tr><td>Sustained cost saving or price gain of $1 million</td><td>About +3 cents a year</td><td>Repeats every year</td></tr>
-  <tr><td>Debt-financed acquisition</td><td>Adjusted EPS up; reported EPS up less (amortisation, interest)</td><td>Leverage up, return on capital down at first</td></tr>
+  <tr><td>Debt-financed acquisition</td><td>Adjusted EPS up; reported EPS up less, or down at first (amortisation, interest, deal costs)</td><td>Leverage up, return on capital down at first</td></tr>
   <tr><td>Share buyback</td><td>Up through fewer shares</td><td>Cash leaves; profit unchanged</td></tr>
   <tr><td>Restructuring charge</td><td>Reported EPS down now; adjusted unchanged</td><td>Savings should lift both later</td></tr>
 </table></div>
@@ -603,12 +607,14 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
     <tr><th>Full-year 2025, simplified</th><th class="n">$ million</th></tr>
     <tr><td>Operating income</td><td class="n" data-v="fy.opInc" data-f="n"></td></tr>
     <tr><td>Invested capital at year-end (debt + equity − cash)</td><td class="n" data-v="roic.ic" data-f="n"></td></tr>
-    <tr class="tot"><td>Pre-tax return on invested capital</td><td class="n" data-v="roic.pre" data-f="p"></td></tr>
-    <tr><td>Same, adding back amortisation and using adjusted EBITDA less capital expenditure</td><td class="n" data-v="roic.cash" data-f="p"></td></tr>
+    <tr><td>Return before tax: operating income ÷ invested capital</td><td class="n" data-v="roic.pre" data-f="p"></td></tr>
+    <tr><td>Operating profit after tax (NOPAT), at an assumed 25% tax rate</td><td class="n" data-v="roic.nopat" data-f="n"></td></tr>
+    <tr class="tot"><td>ROIC after tax: NOPAT ÷ invested capital</td><td class="n" data-v="roic.post" data-f="p"></td></tr>
+    <tr><td>Cash-based view before tax: (adjusted EBITDA − capital expenditure) ÷ invested capital</td><td class="n" data-v="roic.cash" data-f="p"></td></tr>
   </table></div>
   <div class="box caveat"><h4>Uncertainty</h4><p><span class="tag own">own calculation</span> Both lines are rough illustrations with year-end capital, which includes acquisitions completed late in 2025 that contributed profit for only part of the year. They are not reported figures and say nothing about how any company measures returns internally. They show the mechanism, not a verdict.</p></div>
 
-  <h3>What the two lines teach</h3>
+  <h3>What these lines teach</h3>
   <p>The capital base is dominated by goodwill and intangibles from acquisitions (about <span data-v="bs.gwIntPct" data-f="p0"></span> of total assets). An acquirer pays for future profits up front, so its accounting return starts low and must rise as the acquired businesses grow. The businesses themselves need little physical capital: capital expenditure in 2025 was only about <span data-v="fy.capexPct" data-f="p"></span> of sales.</p>
   <p>Value is created when the return exceeds the cost of capital, the return lenders and shareholders require (commonly estimated at high single digits for industrial companies).</p>
 
@@ -619,7 +625,8 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
   <div class="read">
 <h3>How to read it</h3>
 <ul>
-  <li><b>The benchmark is the cost of capital.</b> A return above it creates value, below it destroys value, however large the profit. A 7% return at a 9% cost of capital means the money would have earned more elsewhere.</li>
+  <li><b>The benchmark is the cost of capital, compared like with like.</b> The cost of capital is an after-tax figure, so compare it with the after-tax return (or compare both before tax: 9% after tax corresponds to about 12% before tax at a 25% tax rate). A return above it creates value, below it destroys value, however large the profit.</li>
+  <li><b>Read the example group's figure with care.</b> About 5% after tax is below an assumed 9%. On the accounting view the acquisitions have not yet earned their cost. That is common in the first years after acquisitions, which is why the trend matters: the return must rise as the acquired businesses grow. The cash-based view is higher because amortisation of acquired intangibles is a non-cash charge.</li>
   <li><b>Group and plant returns are not comparable.</b> The group carries the price paid for acquisitions; a plant does not. A plant at 34% and a group at 7% can be the same business seen at two levels.</li>
   <li><b>Old assets flatter the ratio.</b> A fully depreciated plant shows a high return and may be close to needing replacement. A new plant shows a low return and may be the better business.</li>
   <li><b>Average and marginal return differ.</b> The question for a new investment is its own return against the cost of capital, not whether it raises or lowers the unit's average.</li>
@@ -629,7 +636,7 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
   <tr><th>Decision</th><th>Effect on return on capital</th><th>What else it does</th></tr>
   <tr><td>Reduce inventory or receivables</td><td>Up: same profit, less capital</td><td>Cash released; delivery risk if overdone</td></tr>
   <tr><td>Raise output from existing machines</td><td>Up twice: more profit, same capital</td><td>Avoids new capital spending</td></tr>
-  <tr><td>Invest in a project earning 13%</td><td>Unit average may fall if it stands at 34%</td><td>Value still rises, because 13% exceeds the cost of capital</td></tr>
+  <tr><td>Invest in a project with a 15% internal rate of return</td><td>Unit average may fall if it stands at 34%</td><td>Value still rises, because the project earns more than the cost of capital</td></tr>
   <tr><td>Acquire a business at a high price</td><td>Down at first</td><td>Must be earned back through growth and synergies</td></tr>
   <tr><td>Postpone replacement investment</td><td>Up for now</td><td>Reliability, quality and future capacity suffer</td></tr>
 </table></div>
@@ -848,7 +855,7 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
   </div>
 
   <h3>Exercises</h3>
-  <details><summary>1. Customer A (40% gross margin) asks for a 3% price cut and promises more volume. How much more volume makes you whole?</summary><p>3 ÷ (40 − 3) = 8.1% more volume, just to earn the same gross profit as before. For customer B at 24% margin the same cut needs 3 ÷ 21 = 14.3%.</p></details>
+  <details><summary>1. Customer A asks for a 3% price cut and promises more volume. The contribution margin on this account (price minus variable cost) is 40%. How much more volume makes you whole?</summary><p>3 ÷ (40 − 3) = 8.1% more volume, just to earn the same contribution as before. For customer B at 24% the same cut needs 3 ÷ 21 = 14.3%. Always use the contribution margin for this calculation, not the gross margin: gross margin includes fixed overhead that does not change with volume, so it would overstate the volume needed.</p></details>
   <details><summary>2. Customer B agrees to pay in 60 instead of 90 days. Cash effect?</summary><p>$6.0 million × 30 ÷ 365 = $0.49 million of cash released once, and about $44,000 less capital cost each year at 9%.</p></details>
   <details><summary>3. Book-to-bill has been 0.92 for two quarters while sales are still on plan. What do you tell the plant?</summary><p>Sales are being fed from backlog, which is shrinking by 8% of sales per quarter. Unless intake recovers, sales will fall once the backlog is consumed. The plant should plan capacity and stock on order intake, not on current sales.</p></details>
   <details><summary>4. With your own data</summary><p>List your ten largest customers with sales, gross margin, payment terms and overdue amount. Rank them once by sales and once by gross profit after capital cost. Which three change position most?</p></details>
@@ -886,7 +893,7 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
 
   <h3>Worked case: the business case for a new segA design</h3>
   <div class="tblwrap"><table id="prjTable"></table></div>
-  <p>Before launch the project spends $<span data-v="ex.prj.invest"></span> million: development $<span data-v="ex.prj.dev"></span> million (an expense, reducing EBITDA in that year), tooling $<span data-v="ex.prj.tool"></span> million (capital expenditure) and launch stock $<span data-v="ex.prj.stock"></span> million (working capital, recovered at the end). Three different places in the accounts, one cash outflow.</p>
+  <p>Before launch the project spends $<span data-v="ex.prj.invest"></span> million: development $<span data-v="ex.prj.dev"></span> million (an expense, reducing EBITDA in that year), tooling $<span data-v="ex.prj.tool"></span> million (capital expenditure) and launch stock $<span data-v="ex.prj.stock"></span> million (working capital, recovered at the end). The table shows cash flows after tax, so year 0 is lower than the gross spend by the tax relief on the development expense. Three different places in the accounts, one cash outflow.</p>
   <p><b>Why discount?</b> A dollar received in year 4 is worth less than a dollar today because today's dollar could repay debt or earn a return in the meantime. At <span data-v="ex.wacc" data-f="p0"></span>, $1.00 in four years is worth about $0.71 today.</p>
 
   <div class="calc" id="calcRd">
@@ -902,7 +909,7 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
     <label>Volume versus plan: <output id="rVolO"></output></label>
     <input type="range" id="rVol" min="-30" max="20" step="5" value="0">
     <div class="res" id="rRes"></div>
-    <p class="lead" style="font-size:.82rem;margin:.5rem 0 0">Before tax. A delay shifts all income later and cuts the final year by the same number of months, because the market window does not move.</p>
+    <p class="lead" style="font-size:.82rem;margin:.5rem 0 0">After 25% tax: development cost is deductible when incurred, tooling is depreciated over five years. A delay shifts all income later and cuts the final year by the same number of months, because the market window does not move.</p>
   </div>
   <p>Move one slider at a time. In most product projects a 5% price miss or a unit cost 5% above target destroys more value than a 25% overrun of the development budget, yet the budget is what project reviews usually track.</p>
 
@@ -947,7 +954,7 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
 
   <h3>Worked case 1: reading a budget variance</h3>
   <p>Sales are $<span data-v="ex.varSales"></span> million above budget and EBIT is $<span data-v="ex.varEbit"></span> million above budget. Is that good cost control?</p>
-  <p>A flexible budget answers it. At a contribution margin of <span data-v="ex.cmPct" data-f="p"></span>, $<span data-v="ex.varSales"></span> million of extra sales should bring about $<span data-v="ex.flexEbit" data-f="n2"></span> million of extra EBIT if costs behave as planned. The actual gain is $<span data-v="ex.varEbit"></span> million, so costs ran almost exactly on plan. Had EBIT been only $0.3 million above budget, the unit would have been "over budget" on profit while hiding a cost overrun of more than half a million.</p>
+  <p>A flexible budget answers it. At a contribution margin of <span data-v="ex.cmPct" data-f="p"></span>, $<span data-v="ex.varSales"></span> million of extra sales should bring about $<span data-v="ex.flexEbit" data-f="n2"></span> million of extra EBIT if the extra sales came from volume and costs behaved as planned. (Had they come from price alone, nearly the full amount should have reached EBIT, which is why the variance must first be split into volume and price.) The actual gain is $<span data-v="ex.varEbit"></span> million, so costs ran almost exactly on plan. Had EBIT been only $0.3 million above budget, the unit would have been "over budget" on profit while hiding a cost overrun of more than half a million.</p>
 
   <h3>Worked case 2: profit up, return down</h3>
   <p>A new machine costs $1.5 million, saves $0.35 million of labour a year and is depreciated over ten years.</p>
@@ -957,9 +964,13 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
     <tr><td>EBIT, $ million (after $0.15 million extra depreciation)</td><td class="n" data-v="ex.ebit"></td><td class="n" data-v="ex.m.ebit" data-f="n2"></td></tr>
     <tr><td>Capital employed, $ million</td><td class="n" data-v="ex.ce"></td><td class="n" data-v="ex.m.ce"></td></tr>
     <tr><td>ROCE</td><td class="n" data-v="ex.roce" data-f="p"></td><td class="n" data-v="ex.m.roce" data-f="p"></td></tr>
-    <tr><td>Simple payback</td><td class="n"></td><td class="n">4.3 years</td></tr>
+    <tr><td>Simple payback (1.5 ÷ 0.35)</td><td class="n"></td><td class="n">4.3 years</td></tr>
+    <tr><td>Cash flow after tax per year (0.35 saving − 0.05 tax)</td><td class="n"></td><td class="n">0.30</td></tr>
+    <tr><td>Net present value over ten years at 9%</td><td class="n"></td><td class="n">+0.43</td></tr>
+    <tr><td>Internal rate of return after tax</td><td class="n"></td><td class="n">about 15%</td></tr>
   </table></div>
-  <p>EBITDA and EBIT both rise, and ROCE falls, because the machine earns about 13% on its cost (0.20 ÷ 1.5) while the plant as a whole earns 34%. It is still a good investment: 13% is above the 9% cost of capital, so value added rises. Lesson: a ratio can fall while value increases. Judge investments against the cost of capital, not against the unit's current average.</p>
+  <p>EBITDA and EBIT both rise, and ROCE falls. In its first year the machine adds $0.20 million of EBIT on $1.5 million of new capital, about 13%, while the plant as a whole earns 34%, so the average is pulled down.</p>
+  <p>The ratio is the wrong test. The right one is the investment's own cash flows against the cost of capital: tax is 25% of the extra profit of $0.20 million, so the machine returns $0.30 million of cash a year. Over ten years that is worth $1.93 million today at 9%, against a price of $1.5 million. The net present value is positive and the internal rate of return is about 15%, so the investment creates value. Lesson: a ratio can fall while value increases. Judge investments on NPV against the cost of capital, not against the unit's current average.</p>
 
   <div class="calc" id="calcMgr">
     <b>Try it: stress-test the example plant</b> <span class="tag ill">illustrative</span>
@@ -1044,6 +1055,8 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
     <tr><td>Basis point (bp)</td><td>One hundredth of a percentage point. 500 bps = 5.0 percentage points.</td></tr>
     <tr><td>Capital expenditure (capex)</td><td>Spending on long-lived assets such as machinery and buildings.</td></tr>
     <tr><td>Cash conversion cycle</td><td>DSO + DIO − DPO: days between paying suppliers and collecting from customers.</td></tr>
+    <tr><td>Contribution margin</td><td>Sales minus variable costs: what each additional sale adds to profit while capacity is free.</td></tr>
+    <tr><td>Cost of capital (WACC)</td><td>The weighted average return required by lenders and shareholders, after tax; the hurdle for investments.</td></tr>
     <tr><td>Depreciation</td><td>Spreading the cost of a physical asset over its useful life.</td></tr>
     <tr><td>EBITDA</td><td>Earnings before interest, taxes, depreciation and amortisation.</td></tr>
     <tr><td>EPS</td><td>Earnings per share: net income divided by the number of shares.</td></tr>
@@ -1052,6 +1065,9 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
     <tr><td>Goodwill</td><td>The part of an acquisition price that exceeds the fair value of the identifiable assets acquired.</td></tr>
     <tr><td>Guidance</td><td>Management's published forecast for the current year.</td></tr>
     <tr><td>Mix</td><td>The composition of sales by product, customer, channel or region.</td></tr>
+    <tr><td>Net present value (NPV)</td><td>Today's value of all future cash flows of an investment minus its cost, discounted at the cost of capital.</td></tr>
+    <tr><td>NOPAT</td><td>Net operating profit after tax: operating profit less the tax that would be due on it, before interest.</td></tr>
+    <tr><td>Absorption costing</td><td>Valuing inventory including a share of fixed production overhead. The reason building stock lifts reported profit.</td></tr>
     <tr><td>Net leverage</td><td>Net debt divided by twelve months of adjusted EBITDA.</td></tr>
     <tr><td>Operating leverage</td><td>The effect of fixed costs: profit changes faster than sales.</td></tr>
     <tr><td>Organic growth</td><td>Growth excluding acquisitions, divestitures and currency translation.</td></tr>
@@ -1070,6 +1086,7 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
     <li><b>Own calculations.</b> Ratios marked "own calculation", "own estimate" or "illustration" use simplified textbook formulas. Company-specific definitions often differ in detail.</li>
     <li><b>Scope.</b> The tutorial does not describe any company's internal KPI definitions, targets or incentive systems. It is not investment advice.</li>
     <li><b>Didactic design</b> (worked examples that fade into independent problem solving): Sweller, J. &amp; Cooper, G. A. (1985). The use of worked examples as a substitute for problem solving in learning algebra. <i>Cognition and Instruction</i>, 2(1), 59–89.</li>
+    <li><b>Further reading</b> (standard references for the concepts used; cited from memory, check the current edition): Brealey, Myers &amp; Allen, <i>Principles of Corporate Finance</i> (NPV, IRR, cost of capital); Koller, Goedhart &amp; Wessels, <i>Valuation</i> (ROIC, NOPAT, value creation); Horngren, Datar &amp; Rajan, <i>Cost Accounting: A Managerial Emphasis</i> (contribution margin, break-even, absorption costing, flexible budgets, variances); US SEC Regulation G (reconciliation of non-GAAP measures such as adjusted EBITDA).</li>
     <li><b>Updating.</b> To use other figures, change the <code>DATA</code> block (example group) or the <code>EX</code> block (example plant) at the top of the script in <code>index.html</code>; tables, charts and calculators recompute automatically. Explanatory sentences that describe causes need a manual review.</li>
   </ul>
 </section>
@@ -1134,7 +1151,7 @@ const D = JSON.parse(JSON.stringify(DATA));
   lev.ttm=D.ytd.adjEbitda+D.q4prior.adjEbitda; lev.calc=(bs.debt-bs.cash)/lev.ttm;
   lev.ye=(bs0.debt-bs0.cash)/fy.adjEbitda;
   const r=D.roic={};
-  r.ic=bs0.debt+bs0.equity-bs0.cash; r.pre=fy.opInc/r.ic*100; r.cash=(fy.adjEbitda-fy.capex)/r.ic*100;
+  r.ic=bs0.debt+bs0.equity-bs0.cash; r.pre=fy.opInc/r.ic*100; r.cash=(fy.adjEbitda-fy.capex)/r.ic*100; r.nopat=fy.opInc*0.75; r.post=r.nopat/r.ic*100;
   D.guide.revMid=(D.guide.revLow+D.guide.revHigh)/2;
 })();
 
@@ -1159,10 +1176,11 @@ function payback(flows){let c=0;for(let k=0;k<flows.length;k++){const n=c+flows[
 function project(o){ // o: delay (months), devOver, costOver, price, vol (all in %)
   const P=EX.prj, d=(o.delay||0)/12, price=(o.price||0)/100, vol=(o.vol||0)/100;
   const cm=P.cm/100 - (1-P.cm/100)*(o.costOver||0)/100;
-  const flows=[{t:0,v:-(P.dev*(1+(o.devOver||0)/100)+P.tool+P.stock)}];
+  const tax=EX.taxRate/100, dep=P.tool/P.sales.length; // development is tax-deductible when incurred; tooling is depreciated straight-line
+  const flows=[{t:0,v:-(P.dev*(1+(o.devOver||0)/100)*(1-tax)+P.tool+P.stock)}];
   P.sales.forEach((sv,k)=>{
     let sales=sv*(1+vol), last=k===P.sales.length-1, frac=last?(1-d):1;
-    let v=(sales*(1+price)*((cm+price)/(1+price))-P.fixed)*frac;
+    let op=(sales*(cm+price)-P.fixed)*frac, v=op-tax*(op-dep);
     if(last)v+=P.stock;
     flows.push({t:k+1+d,v});
   });
@@ -1204,7 +1222,7 @@ function project(o){ // o: delay (months), devOver, costOver, price, vol (all in
   c.roe=fy.ni/bs0.equity*100; c.roeAdj=fy.adjNi/bs0.equity*100; c.roa=fy.ni/bs0.ta*100; c.assetTurn=fy.sales/bs0.ta;
   c.epsMid=(m.guideEpsLow+m.guideEpsHigh)/2; c.pe=m.price/c.epsMid;
   c.mcap=m.price*q.shares; c.ev=c.mcap+c.netDebt; c.evEbitda=c.ev/((m.guideEbitdaLow+m.guideEbitdaHigh)/2);
-  c.divAnnual=q.divPerShare*4; c.divYield=c.divAnnual/m.price*100; c.payout=fy.div/fy.adjNi*100;
+  c.divAnnual=q.divPerShare*4; c.divYield=c.divAnnual/m.price*100; c.payout=fy.div/fy.adjNi*100; c.payoutRep=fy.div/fy.ni*100;
   c.cashConvFy=fy.fcf/fy.adjNi*100;
 })();
 
@@ -1304,7 +1322,7 @@ const QUIZ={
   {q:"Sales rise 15% and SG&A rises 8%. What is this effect called?",
    o:["Mix effect","Operating leverage","Dilution","Currency translation"],c:1,
    e:"Costs that grow more slowly than sales are spread over more revenue, so margins expand."},
-  {q:"With a gross margin of 40%, roughly how much more volume is needed to make up for a 2% price cut?",
+  {q:"With a contribution margin of 40%, roughly how much more volume is needed to make up for a 2% price cut?",
    o:["About 2%","About 5%","About 10%","About 20%"],c:1,
    e:"Break-even volume ≈ price cut ÷ (margin − price cut) = 2 ÷ (40 − 2) ≈ 5.3%. Try it in the calculator."}],
  m4:[
@@ -1397,8 +1415,8 @@ const QUIZ={
   {q:"Sales are 3% above budget and EBIT is exactly on budget. What does a flexible budget tell you?",
    o:["Everything is on plan","Costs ran above plan, because the extra sales should have added profit","Prices were too high","The budget was wrong"],c:1,
    e:"Extra sales bring contribution margin. If none of it reached EBIT, costs absorbed it."},
-  {q:"An investment earns 13% on its cost. The plant's ROCE is 34% and the cost of capital is 9%. Should it be approved on financial grounds?",
-   o:["No, it lowers ROCE","Yes, it earns more than the cost of capital and adds value","Only if EBITDA margin rises","Only if payback is under two years"],c:1,
+  {q:"An investment has a positive net present value at the 9% cost of capital (internal rate of return 15%). It would lower the plant's ROCE from 34% to 33%. Should it be approved on financial grounds?",
+   o:["No, it lowers ROCE","Yes, a positive NPV means it earns more than the cost of capital and adds value","Only if EBITDA margin rises","Only if payback is under two years"],c:1,
    e:"The hurdle is the cost of capital, not the unit's current average return. Rejecting it would give up value to protect a ratio."},
   {q:"Fixed costs are $15.3M and the contribution margin is 43%. Break-even sales are about:",
    o:["$6.6M","$15.3M","$35.6M","$60M"],c:2,
@@ -1431,7 +1449,7 @@ bars("pvmBars",[
 ]);
 (function(){
   const fl=E.prj.base.flows, r=E.wacc/100; let cum=0;
-  $("prjTable").innerHTML="<tr><th>Year</th><th class='n'>Sales</th><th class='n'>Cash flow</th><th class='n'>Discounted at "+E.wacc+"%</th><th class='n'>Cumulative</th></tr>"+
+  $("prjTable").innerHTML="<tr><th>Year</th><th class='n'>Sales</th><th class='n'>Cash flow after tax</th><th class='n'>Discounted at "+E.wacc+"%</th><th class='n'>Cumulative</th></tr>"+
     fl.map((f,k)=>{cum+=f.v;const dv=f.v/Math.pow(1+r,f.t);
       return `<tr><td>${k}</td><td class="n">${k?nf(EX.prj.sales[k-1],1):""}</td><td class="n">${sgn(f.v,2)}</td><td class="n">${sgn(dv,2)}</td><td class="n">${sgn(cum,2)}</td></tr>`;}).join("")+
     `<tr class="tot"><td colspan="3">Net present value</td><td class="n">${sgn(E.prj.npv,2)}</td><td></td></tr>`;
@@ -1526,7 +1544,7 @@ const KPIS=[
  {n:"Current ratio",c:"Financing and liquidity",f:"Current assets ÷ current liabilities",v:tm(E.curRatio),s:"ill",t:"Can short-term obligations be met from short-term assets? Below 1 signals a liquidity risk; a very high value can mean idle stock or receivables.",r:["mgr"]},
  {n:"Quick ratio",c:"Financing and liquidity",f:"(Cash + receivables) ÷ current liabilities",v:tm(E.quick),s:"ill",t:"As the current ratio, but without inventory, which cannot be turned into cash quickly.",r:["mgr"]},
  // ---- Returns
- {n:"Return on invested capital (ROIC)",c:"Returns",f:"Operating profit (after tax) ÷ (debt + equity − cash)",v:pc(D.roic.pre)+" before tax (2025, simplified)",s:"own",t:"What the company earns on all capital provided by lenders and owners. Value is created only above the cost of capital. Low here because of acquisition goodwill.",r:["mgr"]},
+ {n:"Return on invested capital (ROIC)",c:"Returns",f:"Operating profit (after tax) ÷ (debt + equity − cash)",v:pc(D.roic.post)+" after tax, "+pc(D.roic.pre)+" before tax (2025, simplified)",s:"own",t:"What the company earns on all capital provided by lenders and owners. Value is created only above the cost of capital. Low here because of acquisition goodwill.",r:["mgr"]},
  {n:"Return on capital employed (ROCE)",c:"Returns",f:"EBIT ÷ (fixed assets + working capital)",v:pc(E.roce),s:"ill",t:"The plant-level version. High because a plant carries no goodwill. Improves through margin or through less capital.",r:["ops","mgr"]},
  {n:"Return on equity (ROE)",c:"Returns",f:"Net income ÷ shareholders' equity",v:pc(C.roe)+" reported, "+pc(C.roeAdj)+" on adjusted net income (2025)",s:"own",t:"Return on the owners' capital. The reported 2025 value is depressed by the one-time loss on the sale of a business.",r:[]},
  {n:"Return on assets (ROA)",c:"Returns",f:"Net income ÷ total assets",v:pc(C.roa)+" (2025)",s:"own",t:"Profit per dollar of everything the company owns, regardless of financing.",r:[]},
@@ -1543,7 +1561,7 @@ const KPIS=[
  {n:"EV/EBITDA",c:"Capital market",f:"Enterprise value ÷ adjusted EBITDA",v:tm(C.evEbitda)+" (on 2026 guidance midpoint)",s:"own",t:"Valuation multiple independent of financing. Also the yardstick for acquisition prices.",r:[]},
  {n:"Dividend per share",c:"Capital market",f:"Cash paid to shareholders per share",v:"$"+nf(C.divAnnual,2)+" a year ($"+nf(Q.divPerShare,2)+" per quarter)",s:"rep",t:"The direct cash return to owners.",r:[]},
  {n:"Dividend yield",c:"Capital market",f:"Annual dividend per share ÷ share price",v:pc(C.divYield,2),s:"own",t:"Low here: most cash is reinvested in growth and acquisitions.",r:[]},
- {n:"Payout ratio",c:"Capital market",f:"Dividends ÷ (adjusted) net income",v:pc(C.payout,0)+" of adjusted net income (2025)",s:"own",t:"Share of earnings distributed. A low ratio leaves room for investment and makes the dividend safe.",r:[]},
+ {n:"Payout ratio",c:"Capital market",f:"Dividends ÷ net income",v:pc(C.payoutRep,0)+" of reported net income, "+pc(C.payout,0)+" of adjusted net income (2025)",s:"own",t:"Share of earnings distributed. A low ratio leaves room for investment and makes the dividend safe.",r:[]},
  // ---- Investment appraisal
  {n:"Payback period",c:"Investment appraisal",f:"Time until cumulative cash flow turns positive",v:nf(E.prj.payback,1)+" years (example project)",s:"ill",t:"How long the money is at risk. Simple, but ignores everything after payback and the time value of money.",r:["rd","ops","mgr"]},
  {n:"Net present value (NPV)",c:"Investment appraisal",f:"Sum of all cash flows discounted at the cost of capital",v:usd(E.prj.npv,2)+" (example project)",s:"ill",t:"Value created above the required return. The most reliable single criterion: positive means do it, if the assumptions hold.",r:["rd","ops","mgr"]},
@@ -1616,7 +1634,7 @@ const INTERP={
 "Operating cash flow":["Over several years it should track net income plus depreciation. Persistently lower means working capital is absorbing the profit. A single period is strongly affected by payment timing.","Profit, and above all stock levels, customer terms, collection and supplier payments."],
 "Free cash flow":["Lumpy: judge several years. Negative in a year of heavy, sensible investment is fine. Persistently below net income needs an explanation.","All operating decisions plus the timing of capital spending. Postponing investment raises it now and costs later."],
 "Free cash flow margin":["Shows how cash-generative the business model is. Compare with the EBITDA margin: a large gap means capital spending, tax, interest or working capital take a big share.","Margin, working-capital discipline and investment intensity."],
-"Cash conversion":["Around 100% over several years means earnings are real cash. Well below suggests growth absorbing working capital or aggressive profit recognition. Well above for one year often comes from stretching payables.","Inventory and receivables management, supplier terms, capital spending."],
+"Cash conversion":["Definitions vary (free cash flow to net income, or operating cash flow to EBITDA), so check which one is meant. Around 100% over several years means earnings are real cash. Well below suggests growth absorbing working capital or aggressive profit recognition. Well above for one year often comes from stretching payables.","Inventory and receivables management, supplier terms, capital spending."],
 "Capex ratio":["Compare with depreciation: persistently below it means the asset base is ageing; well above means expansion. Low is not good by itself.","Capacity additions, automation, replacement policy, lease-or-buy, maintenance versus renewal."],
 "Days sales outstanding (DSO)":["Compare with agreed payment terms. DSO far above terms means late payers or disputed invoices. A rise can also come from strong sales late in the period, which is harmless.","Payment terms agreed by sales, invoice accuracy and timing, follow-up of overdue accounts, customer mix by country."],
 "Days inventory outstanding (DIO)":["Judge the trend against sales. Rising before a launch or for confirmed orders is planned; rising at flat sales is a problem. Very low values risk missed deliveries.","Batch sizes, safety stock, lead times, forecast quality, part variety, bulk purchases, consignment stock, write-downs."],
@@ -1625,14 +1643,14 @@ const INTERP={
 "Inventory turnover":["The same information as DIO seen the other way. Higher is better until delivery suffers. Raw material, work in process and finished goods should be judged separately.","As for DIO: planning, batch sizes, lead times, variety, forecasts."],
 "Working capital ratio":["Tells you how much cash growth will absorb: at 19%, a $10 million sales increase needs about $1.9 million. A falling ratio at constant service is a real improvement.","Terms with customers and suppliers, stock policy, product and customer mix."],
 "Net debt":["A dollar amount means little alone; relate it to earnings (leverage) and to equity (gearing). Check what the debt financed.","Acquisitions, buybacks and dividends raise it; free cash flow used for repayment lowers it."],
-"Net leverage":["Falls when debt is repaid or when earnings rise; only the first is permanent. As a rough guide for industrial companies, below 2× is comfortable and above 3× to 4× restricts decisions.","Acquisitions and buybacks raise it. Operating profit, working-capital release and debt repayment lower it."],
-"Interest coverage":["Shows how much earnings could fall before interest becomes a problem. Below about 3× is usually regarded as tight. Sensitive to interest rates on floating debt.","Debt level, interest rates and refinancing, and operating earnings."],
+"Net leverage":["Falls when debt is repaid or when earnings rise; only the first is permanent. Loan agreements use their own definition of debt and EBITDA, which can differ from the published ratio. As a rough guide for industrial companies, below 2× is comfortable and above 3× to 4× restricts decisions.","Acquisitions and buybacks raise it. Operating profit, working-capital release and debt repayment lower it."],
+"Interest coverage":["Lenders define it in their agreements, often on EBITDA; analysts often use EBIT, which is stricter. Shows how much earnings could fall before interest becomes a problem. Below about 3× is usually regarded as tight. Sensitive to interest rates on floating debt.","Debt level, interest rates and refinancing, and operating earnings."],
 "Equity ratio":["High means resilience; very high can mean capital is not being used efficiently. Goodwill inflates assets and equity, so look at what the equity consists of.","Retained profit raises it; dividends, buybacks, losses and write-downs lower it."],
 "Gearing":["An alternative view of leverage based on the balance sheet instead of earnings. Less useful for acquirers, where equity depends on goodwill.","Borrowing and repayment, retained profit, buybacks."],
 "Current ratio":["Around 1.5 to 2 is commonly seen as sound. Below 1 signals a liquidity risk. A very high value may only mean too much stock and slow-paying customers.","Stock and receivables levels, short-term borrowing, payment behaviour."],
 "Quick ratio":["Stricter than the current ratio because stock is excluded. Near or above 1 is usually comfortable. A large gap to the current ratio means liquidity rests on inventory.","Collection, cash holdings, short-term debt."],
-"Return on invested capital (ROIC)":["Compare with the cost of capital: above creates value, below destroys it. Low for acquirers because the purchase price is in the capital base. Follow the trend after acquisitions: it should rise.","Operating margin, working capital, investment, and above all the price paid for acquisitions."],
-"Return on capital employed (ROCE)":["High at plant level because no goodwill is included, so do not compare with group returns. Old, written-down assets flatter it. A fall after a sound investment is not a problem.","Margin (price, cost) and capital (stock, receivables, machines). Often the fastest lever is working capital."],
+"Return on invested capital (ROIC)":["Compare the after-tax figure with the after-tax cost of capital: above creates value, below destroys it. Year-end capital is used here; average capital over the year is more accurate. Low for acquirers because the purchase price is in the capital base. Follow the trend after acquisitions: it should rise.","Operating margin, working capital, investment, and above all the price paid for acquisitions."],
+"Return on capital employed (ROCE)":["A before-tax measure, so compare it with a before-tax hurdle (about 12% if the after-tax cost of capital is 9% and tax is 25%). High at plant level because no goodwill is included, so do not compare with group returns. Old, written-down assets flatter it. A fall after a sound investment is not a problem.","Margin (price, cost) and capital (stock, receivables, machines). Often the fastest lever is working capital."],
 "Return on equity (ROE)":["Can be raised simply by using more debt, which adds risk. Distorted by one-offs. Read it with leverage.","Net profit, debt level, buybacks and dividends."],
 "Return on assets (ROA)":["Independent of financing, so it compares businesses with different debt levels. Low where goodwill is large.","Profitability and the size of the asset base, including acquisitions."],
 "Asset turnover":["Capital-light businesses show high values, acquirers low ones. Rising turnover means more sales from the same assets.","Utilisation of plants, stock and receivable levels, acquisitions."],
@@ -1647,7 +1665,7 @@ const INTERP={
 "EV/EBITDA":["A valuation yardstick also used for acquisition prices. Buying at a multiple above one's own only pays off if the target grows faster or brings synergies.","The market sets it. Management influences it only through growth, margin stability and cash conversion."],
 "Dividend per share":["Stability matters more than level: companies avoid cutting it, so a rise signals confidence in future cash flow.","The board's distribution policy, based on expected free cash flow."],
 "Dividend yield":["Low yield in a growing company means cash is reinvested. A very high yield can signal a falling share price and doubt about the dividend.","Dividend policy and the share price."],
-"Payout ratio":["Low leaves room for investment and makes the dividend safe. Above 100% is being paid from reserves or debt and cannot continue.","Dividend decisions relative to earnings."],
+"Payout ratio":["Low leaves room for investment and makes the dividend safe. Above 100% is being paid from reserves or debt and cannot continue. One-off charges distort it: here the reported ratio is inflated by the loss on a disposal, so the adjusted ratio and the dividend cover from free cash flow give the truer picture.","Dividend decisions relative to earnings."],
 "Payback period":["Shorter means less risk, but it ignores all income after payback, so it favours short-lived projects. Use it as a risk check beside NPV.","Investment size, time to market, ramp-up speed, price and margin achieved."],
 "Net present value (NPV)":["Positive means the project earns more than the cost of capital. The result is only as good as the assumptions: test price, volume and timing, and prefer projects that stay positive under stress.","Selling price and unit cost first, then volume and launch date; the development budget usually matters least."],
 "Internal rate of return (IRR)":["Compare with the cost of capital. A small project can have a spectacular IRR and add little value; rank by NPV when choosing between projects.","As for NPV; front-loaded cash and early launch raise it strongly."],
@@ -1671,15 +1689,15 @@ const INTERP={
 };
 
 /* ===================== decision lab ===================== */
-const LABK=[["S","Sales",1],["GM","Gross margin %",1],["EB","EBITDA",1],["EI","Operating profit (EBIT)",1],["EPS","Net income / EPS",1],["FCF","Free cash flow",1],["WC","Working capital tied up",-1],["ROC","Return on capital",1],["LEV","Net leverage",-1]];
+const LABK=[["S","Sales",1],["GM","Gross margin %",1],["EB","EBITDA (adjusted)",1],["EI","Operating profit (EBIT)",1],["EPS","Net income / EPS",1],["FCF","Free cash flow",1],["WC","Working capital tied up",-1],["ROC","Return on capital",1],["LEV","Net leverage",-1]];
 // effect codes: + up, - down, 0 no direct effect, ~ depends
 const DECISIONS=[
  {n:"Give a 3% discount to win more volume",r:["sales","mgr"],e:"S:~ GM:- EB:~ EI:~ EPS:~ FCF:~ WC:+ ROC:~ LEV:0",
-  w:"The discount is certain and applies to every unit; the extra volume is a promise. At a 40% gross margin you need about 8% more volume just to earn the same gross profit, and that volume needs stock and receivables as well.",
+  w:"The discount is certain and applies to every unit; the extra volume is a promise. At a 40% contribution margin you need about 8% more volume just to earn the same contribution, and that volume needs stock and receivables as well.",
   t:"Discounts tend to stay after the reason for them has gone, and other customers learn of them. Calculate the break-even volume before conceding."},
  {n:"Raise prices by 2%",r:["sales","mgr"],e:"S:+ GM:+ EB:+ EI:+ EPS:+ FCF:+ WC:0 ROC:+ LEV:-",
-  w:"A price increase has no cost of goods attached, so almost all of it reaches profit. On a 40% margin, 2% more price is worth as much as about 5% more volume, and it needs no extra capital.",
-  t:"Some volume may be lost. At a 40% margin you can lose up to about 4.8% of volume before you are worse off. The limit is the customer's alternatives, not your cost."},
+  w:"A price increase has no cost of goods attached, so almost all of it reaches profit. At a 40% contribution margin, 2% more price is worth as much as about 5% more volume, and it needs no extra capital.",
+  t:"Some volume may be lost. At a 40% contribution margin you can lose up to about 4.8% of volume before you are worse off. The limit is the customer's alternatives, not your cost."},
  {n:"Extend a customer's payment terms from 30 to 60 days",r:["sales","mgr"],e:"S:0 GM:0 EB:0 EI:0 EPS:0 FCF:- WC:+ ROC:- LEV:+",
   w:"Nothing changes in the income statement, which is why this concession feels free. On the balance sheet one more month of that customer's sales sits in receivables, and the cash arrives a month later, permanently.",
   t:"It is an interest-free loan and it raises credit risk. If it wins the order, compare its cost with the price discount it replaces; terms are often the cheaper concession, but only when decided knowingly."},
@@ -1707,8 +1725,8 @@ const DECISIONS=[
  {n:"Buy a machine that replaces manual work",r:["ops","mgr"],e:"S:0 GM:~ EB:+ EI:~ EPS:~ FCF:- WC:0 ROC:- LEV:+",
   w:"Wages fall, so EBITDA rises. Depreciation is added, so operating profit rises by less. The purchase price leaves as cash in year one and returns over several years.",
   t:"The unit's average return may fall even when the investment is sound. Judge it on payback, NPV and its own return against the cost of capital. More fixed cost also means a higher break-even."},
- {n:"Outsource a process step instead of doing it in-house",r:["ops","mgr"],e:"S:0 GM:~ EB:~ EI:~ EPS:~ FCF:+ WC:- ROC:+ LEV:-",
-  w:"Fixed cost and capital turn into a price per piece. Less equipment and work-in-process are needed, so capital falls and the break-even point drops. At high volume the margin is usually lower than with own production.",
+ {n:"Outsource a process step instead of doing it in-house",r:["ops","mgr"],e:"S:0 GM:~ EB:~ EI:~ EPS:~ FCF:~ WC:- ROC:~ LEV:0",
+  w:"Fixed cost and capital turn into a price per piece. Less equipment and work-in-process are needed, so capital falls and the break-even point drops. At high volume the margin is usually lower than with own production, so whether cash flow and return improve depends on the price paid and on volume.",
   t:"You trade margin in good times for safety in bad times, and you depend on the supplier for quality, delivery and know-how."},
  {n:"Use overtime and express freight to meet a delivery date",r:["ops","sales"],e:"S:+ GM:- EB:~ EI:~ EPS:~ FCF:~ WC:0 ROC:~ LEV:0",
   w:"The sale lands in the planned period and the customer is kept, but premium labour and freight reduce the margin on those goods.",
