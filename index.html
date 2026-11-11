@@ -102,6 +102,17 @@ li{margin:.2rem 0}
 .kpi.mine{border-left:4px solid var(--accent)}
 .rolebanner{background:var(--accent-soft);border-radius:10px;padding:.7rem .9rem;margin:.8rem 0}
 .rolebanner a{font-weight:700}
+.read{border-top:2px solid var(--accent);margin:1.2rem 0 .6rem;padding-top:.2rem}
+.read h3{color:var(--accent)}
+table.dec td:first-child{font-weight:600}
+.ar{font-size:.95rem}.ar.good{color:var(--good)}.ar.bad{color:var(--bad)}.ar.flat{color:var(--line)}.ar.mix{color:var(--warn)}
+.effgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(125px,1fr));gap:.4rem;margin:.6rem 0;font-size:.86rem}
+.effgrid>div{border:1px solid var(--line);border-radius:8px;padding:.4rem .55rem}
+table.matrix{font-size:.82rem}table.matrix td.c,table.matrix th{text-align:center;padding:.3rem .25rem}
+table.matrix td:first-child,table.matrix th:first-child{text-align:left;min-width:190px}
+.kpi .lbl{font-weight:700}
+nav.toc a[data-role]{display:none}
+body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a[data-role=sales],body[data-active=rd] nav.toc a[data-role=rd],body[data-active=mgr] nav.toc a[data-role=mgr]{display:flex}
 </style>
 </head>
 <body data-active="mgr">
@@ -132,10 +143,11 @@ li{margin:.2rem 0}
   <div class="rolebanner">You are viewing the <b id="roleName"></b> track. Change it with the buttons at the top. Your dedicated module: <a id="roleLink" href="#">Module 12</a>.</div>
   <h3>How this tutorial works</h3>
   <ol>
-    <li><b>Pick your role</b> at the top. Modules 1 to 10 are a shared core using the figures of an example group. Module 12 is written separately for each role, with its own KPIs, cases, calculator and exercises. The catalogue in Module 13 can be filtered to your role.</li>
+    <li><b>Pick your role</b> at the top. Modules 1 to 10 are a shared core using the figures of an example group. Module 12 is written separately for each role, with its own KPIs, cases, calculator and exercises. The decision lab (Module 13) and the catalogue (Module 15) can be filtered to your role.</li>
     <li><b>Each module follows one pattern:</b> a number from the examples → what it means → what drives it → what you can influence → a self-test.</li>
     <li><b>Work top-down.</b> We start from the published result and drill into its causes, instead of memorising formulas first.</li>
     <li><b>Two data sets.</b> Modules 1 to 10 use an example group: a listed industrial company with two segments. Plant-level figures (scrap, orders, customer margins, projects) come from an invented example plant introduced in Module 11, always labelled <span class="tag ill">illustrative</span>.</li>
+    <li><b>Interpretation comes first.</b> Every core module has a "How to read it" part and a table of the decisions that move the figure. Module 13 turns this round: pick a decision and see what it does to all the figures. Module 14 trains reading several figures together.</li>
     <li><b>Apply it.</b> Use the quarterly routine (Module 10) on the next earnings release and redo the role exercises with your own unit's numbers.</li>
   </ol>
 
@@ -237,6 +249,25 @@ li{margin:.2rem 0}
   <div class="formula">Sales change ≈ volume effect + price effect + mix effect</div>
   <p>Price is the most powerful of the three because a price increase has almost no cost attached (Module 3). Mix means selling relatively more of the products with higher prices or margins. The report names stronger demand in several end markets and pricing actions as drivers, with weaker demand in one region working against them.</p>
 
+  <div class="read">
+<h3>How to read it</h3>
+<ul>
+  <li><b>Always split it first.</b> Total growth of 13.6% and organic growth of 7.5% describe two different things: what the group bought and what the business earned.</li>
+  <li><b>Compare with the market.</b> Growing 5% in a market that grows 10% is a loss of share. Growing 2% in a shrinking market is a gain.</li>
+  <li><b>Check the base.</b> Strong growth after a weak prior-year quarter is partly recovery. Look at two or three years together.</li>
+  <li><b>Ask what it cost.</b> Growth says nothing about profit. Growth won by discounts, long payment terms or extra stock shows up later in margin and cash.</li>
+  <li><b>One quarter is not a trend.</b> Large orders and delivery timing shift sales between quarters. Order intake tells you more about direction.</li>
+</ul>
+<div class="tblwrap"><table class="dec">
+  <tr><th>Decision</th><th>Effect on growth</th><th>What else it does</th></tr>
+  <tr><td>Raise prices</td><td>Organic growth up at once, if volume holds</td><td>Margin up strongly; risk of losing price-sensitive volume</td></tr>
+  <tr><td>Discount to win volume</td><td>Volume up, price effect negative</td><td>Margin down; discounts tend to become permanent</td></tr>
+  <tr><td>Launch a new product</td><td>Organic growth and mix up, with a delay of years</td><td>Development cost reduces margin today</td></tr>
+  <tr><td>Improve delivery reliability</td><td>Sales arrive in the planned quarter; more repeat orders</td><td>May need capacity or stock</td></tr>
+  <tr><td>Acquire a business</td><td>Total growth up at once, organic growth unchanged</td><td>Debt up, return on capital down at first, amortisation up</td></tr>
+</table></div>
+</div>
+
   <div class="box role" data-role="ops"><h4>In your role: operations &amp; supply chain</h4><p>Organic growth only counts when it ships. On-time delivery, lead time and capacity decide whether an order book becomes sales this quarter or next. Late deliveries shift sales, and in aftermarket business they can lose them.</p></div>
   <div class="box role" data-role="sales"><h4>In your role: sales &amp; marketing</h4><p>Separate your own growth into volume, price and mix before you celebrate it. Ten per cent from price is worth far more profit than ten per cent from discount-driven volume. Report all three for your territory.</p></div>
   <div class="box role" data-role="rd"><h4>In your role: R&amp;D &amp; engineering</h4><p>New products feed organic growth and, more importantly, mix: differentiated products carry higher prices. A useful personal KPI is the share of sales from products launched in the last few years.</p></div>
@@ -274,6 +305,25 @@ li{margin:.2rem 0}
     <p class="lead" style="font-size:.82rem;margin:.5rem 0 0">Assumptions: sales at the midpoint of 2026 guidance; a price change falls fully to profit; extra volume earns the Q3 2026 gross margin (which understates the effect, because part of cost of sales is fixed). Real effects depend on product, customer and capacity.</p>
   </div>
 
+  <div class="read">
+<h3>How to read it</h3>
+<ul>
+  <li><b>A margin change has five possible causes:</b> price, input cost, mix, utilisation of fixed cost, and waste. Before judging a change, find out which. They call for different actions.</li>
+  <li><b>Percentage and amount can move in opposite directions.</b> An order at a below-average margin lowers the percentage and still adds profit if capacity is free. Steering only by the percentage rejects good business; steering only by the amount fills the plant with poor business.</li>
+  <li><b>Gross margin isolates the product.</b> If gross margin is stable and operating margin falls, the cause is in SG&amp;A. If gross margin falls, look at price, material, mix and the plant.</li>
+  <li><b>Rising margins on rising sales are partly automatic.</b> That is operating leverage, not necessarily better management. The test is what happens when sales stop growing.</li>
+  <li><b>Compare only like with like.</b> A distribution business and an engineered-products business have different normal margins. Compare a business with its own history and direct peers.</li>
+</ul>
+<div class="tblwrap"><table class="dec">
+  <tr><th>Decision</th><th>Effect on margin</th><th>What else it does</th></tr>
+  <tr><td>Price increase of 1%</td><td>Margin up by nearly one point</td><td>No extra cost or capital; volume risk</td></tr>
+  <tr><td>Reduce scrap, rework, material use</td><td>Gross margin up, dollar for dollar</td><td>Frees capacity as well</td></tr>
+  <tr><td>Sell more of the high-margin lines</td><td>Average margin up without any cost change</td><td>Needs sales focus and often development</td></tr>
+  <tr><td>Add fixed cost (people, sites, systems)</td><td>Margin down now; up later only if sales follow</td><td>Break-even rises; harder to reverse in a downturn</td></tr>
+  <tr><td>Run the plant fuller</td><td>Fixed cost per unit falls, margin up</td><td>Only real if the output is sold; otherwise it becomes stock</td></tr>
+</table></div>
+</div>
+
   <div class="box role" data-role="ops"><h4>In your role: operations &amp; supply chain</h4><p>Gross margin is your scoreboard. Scrap, rework, yield, overtime, expedited freight and purchase prices all sit in cost of sales. One percentage point of cost of sales saved on Q3 volumes is roughly $<span data-v="q.cogs1pct" data-f="n1"></span> million per quarter. <span class="tag own">own calculation</span></p></div>
   <div class="box role" data-role="sales"><h4>In your role: sales &amp; marketing</h4><p>Use the calculator: a one per cent discount needs a clearly larger volume gain just to break even. Before conceding price, calculate the volume you need to make up for it, and ask whether the customer will really deliver it.</p></div>
   <div class="box role" data-role="rd"><h4>In your role: R&amp;D &amp; engineering</h4><p>Most of a product's cost is fixed by its design: material choice, tolerances, number of process steps. Design-to-cost decisions influence gross margin for the product's whole life, long after the project budget is forgotten.</p></div>
@@ -302,6 +352,25 @@ li{margin:.2rem 0}
     <li><b>"One-off" items that recur every year</b> (restructuring, acquisition costs) are partly a normal cost of the strategy. Check whether the same adjustments appear year after year.</li>
     <li><b>Its strength:</b> it lets you compare periods and businesses without distortion from the sale of a business or a refinancing.</li>
   </ul>
+
+  <div class="read">
+<h3>How to read it</h3>
+<ul>
+  <li><b>EBITDA is not cash.</b> It ignores capital expenditure, working capital, interest and tax. A business can report strong EBITDA and still consume cash. Read it together with free cash flow.</li>
+  <li><b>Look at the size of the gap to net income.</b> Here adjusted EBITDA is several times net income. A large gap means much of the picture sits in the items removed: depreciation, amortisation, interest, one-offs.</li>
+  <li><b>Test the adjustments.</b> Ask of each one: is it truly non-recurring, and was any cash spent? Restructuring every year is a cost of doing business.</li>
+  <li><b>Capital-heavy and capital-light businesses are not comparable on EBITDA.</b> The same EBITDA margin is worth less where machines must be replaced constantly.</li>
+  <li><b>Use it for what it is good at:</b> comparing the operating performance of one business over time, without distortion from financing and one-off events.</li>
+</ul>
+<div class="tblwrap"><table class="dec">
+  <tr><th>Decision</th><th>Effect on EBITDA</th><th>What EBITDA does not show</th></tr>
+  <tr><td>Buy a machine instead of using labour</td><td>Up: wages leave, depreciation is excluded</td><td>Cash out for the machine; EBIT rises less; capital employed up</td></tr>
+  <tr><td>Postpone maintenance</td><td>Up this year</td><td>Lower reliability and a larger bill later</td></tr>
+  <tr><td>Cut development or training</td><td>Up this year</td><td>Weaker products and skills in later years</td></tr>
+  <tr><td>Restructure a site</td><td>Adjusted: unchanged now, up later. Reported profit: down now</td><td>Real cash leaves for severance and closure</td></tr>
+  <tr><td>Build stock to keep the plant busy</td><td>Up, because fixed overhead moves into inventory</td><td>Cash down; risk of later write-down</td></tr>
+</table></div>
+</div>
 
   <div class="box role" data-role="ops"><h4>In your role: operations &amp; supply chain</h4><p>Everything you do to cost of sales shows up in EBITDA directly. Depreciation of your machines does not, so EBITDA does not reward running equipment longer or penalise a new line. Watch that this does not hide the true cost of capital-heavy solutions.</p></div>
   <div class="box role" data-role="sales"><h4>In your role: sales &amp; marketing</h4><p>EBITDA margin is the reason "profitable growth" is not the same as growth. An order at a margin far below the segment's average raises sales and lowers the margin percentage at the same time.</p></div>
@@ -332,6 +401,25 @@ li{margin:.2rem 0}
 
   <h3>Mix: the average can move when nothing inside changes</h3>
   <p>Segment A earns a higher margin than Segment B. If Segment B grows faster, the company's average margin is pulled toward Segment B's level even if each segment holds its own margin. The same happens inside every business between product lines, customers and regions. Always ask whether a margin change is a real change in performance or a change in mix.</p>
+
+  <div class="read">
+<h3>How to read it</h3>
+<ul>
+  <li><b>Read level and change separately.</b> Segment A's 28% is a high, stable level. Segment B's move from 18% to 22% is a change, driven by volume returning. Stability and momentum are different qualities.</li>
+  <li><b>A segment margin is before corporate cost, depreciation and amortisation.</b> It measures what the segment's managers control. It overstates what the segment finally contributes to net income.</li>
+  <li><b>Check mix before concluding anything from the group margin.</b> If the lower-margin segment grows faster, the group margin can fall while both segments improve.</li>
+  <li><b>High margin often signals pricing power,</b> for example critical parts that are a small share of the customer's cost. Such margins are defended by quality and delivery, not by cost cutting alone.</li>
+  <li><b>Volatile margins signal high fixed cost or a cyclical market.</b> They need a cautious view of "normal" earnings.</li>
+</ul>
+<div class="tblwrap"><table class="dec">
+  <tr><th>Decision</th><th>Effect on segment EBITDA margin</th><th>What else it does</th></tr>
+  <tr><td>Invest in growth (sales engineers, development)</td><td>Down now</td><td>Intended to raise sales and mix later; must be shown to pay back</td></tr>
+  <tr><td>Shift resources to the higher-margin segment</td><td>Group margin up through mix</td><td>The other segment may lose scale</td></tr>
+  <tr><td>Acquire a business with lower margin</td><td>Segment margin diluted at once</td><td>Total profit up; integration needed to lift the margin</td></tr>
+  <tr><td>Exit low-margin product lines</td><td>Margin up</td><td>Sales down; fixed cost must leave too or other lines carry it</td></tr>
+  <tr><td>Centralise a function at corporate</td><td>Segment margin up, group margin unchanged</td><td>Only moves cost between lines; no real improvement</td></tr>
+</table></div>
+</div>
 
   <div class="box role" data-role="ops"><h4>In your role: operations &amp; supply chain</h4><p>Your site's results roll up into one of the two segment figures. Costs you control are inside segment EBITDA; corporate costs are not. Depreciation of your equipment is excluded too, so capital discipline is measured elsewhere (Modules 6 and 9).</p></div>
   <div class="box role" data-role="sales"><h4>In your role: sales &amp; marketing</h4><p>Mix is your lever. Two territories with the same sales can contribute very different EBITDA. Know the relative margin of your product lines and channels (in the example group, aftermarket and original-equipment business each account for roughly half of sales).</p></div>
@@ -381,6 +469,27 @@ li{margin:.2rem 0}
     <p class="lead" style="font-size:.82rem;margin:.5rem 0 0">Based on Q3 2026 group sales and cost of sales. The cash is released once; the interest saving repeats every year.</p>
   </div>
 
+  <div class="read">
+<h3>How to read it</h3>
+<ul>
+  <li><b>Rising DSO has three very different causes:</b> more sales late in the quarter (harmless), longer agreed terms (a commercial decision), or customers paying late (a credit risk). The ratio alone cannot tell you which; the overdue list can.</li>
+  <li><b>Rising DIO can be preparation or a problem.</b> Stock built for confirmed orders or a launch is planned. Stock that grows while sales are flat points to forecast errors, large batches or products nobody wants.</li>
+  <li><b>High DPO is not automatically good.</b> It finances the business, but it can mean lost early-payment discounts and strained suppliers. A sudden rise can also be a sign of cash shortage.</li>
+  <li><b>Working capital grows with sales.</b> Judge it in days or as a percentage of sales, not in dollars. More dollars at constant days is normal growth.</li>
+  <li><b>Free cash flow is lumpy.</b> One large project or one week of payment timing moves a quarter. Compare several years with net income: over time most of the profit should arrive as cash.</li>
+  <li><b>Year-end figures flatter.</b> Many companies collect hard and delay payments before the balance sheet date. Averages over the year are more honest.</li>
+</ul>
+<div class="tblwrap"><table class="dec">
+  <tr><th>Decision</th><th>Effect on cash and days</th><th>What the income statement shows</th></tr>
+  <tr><td>Grant 60 instead of 30 days</td><td>DSO up; cash arrives a month later</td><td>Nothing</td></tr>
+  <tr><td>Larger production batches</td><td>DIO up; cash tied up</td><td>Lower unit cost, better gross margin</td></tr>
+  <tr><td>Bulk purchase for a discount</td><td>DIO up; cash out early</td><td>Better purchase price</td></tr>
+  <tr><td>Pay suppliers later</td><td>DPO up; cash stays longer</td><td>Nothing, unless discounts are lost or prices rise</td></tr>
+  <tr><td>Buy equipment</td><td>Free cash flow down in the year of purchase</td><td>Only the yearly depreciation</td></tr>
+  <tr><td>Scrap obsolete stock</td><td>DIO improves; no cash effect</td><td>A loss in the amount of the book value</td></tr>
+</table></div>
+</div>
+
   <div class="box role" data-role="ops"><h4>In your role: operations &amp; supply chain</h4><p>Inventory is the largest working-capital item and it is yours: batch sizes, safety stock, lead times, slow-moving and obsolete parts. Stock also hides problems and risks write-downs, which hit profit directly. Supplier payment terms set DPO.</p></div>
   <div class="box role" data-role="sales"><h4>In your role: sales &amp; marketing</h4><p>DSO is yours: agreed payment terms, invoice accuracy, and following up overdue accounts. Granting 60 instead of 30 days is an interest-free loan to the customer. Good forecasts also reduce the stock operations must hold for you.</p></div>
   <div class="box role" data-role="rd"><h4>In your role: R&amp;D &amp; engineering</h4><p>Design choices create inventory: every unique part number needs its own safety stock. Using common parts and materials across products lowers DIO for years. Capital you request reduces free cash flow in the year it is spent.</p></div>
@@ -404,6 +513,25 @@ li{margin:.2rem 0}
   <h3>Where the cash goes</h3>
   <div class="bars" id="allocBars"></div>
   <p>A company can use cash in five ways: invest in its own operations (capital expenditure), buy businesses, repay debt, pay dividends, or buy back shares. In 2025 acquisitions were the largest use. In 2026 so far it has been debt repayment. The quarterly dividend is <span data-v="q.divPerShare" data-f="d2"></span> per share, and the board has authorised up to $<span data-v="q.buyback" data-f="n0"></span> million of share repurchases.</p>
+
+  <div class="read">
+<h3>How to read it</h3>
+<ul>
+  <li><b>The ratio has two parts.</b> Leverage falls when debt is repaid or when EBITDA rises. A fall caused only by peak earnings in a cyclical business reverses when earnings normalise.</li>
+  <li><b>Rules of thumb, not laws:</b> for industrial companies, below about 2× is usually seen as comfortable, around 3× as stretched, above 4× as constraining. Lenders' agreements set the real limits.</li>
+  <li><b>Low leverage is an option, not just safety.</b> It means the company can act when an acquisition or an investment opportunity appears, and can keep investing through a downturn.</li>
+  <li><b>Very low leverage has a cost too.</b> Equity is more expensive than debt, so unused borrowing capacity lowers the return for owners.</li>
+  <li><b>Capital allocation reveals priorities.</b> Where the cash went (own investment, acquisitions, debt, dividends, buybacks) tells you more about strategy than any presentation.</li>
+</ul>
+<div class="tblwrap"><table class="dec">
+  <tr><th>Decision</th><th>Effect on leverage</th><th>What else it does</th></tr>
+  <tr><td>Acquire with borrowed money</td><td>Up at once</td><td>EBITDA and sales up; return on capital down at first</td></tr>
+  <tr><td>Repay debt from free cash flow</td><td>Down</td><td>Interest falls, EPS rises slightly</td></tr>
+  <tr><td>Buy back shares</td><td>Up (cash leaves)</td><td>EPS up through fewer shares; no operating effect</td></tr>
+  <tr><td>Release working capital</td><td>Down, once</td><td>The released cash can repay debt</td></tr>
+  <tr><td>Improve operating profit</td><td>Down, because EBITDA rises</td><td>The only lever every unit holds</td></tr>
+</table></div>
+</div>
 
   <div class="box role" data-role="ops"><h4>In your role: operations &amp; supply chain</h4><p>Your capital requests compete with acquisitions, debt repayment and dividends for the same cash. A request with a clear payback (capacity for confirmed demand, safety, quality, cost reduction) is much easier to approve.</p></div>
   <div class="box role" data-role="sales"><h4>In your role: sales &amp; marketing</h4><p>Customers and distributors read these numbers too. Low leverage and steady cash generation signal a reliable long-term supplier, which matters when you sell critical components with long service lives.</p></div>
@@ -441,6 +569,23 @@ li{margin:.2rem 0}
   </ul>
   <p>Only the first is created in day-to-day operations, and it is by far the largest in a growing company.</p>
 
+  <div class="read">
+<h3>How to read it</h3>
+<ul>
+  <li><b>Look at the gap between reported and adjusted.</b> A persistent, large gap means the adjusted figure rests on judgement about what counts as normal. Here most of it is amortisation from acquisitions, which is consistent but recurring.</li>
+  <li><b>Ask where EPS growth came from.</b> Growth from operating profit is repeatable. Growth from fewer shares, a lower tax rate or lower interest is one-time or financial.</li>
+  <li><b>EPS ignores the capital used.</b> A company can raise EPS through acquisitions that earn less than they cost. Read EPS with return on capital.</li>
+  <li><b>Quarterly EPS against "expectations" is noise for operating purposes.</b> The direction over several years is what matters.</li>
+</ul>
+<div class="tblwrap"><table class="dec">
+  <tr><th>Decision</th><th>Effect on EPS</th><th>What else it does</th></tr>
+  <tr><td>Sustained cost saving or price gain of $1 million</td><td>About +3 cents a year</td><td>Repeats every year</td></tr>
+  <tr><td>Debt-financed acquisition</td><td>Adjusted EPS up; reported EPS up less (amortisation, interest)</td><td>Leverage up, return on capital down at first</td></tr>
+  <tr><td>Share buyback</td><td>Up through fewer shares</td><td>Cash leaves; profit unchanged</td></tr>
+  <tr><td>Restructuring charge</td><td>Reported EPS down now; adjusted unchanged</td><td>Savings should lift both later</td></tr>
+</table></div>
+</div>
+
   <div class="box role" data-role="ops sales rd"><h4>In your role</h4><p>You do not manage EPS, but it is how the outside world scores the sum of everyone's work. A useful translation: $1 million of sustained cost saving or margin gain is worth roughly 3 cents of annual EPS after tax. <span class="tag own">own estimate, assuming a tax rate of about 25%</span></p></div>
   <div class="box role" data-role="mgr"><h4>In your role: managers</h4><p>If part of your compensation is share-based, EPS and its growth are directly relevant to you. Use the translation into cents per share to give your team a sense of scale: $1 million of sustained profit is roughly 3 cents of annual EPS. <span class="tag own">own estimate, assuming a tax rate of about 25%</span></p></div>
 
@@ -470,6 +615,25 @@ li{margin:.2rem 0}
   <h3>The return tree</h3>
   <div class="formula">Return on capital = margin (profit ÷ sales) × capital turnover (sales ÷ capital)</div>
   <p>There are two ways to raise it: earn more per dollar of sales, or need less capital per dollar of sales. Modules 3 to 5 covered the first; working capital and capital expenditure are the second.</p>
+
+  <div class="read">
+<h3>How to read it</h3>
+<ul>
+  <li><b>The benchmark is the cost of capital.</b> A return above it creates value, below it destroys value, however large the profit. A 7% return at a 9% cost of capital means the money would have earned more elsewhere.</li>
+  <li><b>Group and plant returns are not comparable.</b> The group carries the price paid for acquisitions; a plant does not. A plant at 34% and a group at 7% can be the same business seen at two levels.</li>
+  <li><b>Old assets flatter the ratio.</b> A fully depreciated plant shows a high return and may be close to needing replacement. A new plant shows a low return and may be the better business.</li>
+  <li><b>Average and marginal return differ.</b> The question for a new investment is its own return against the cost of capital, not whether it raises or lowers the unit's average.</li>
+  <li><b>A return can be raised by starving the business.</b> Cutting investment lifts the ratio for a few years. Check capital expenditure against depreciation.</li>
+</ul>
+<div class="tblwrap"><table class="dec">
+  <tr><th>Decision</th><th>Effect on return on capital</th><th>What else it does</th></tr>
+  <tr><td>Reduce inventory or receivables</td><td>Up: same profit, less capital</td><td>Cash released; delivery risk if overdone</td></tr>
+  <tr><td>Raise output from existing machines</td><td>Up twice: more profit, same capital</td><td>Avoids new capital spending</td></tr>
+  <tr><td>Invest in a project earning 13%</td><td>Unit average may fall if it stands at 34%</td><td>Value still rises, because 13% exceeds the cost of capital</td></tr>
+  <tr><td>Acquire a business at a high price</td><td>Down at first</td><td>Must be earned back through growth and synergies</td></tr>
+  <tr><td>Postpone replacement investment</td><td>Up for now</td><td>Reliability, quality and future capacity suffer</td></tr>
+</table></div>
+</div>
 
   <div class="box role" data-role="ops"><h4>In your role: operations &amp; supply chain</h4><p>You influence capital turnover more than anyone: inventory, machine utilisation, and whether new capacity is really needed or existing equipment can deliver more. Higher output from the same assets raises returns twice, through margin and through turnover.</p></div>
   <div class="box role" data-role="sales"><h4>In your role: sales &amp; marketing</h4><p>A customer with thin margins, long payment terms and consignment stock can have a poor return even at high sales. Look at profit and the capital tied up for a customer together.</p></div>
@@ -819,11 +983,47 @@ li{margin:.2rem 0}
   <button class="markdone" data-done="t-mgr">Mark module complete</button>
 </section>
 
+<section class="mod" id="lab" data-title="13 · Decision lab">
+  <div class="kicker">Module 13</div>
+  <h2>Decision lab: what a decision does to the numbers</h2>
+  <p class="lead">Pick an everyday decision and see which indicators move, in which direction, and why. Most decisions improve one figure and worsen another. Knowing the full pattern is what "understanding KPIs" means in practice.</p>
+  <div class="catbar">
+    <select id="labSel" aria-label="Decision"></select>
+    <label class="chk"><input type="checkbox" id="labMine" checked> Only decisions typical for my role</label>
+  </div>
+  <div id="labOut"></div>
+  <p style="font-size:.85rem" class="lead">Arrows show the usual first-order direction, assuming nothing else changes. <span class="ar up good">▲</span> <span class="ar down good">▼</span> favourable, <span class="ar up bad">▲</span> <span class="ar down bad">▼</span> unfavourable, <span class="ar flat">●</span> no direct effect, <span class="ar mix">◆</span> depends on the outcome. Real cases depend on size, timing and what competitors and customers do.</p>
+  <h3>All decisions at a glance</h3>
+  <div class="tblwrap"><table class="matrix" id="labMatrix"></table></div>
+  <div class="box key"><h4>Three patterns worth remembering</h4>
+  <p><b>1. Profit now, cash later.</b> Building stock, bulk buying and longer customer terms look good or neutral in the income statement and cost cash.</p>
+  <p><b>2. Good ratio, bad decision.</b> Cutting development, postponing maintenance or rejecting a sound investment all improve a ratio this year and weaken the business.</p>
+  <p><b>3. Price beats volume.</b> Price changes go to profit almost in full; volume changes only with their margin, and they need capital.</p></div>
+  <button class="markdone" data-done="lab">Mark module complete</button>
+</section>
+
+<section class="mod" id="signals" data-title="14 · Reading the signals">
+  <div class="kicker">Module 14</div>
+  <h2>Reading the signals: what is really going on?</h2>
+  <p class="lead">A single KPI rarely means anything by itself. Interpretation starts when you read several together. Each case shows a pattern; decide what it means before you open the answer.</p>
+  <div id="sigList"></div>
+  <div class="box key"><h4>A routine for interpreting any figure</h4>
+  <ol>
+    <li><b>Compared with what?</b> Prior year, plan, peers, the market. A number without a comparison says nothing.</li>
+    <li><b>Level or change?</b> A high level and a strong improvement are different findings.</li>
+    <li><b>What is it made of?</b> Split it: price, volume and mix; organic and acquired; recurring and one-off.</li>
+    <li><b>What moved with it?</b> Check the partner figures: margin with sales, cash with profit, capital with return.</li>
+    <li><b>Which decisions caused it?</b> Name them. A figure nobody can link to a decision cannot be managed.</li>
+    <li><b>Will it last?</b> Separate what repeats from what was timing, one-off or borrowed from the future.</li>
+  </ol></div>
+  <button class="markdone" data-done="signals">Mark module complete</button>
+</section>
+
 <!-- ======================= KPI CATALOGUE ======================= -->
-<section class="mod" id="catalogue" data-title="13 · KPI catalogue">
-  <div class="kicker">Module 13 · Reference</div>
-  <h2>KPI catalogue: all the usual indicators</h2>
-  <p class="lead">Every indicator with its formula, a worked value, what it tells you and what it does to the business. Filter by topic, or show only those your role influences.</p>
+<section class="mod" id="catalogue" data-title="15 · KPI catalogue">
+  <div class="kicker">Module 15 · Reference</div>
+  <h2>KPI catalogue: every indicator, how to read it, what moves it</h2>
+  <p class="lead">Every indicator with its formula, a worked value, what it means for the business, how to interpret it and which decisions move it. Filter by topic, or show only those your role influences.</p>
   <p style="font-size:.88rem">Value labels: <span class="tag rep">example group, reported</span> as in the group's reports · <span class="tag own">example group, own calculation</span> computed here from those figures · <span class="tag ill">illustrative</span> invented example plant (Module 11).</p>
   <div class="catbar">
     <input type="search" id="catQ" placeholder="Search, e.g. margin, inventory, EPS" aria-label="Search KPIs">
@@ -1378,16 +1578,245 @@ const ROLE={ops:"Operations & supply chain",sales:"Sales & marketing",rd:"R&D & 
 })();
 function renderCat(){
   const q=$("catQ").value.trim().toLowerCase(), cat=$("catCat").value, mine=$("catMine").checked, role=document.body.dataset.active;
-  const rows=KPIS.filter(k=>(!cat||k.c===cat)&&(!mine||k.r.includes(role))&&(!q||(k.n+" "+k.f+" "+k.t+" "+k.c).toLowerCase().includes(q)));
+  const rows=KPIS.filter(k=>(!cat||k.c===cat)&&(!mine||k.r.includes(role))&&(!q||(k.n+" "+k.f+" "+k.t+" "+k.c+" "+(INTERP[k.n]||[]).join(" ")).toLowerCase().includes(q)));
   $("catCount").textContent=rows.length+" of "+KPIS.length+" indicators shown. A coloured edge marks those your current role influences directly.";
   $("catList").innerHTML=rows.map(k=>`<div class="kpi${k.r.includes(role)?" mine":""}">
     <h4><span>${k.n}</span><span class="val">${k.v}</span></h4>
     <div class="meta">${k.c} · <span class="tag ${SRC[k.s][0]}">${SRC[k.s][1]}</span></div>
     <div class="formula">${k.f}</div>
-    <p>${k.t}</p>
+    <p><span class="lbl">What it means.</span> ${k.t}</p>
+    <p><span class="lbl">How to read it.</span> ${(INTERP[k.n]||["",""])[0]}</p>
+    <p><span class="lbl">Decisions that move it.</span> ${(INTERP[k.n]||["",""])[1]}</p>
     <div class="meta">Influenced by: ${k.r.length?k.r.map(r=>ROLE[r]).join(", "):"group finance and capital-market decisions; no direct lever in operating roles"}</div>
   </div>`).join("")||"<p>No indicator matches.</p>";
 }
+
+/* ===================== catalogue: how to read each KPI, and which decisions move it ===================== */
+const INTERP={
+"Sales growth":["Compare with market growth and with the prior-year base; split into organic, acquired and currency before judging. High growth with a falling margin or rising receivables is a warning, not a success.","Pricing, discounts, new products, delivery performance, sales coverage, acquisitions."],
+"Organic growth":["The part that shows competitive strength. Above market growth means share gain. Ask how much is price and how much is volume: price-led growth is more profitable but has limits.","Price increases, product launches, entering new markets or customers, delivery reliability, service quality."],
+"Compound annual growth rate (CAGR)":["Smooths single years, so it hides volatility and depends heavily on the start and end year chosen. A period that starts in a weak year flatters the result.","The sum of several years of growth decisions, including acquisitions; no single decision moves it much."],
+"Order intake":["Leads sales by weeks to quarters. Compare with sales (book-to-bill) and with the same period last year. One very large order can distort a quarter.","Quotation activity, pricing, lead times offered, new product availability, sales effort by market."],
+"Book-to-bill ratio":["Above 1 the backlog grows, below 1 it shrinks. Two quarters below 1 with sales still on plan means a decline is coming. Seasonal businesses need a rolling twelve-month view.","Winning orders (price, lead time, product) raises it; so does delivering late, which is the wrong reason. Check both sides of the ratio."],
+"Backlog coverage":["More months mean more visibility, but a growing backlog can also mean the plant cannot deliver. Read it with on-time delivery and lead time.","Order intake, capacity and delivery speed. Adding capacity lowers it; so does weak demand. The cause matters."],
+"Gross margin":["Stable over time is normal; a change of a point or more needs an explanation from price, material cost, mix, utilisation or waste. Compare only with the same business, never across industries.","Price and discount levels, purchase prices, scrap and yield, labour efficiency, plant utilisation, product design, product and customer mix."],
+"SG&A ratio":["Should fall as sales grow. A rising ratio at growing sales means the organisation is growing faster than the business. A very low ratio can mean under-investment in sales and development.","Hiring, travel, marketing, systems, site footprint, development spending; acquisitions add amortisation here."],
+"Operating margin (EBIT margin)":["Includes depreciation and amortisation, so it reflects the cost of assets and acquisitions. A large gap to EBITDA margin signals a capital-heavy or acquisition-heavy company.","Everything that moves gross margin and SG&A, plus investment (depreciation) and acquisitions (amortisation)."],
+"EBITDA margin (adjusted)":["Good for comparing the same business over time. Not comparable between capital-light and capital-heavy businesses. Always look at what was adjusted out and at free cash flow alongside.","Price, volume, mix, cost of sales, SG&A. Not moved by depreciation, so replacing labour with machines raises it."],
+"Adjusted segment EBITDA margin":["Read level and change separately: a high stable margin signals pricing power, a volatile one signals fixed cost or a cyclical market. Excludes corporate cost, so it overstates the final contribution.","Segment pricing, mix, plant cost, growth spending. Moving costs to corporate improves it without any real gain."],
+"Net margin (return on sales)":["The most distorted margin: one-offs, interest and tax all sit in it. Use it for the long-term picture; use operating margins to judge the business.","Operating performance plus financing (debt level), tax structure and one-off events such as disposals."],
+"Effective tax rate":["A rate far below the statutory level deserves a look at why and whether it lasts. Swings between quarters are common and usually technical.","Where profits are earned, legal structure, use of tax losses and credits. Outside operating influence."],
+"Contribution margin":["High means each extra sale is very profitable and each lost sale hurts; low means volume matters less than cost. Valid only while capacity is free: at full capacity extra sales need new fixed cost.","Price, variable cost (material, direct labour, freight), product mix. Outsourcing lowers it while cutting fixed cost."],
+"Break-even sales":["The lower relative to actual sales, the safer the unit. It rises silently with every fixed-cost decision. Compare it with the worst year you can reasonably imagine.","Hiring, new sites, leases and systems raise it. Price increases, variable cost savings and outsourcing lower it."],
+"Margin of safety":["Above roughly 30% is comfortable for a cyclical industrial business; below 15% a normal downturn produces a loss. Rules of thumb only.","The same decisions as break-even: fixed cost commitments reduce it, price and contribution gains increase it."],
+"Operating leverage":["A value of 2.5 means a 10% volume change moves profit by about 25%. High is attractive in growth and dangerous in decline.","Automation and own production raise it; outsourcing, temporary labour and variable pay lower it."],
+"Personnel cost ratio":["Meaningful as a trend. Rising at flat sales signals falling productivity or wage increases not passed on in price. Differs strongly between labour-intensive and automated businesses.","Headcount, wage settlements, overtime, automation, make-or-buy, pricing."],
+"Sales per employee":["Compare over time within one business. Outsourcing raises it without any productivity gain; so does inflation in prices.","Automation, outsourcing, headcount, price level, product mix."],
+"Budget variance":["Split it before judging: volume, price, mix, cost. A favourable sales variance should bring a favourable profit variance; if it does not, costs ran over. A budget is also a forecast that may simply have been wrong.","Every operating decision of the period, and the quality of the planning assumptions."],
+"Operating cash flow":["Over several years it should track net income plus depreciation. Persistently lower means working capital is absorbing the profit. A single period is strongly affected by payment timing.","Profit, and above all stock levels, customer terms, collection and supplier payments."],
+"Free cash flow":["Lumpy: judge several years. Negative in a year of heavy, sensible investment is fine. Persistently below net income needs an explanation.","All operating decisions plus the timing of capital spending. Postponing investment raises it now and costs later."],
+"Free cash flow margin":["Shows how cash-generative the business model is. Compare with the EBITDA margin: a large gap means capital spending, tax, interest or working capital take a big share.","Margin, working-capital discipline and investment intensity."],
+"Cash conversion":["Around 100% over several years means earnings are real cash. Well below suggests growth absorbing working capital or aggressive profit recognition. Well above for one year often comes from stretching payables.","Inventory and receivables management, supplier terms, capital spending."],
+"Capex ratio":["Compare with depreciation: persistently below it means the asset base is ageing; well above means expansion. Low is not good by itself.","Capacity additions, automation, replacement policy, lease-or-buy, maintenance versus renewal."],
+"Days sales outstanding (DSO)":["Compare with agreed payment terms. DSO far above terms means late payers or disputed invoices. A rise can also come from strong sales late in the period, which is harmless.","Payment terms agreed by sales, invoice accuracy and timing, follow-up of overdue accounts, customer mix by country."],
+"Days inventory outstanding (DIO)":["Judge the trend against sales. Rising before a launch or for confirmed orders is planned; rising at flat sales is a problem. Very low values risk missed deliveries.","Batch sizes, safety stock, lead times, forecast quality, part variety, bulk purchases, consignment stock, write-downs."],
+"Days payables outstanding (DPO)":["Compare with agreed supplier terms. A sudden rise can signal cash shortage. Very high values can mean lost discounts and supplier strain.","Negotiated terms, payment run timing, use of early-payment discounts, supplier mix."],
+"Cash conversion cycle":["Shorter is better as long as service is unharmed. Its level depends on the business model, so follow the trend and its three components separately.","The combined decisions behind DSO, DIO and DPO."],
+"Inventory turnover":["The same information as DIO seen the other way. Higher is better until delivery suffers. Raw material, work in process and finished goods should be judged separately.","As for DIO: planning, batch sizes, lead times, variety, forecasts."],
+"Working capital ratio":["Tells you how much cash growth will absorb: at 19%, a $10 million sales increase needs about $1.9 million. A falling ratio at constant service is a real improvement.","Terms with customers and suppliers, stock policy, product and customer mix."],
+"Net debt":["A dollar amount means little alone; relate it to earnings (leverage) and to equity (gearing). Check what the debt financed.","Acquisitions, buybacks and dividends raise it; free cash flow used for repayment lowers it."],
+"Net leverage":["Falls when debt is repaid or when earnings rise; only the first is permanent. As a rough guide for industrial companies, below 2× is comfortable and above 3× to 4× restricts decisions.","Acquisitions and buybacks raise it. Operating profit, working-capital release and debt repayment lower it."],
+"Interest coverage":["Shows how much earnings could fall before interest becomes a problem. Below about 3× is usually regarded as tight. Sensitive to interest rates on floating debt.","Debt level, interest rates and refinancing, and operating earnings."],
+"Equity ratio":["High means resilience; very high can mean capital is not being used efficiently. Goodwill inflates assets and equity, so look at what the equity consists of.","Retained profit raises it; dividends, buybacks, losses and write-downs lower it."],
+"Gearing":["An alternative view of leverage based on the balance sheet instead of earnings. Less useful for acquirers, where equity depends on goodwill.","Borrowing and repayment, retained profit, buybacks."],
+"Current ratio":["Around 1.5 to 2 is commonly seen as sound. Below 1 signals a liquidity risk. A very high value may only mean too much stock and slow-paying customers.","Stock and receivables levels, short-term borrowing, payment behaviour."],
+"Quick ratio":["Stricter than the current ratio because stock is excluded. Near or above 1 is usually comfortable. A large gap to the current ratio means liquidity rests on inventory.","Collection, cash holdings, short-term debt."],
+"Return on invested capital (ROIC)":["Compare with the cost of capital: above creates value, below destroys it. Low for acquirers because the purchase price is in the capital base. Follow the trend after acquisitions: it should rise.","Operating margin, working capital, investment, and above all the price paid for acquisitions."],
+"Return on capital employed (ROCE)":["High at plant level because no goodwill is included, so do not compare with group returns. Old, written-down assets flatter it. A fall after a sound investment is not a problem.","Margin (price, cost) and capital (stock, receivables, machines). Often the fastest lever is working capital."],
+"Return on equity (ROE)":["Can be raised simply by using more debt, which adds risk. Distorted by one-offs. Read it with leverage.","Net profit, debt level, buybacks and dividends."],
+"Return on assets (ROA)":["Independent of financing, so it compares businesses with different debt levels. Low where goodwill is large.","Profitability and the size of the asset base, including acquisitions."],
+"Asset turnover":["Capital-light businesses show high values, acquirers low ones. Rising turnover means more sales from the same assets.","Utilisation of plants, stock and receivable levels, acquisitions."],
+"DuPont return tree":["Use it to locate a problem: is the return weak because of margin or because of capital? Two businesses with the same return can need opposite actions.","Margin levers on one branch, capital levers on the other; it shows which branch a decision acts on."],
+"Cost of capital (WACC)":["The minimum return investors expect, used as the hurdle for investments. It is an estimate, so treat results close to the hurdle as uncertain.","Set by markets and financing structure; not influenced by operating units."],
+"Economic value added (EVA)":["Positive means the unit earns more than its capital costs. Unlike a ratio it rewards every investment above the hurdle, even one that lowers the average return.","Profit increases and capital reductions both raise it; growth that needs more capital than it earns lowers it."],
+"Earnings per share (EPS)":["Affected by one-offs, tax and share count. Ask where a change came from: operations, financing or fewer shares.","Operating profit, debt and interest, tax, buybacks, one-off gains and losses."],
+"Adjusted EPS":["Smoother than reported EPS and closer to ongoing performance, but it depends on management's choice of adjustments. A persistent large gap to reported EPS needs explaining.","As for EPS, without the items defined as one-off or acquisition-related."],
+"Price/earnings ratio (P/E)":["High means investors expect growth; it is not a statement that the company is good or bad. The expectation has to be met through future profit.","Not decided inside the company. It reflects the market's view of growth, risk and interest rates."],
+"Market capitalisation":["The value of the equity today. Moves with expectations and the general market as much as with results.","Indirectly: sustained profit growth, cash generation and credible guidance."],
+"Enterprise value (EV)":["Use it, not market capitalisation, when comparing companies with different debt levels.","As for market capitalisation, plus changes in net debt."],
+"EV/EBITDA":["A valuation yardstick also used for acquisition prices. Buying at a multiple above one's own only pays off if the target grows faster or brings synergies.","The market sets it. Management influences it only through growth, margin stability and cash conversion."],
+"Dividend per share":["Stability matters more than level: companies avoid cutting it, so a rise signals confidence in future cash flow.","The board's distribution policy, based on expected free cash flow."],
+"Dividend yield":["Low yield in a growing company means cash is reinvested. A very high yield can signal a falling share price and doubt about the dividend.","Dividend policy and the share price."],
+"Payout ratio":["Low leaves room for investment and makes the dividend safe. Above 100% is being paid from reserves or debt and cannot continue.","Dividend decisions relative to earnings."],
+"Payback period":["Shorter means less risk, but it ignores all income after payback, so it favours short-lived projects. Use it as a risk check beside NPV.","Investment size, time to market, ramp-up speed, price and margin achieved."],
+"Net present value (NPV)":["Positive means the project earns more than the cost of capital. The result is only as good as the assumptions: test price, volume and timing, and prefer projects that stay positive under stress.","Selling price and unit cost first, then volume and launch date; the development budget usually matters least."],
+"Internal rate of return (IRR)":["Compare with the cost of capital. A small project can have a spectacular IRR and add little value; rank by NPV when choosing between projects.","As for NPV; front-loaded cash and early launch raise it strongly."],
+"Overall equipment effectiveness (OEE)":["Around 85% is often cited as excellent for discrete manufacturing, but only on bottleneck machines does a gain turn into money. High OEE on a non-bottleneck just builds stock.","Maintenance, changeover times, staffing, material availability, process stability, product mix on the machine."],
+"Scrap and rework rate":["Follow the trend per product and process. A low rate with rising customer complaints means defects are escaping. New products start high and should fall quickly.","Process control, tooling condition, training, material quality, design tolerances."],
+"Cost of poor quality":["Usually several times the visible scrap figure. A shift from external failures (complaints) to prevention cost is progress even if the total stays similar.","Design robustness, supplier quality, process capability, inspection strategy."],
+"On-time delivery":["Check how it is measured: against the customer's requested date or the confirmed date. A high figure achieved with long quoted lead times or high stock is bought, not earned.","Planning, capacity, supplier reliability, stock levels, forecast quality from sales."],
+"Capacity utilisation":["Around 80% to 85% often balances cost and flexibility. Near 100% lead times and overtime rise; low values load each unit with fixed cost.","Order intake, shift models, make-or-buy, product allocation between plants, capital spending."],
+"Purchase price variance":["Favourable is not automatically good: it may come from bulk buying or lower quality. Unfavourable may be market-wide and need passing on in price.","Supplier selection, negotiation, order quantities, timing of purchases, specification changes."],
+"Excess and obsolete inventory":["Any rising trend deserves action before a write-down is forced. A low figure is only credible if the stock is reviewed honestly.","Forecasts, minimum order quantities, engineering changes, end-of-life planning, part variety."],
+"Price realisation (discount rate)":["Watch the trend and the spread between customers. A rising average discount means price is leaking even while list prices rise.","Discount authority, price list updates, contract terms, how sales staff are rewarded."],
+"Price, volume and mix effect":["Profit quality differs: price counts almost fully, volume with its margin, mix by the margin difference. Growth that is all volume at falling price is the weakest kind.","Pricing decisions, sales focus by product and customer, new product launches."],
+"Customer profitability":["Large accounts are often less profitable than they look once service, terms and stock are counted. Use it to set terms and priorities, not automatically to drop customers.","Price and discounts, payment terms, consignment stock, service level, order sizes."],
+"Customer concentration":["High concentration means dependence and weaker negotiating power. Low concentration can mean high cost to serve many small accounts.","Account development, market diversification, contract length."],
+"Win rate":["Read with margin. Very high: probably priced too low or quoting only safe jobs. Very low: wasted engineering effort or uncompetitive offers.","Which enquiries are quoted, pricing, lead times offered, technical fit."],
+"Forecast accuracy":["Measure it at the level the plant plans at (product and month), where it is always worse than in total. Bias matters more than scatter: always-too-high forecasts build stock.","Customer contact, planning discipline, incentive effects on forecasting."],
+"R&D intensity":["An input, not a result. Compare with peers and with the vitality index: steady spending with falling vitality signals an effectiveness problem.","Development budget, number of projects, capitalised versus expensed work."],
+"Vitality index":["Falling means the portfolio is ageing and price pressure will grow. Very high can mean cannibalisation or renaming of old products; check the margin of the new ones.","Project selection, time to market, launch quality, sales adoption of new products."],
+"Time to market":["Compare with plan and with competitors. Delay usually costs more value than a budget overrun because the selling window does not move.","Number of parallel projects, specification stability, testing and approval capacity, supplier lead times."],
+"Target cost gap":["Should close steadily through the project. A gap still open at design freeze becomes a permanent margin shortfall.","Material and tolerance choices, part count, process selection, reuse of common parts."]
+};
+
+/* ===================== decision lab ===================== */
+const LABK=[["S","Sales",1],["GM","Gross margin %",1],["EB","EBITDA",1],["EI","Operating profit (EBIT)",1],["EPS","Net income / EPS",1],["FCF","Free cash flow",1],["WC","Working capital tied up",-1],["ROC","Return on capital",1],["LEV","Net leverage",-1]];
+// effect codes: + up, - down, 0 no direct effect, ~ depends
+const DECISIONS=[
+ {n:"Give a 3% discount to win more volume",r:["sales","mgr"],e:"S:~ GM:- EB:~ EI:~ EPS:~ FCF:~ WC:+ ROC:~ LEV:0",
+  w:"The discount is certain and applies to every unit; the extra volume is a promise. At a 40% gross margin you need about 8% more volume just to earn the same gross profit, and that volume needs stock and receivables as well.",
+  t:"Discounts tend to stay after the reason for them has gone, and other customers learn of them. Calculate the break-even volume before conceding."},
+ {n:"Raise prices by 2%",r:["sales","mgr"],e:"S:+ GM:+ EB:+ EI:+ EPS:+ FCF:+ WC:0 ROC:+ LEV:-",
+  w:"A price increase has no cost of goods attached, so almost all of it reaches profit. On a 40% margin, 2% more price is worth as much as about 5% more volume, and it needs no extra capital.",
+  t:"Some volume may be lost. At a 40% margin you can lose up to about 4.8% of volume before you are worse off. The limit is the customer's alternatives, not your cost."},
+ {n:"Extend a customer's payment terms from 30 to 60 days",r:["sales","mgr"],e:"S:0 GM:0 EB:0 EI:0 EPS:0 FCF:- WC:+ ROC:- LEV:+",
+  w:"Nothing changes in the income statement, which is why this concession feels free. On the balance sheet one more month of that customer's sales sits in receivables, and the cash arrives a month later, permanently.",
+  t:"It is an interest-free loan and it raises credit risk. If it wins the order, compare its cost with the price discount it replaces; terms are often the cheaper concession, but only when decided knowingly."},
+ {n:"Accept a large order at below-average margin to fill idle capacity",r:["sales","ops","mgr"],e:"S:+ GM:- EB:+ EI:+ EPS:+ FCF:~ WC:+ ROC:~ LEV:0",
+  w:"The margin percentage falls because the order is priced below average. Profit in dollars still rises, because the fixed costs are already paid and the order contributes its price minus variable cost.",
+  t:"Good only while capacity is truly idle and the low price does not spread to other customers. Once the plant is full, the same order pushes out better business."},
+ {n:"Hold consignment stock at a customer's site",r:["sales","ops"],e:"S:0 GM:0 EB:0 EI:0 EPS:0 FCF:- WC:+ ROC:- LEV:+",
+  w:"The goods are made and paid for but not yet sold. They stay in your inventory until the customer withdraws them, so stock and its risks are yours while the benefit is the customer's.",
+  t:"Can secure a customer and smooth production. Price it in: capital cost, obsolescence if the design changes, and counting effort."},
+ {n:"Build finished goods ahead of demand or run larger batches",r:["ops","mgr"],e:"S:0 GM:+ EB:+ EI:+ EPS:+ FCF:- WC:+ ROC:- LEV:+",
+  w:"Larger runs lower the cost per unit, and fixed overhead is spread over more units, part of which goes into inventory instead of the income statement. Reported profit improves in the period while cash goes out for material and labour.",
+  t:"The classic trap: profit up, cash down. The profit is borrowed from future periods, and unsold stock may later be written down. Justified for confirmed demand, launches and long set-ups."},
+ {n:"Cut inventory by reducing safety stock and batch sizes",r:["ops","mgr"],e:"S:0 GM:- EB:- EI:- EPS:- FCF:+ WC:- ROC:+ LEV:-",
+  w:"While stock is being run down the plant produces less than it sells, so less fixed overhead is absorbed and the period's profit dips. Cash is released once and capital employed falls for good.",
+  t:"The profit dip is temporary, the cash gain is permanent. Managers judged only on monthly profit avoid this for the wrong reason. Watch delivery reliability."},
+ {n:"Reduce scrap and rework",r:["ops","rd"],e:"S:0 GM:+ EB:+ EI:+ EPS:+ FCF:+ WC:- ROC:+ LEV:-",
+  w:"Material and labour that were thrown away are saved in full. Capacity is freed, less buffer stock is needed and delivery improves. One of the few decisions with no unfavourable arrow.",
+  t:"The effort is in finding root causes. Money spent on prevention shows as cost first and as saving later."},
+ {n:"Buy six months of material at once for a discount",r:["ops"],e:"S:0 GM:+ EB:+ EI:+ EPS:+ FCF:- WC:+ ROC:~ LEV:+",
+  w:"The purchase price falls and gross margin improves. The cash for half a year of material leaves at once and sits in the warehouse.",
+  t:"Compare the discount with the full carrying cost: capital, storage, shelf life and the risk of design changes. A 4% discount can be worth almost nothing after a 15% carrying cost on the extra stock."},
+ {n:"Negotiate longer payment terms with suppliers",r:["ops","mgr"],e:"S:0 GM:0 EB:0 EI:0 EPS:0 FCF:+ WC:- ROC:+ LEV:-",
+  w:"Suppliers finance more of your stock. Cash stays in the business longer and capital employed falls. The income statement does not change.",
+  t:"Suppliers may recover it through price, and small suppliers can be put at risk. Giving up a 2% discount for paying 20 days early costs the equivalent of more than 30% interest a year."},
+ {n:"Buy a machine that replaces manual work",r:["ops","mgr"],e:"S:0 GM:~ EB:+ EI:~ EPS:~ FCF:- WC:0 ROC:- LEV:+",
+  w:"Wages fall, so EBITDA rises. Depreciation is added, so operating profit rises by less. The purchase price leaves as cash in year one and returns over several years.",
+  t:"The unit's average return may fall even when the investment is sound. Judge it on payback, NPV and its own return against the cost of capital. More fixed cost also means a higher break-even."},
+ {n:"Outsource a process step instead of doing it in-house",r:["ops","mgr"],e:"S:0 GM:~ EB:~ EI:~ EPS:~ FCF:+ WC:- ROC:+ LEV:-",
+  w:"Fixed cost and capital turn into a price per piece. Less equipment and work-in-process are needed, so capital falls and the break-even point drops. At high volume the margin is usually lower than with own production.",
+  t:"You trade margin in good times for safety in bad times, and you depend on the supplier for quality, delivery and know-how."},
+ {n:"Use overtime and express freight to meet a delivery date",r:["ops","sales"],e:"S:+ GM:- EB:~ EI:~ EPS:~ FCF:~ WC:0 ROC:~ LEV:0",
+  w:"The sale lands in the planned period and the customer is kept, but premium labour and freight reduce the margin on those goods.",
+  t:"Reasonable as an exception. When it becomes routine it is a symptom of a planning or capacity problem, and its cost is hidden inside cost of sales."},
+ {n:"Start a development project",r:["rd","mgr"],e:"S:0 GM:0 EB:- EI:- EPS:- FCF:- WC:0 ROC:- LEV:+",
+  w:"Development is expensed as it is incurred, so profit and cash fall now. Sales, mix and margin improve only after launch, often years later.",
+  t:"Every arrow is unfavourable in the short run; the case rests entirely on the later payoff. That is why the business case, time to market and target cost matter more than the budget."},
+ {n:"Cut development spending to reach this year's profit",r:["rd","mgr"],e:"S:0 GM:0 EB:+ EI:+ EPS:+ FCF:+ WC:0 ROC:+ LEV:-",
+  w:"Every short-term figure improves at once, because the cost disappears and the lost sales lie years ahead.",
+  t:"The mirror image of the previous decision. In later years the portfolio ages, the vitality index falls, and price pressure rises. No current KPI warns you except the vitality index and time."},
+ {n:"Design a new product with existing common parts",r:["rd","ops"],e:"S:0 GM:~ EB:~ EI:~ EPS:~ FCF:+ WC:- ROC:+ LEV:-",
+  w:"Fewer new part numbers mean less tooling, less safety stock and a faster launch. The unit cost may be slightly higher than with an optimised special part.",
+  t:"Looks worse on a unit-cost comparison and better on a full business case. Compare designs on NPV, not on piece cost."},
+ {n:"Hire additional permanent staff",r:["mgr"],e:"S:~ GM:0 EB:- EI:- EPS:- FCF:- WC:0 ROC:- LEV:+",
+  w:"Fixed cost rises from the first month. Profit falls until the new people generate more contribution than they cost.",
+  t:"Translate the cost into the sales needed to cover it: annual cost divided by the contribution margin. The break-even point of the whole unit moves up."},
+ {n:"Restructure: close a line and pay severance",r:["mgr"],e:"S:~ GM:0 EB:0 EI:- EPS:- FCF:- WC:0 ROC:~ LEV:+",
+  w:"The one-time cost reduces reported profit and cash now. Adjusted EBITDA excludes it, so that figure does not move until the savings arrive and lift it.",
+  t:"Shows why reported and adjusted figures must be read together. The cash is real even where the adjusted figure looks untouched."},
+ {n:"Postpone maintenance and replacement investment",r:["ops","mgr"],e:"S:0 GM:+ EB:+ EI:+ EPS:+ FCF:+ WC:0 ROC:+ LEV:-",
+  w:"Maintenance cost and capital spending fall, so profit, cash and return all improve this year.",
+  t:"Nothing in the financial figures shows the damage. It appears later in OEE, scrap, delivery and a larger investment. Compare capital spending with depreciation over several years."},
+ {n:"Write down obsolete inventory",r:["ops","mgr"],e:"S:0 GM:- EB:- EI:- EPS:- FCF:0 WC:- ROC:~ LEV:0",
+  w:"The book value of the stock is charged to cost of sales in one step. No cash moves, because the cash was spent when the stock was made. Inventory days improve.",
+  t:"A KPI can improve through a loss. Lower DIO after a write-down is not better stock management; the decision that caused it was taken long before."},
+ {n:"Acquire a company with borrowed money",r:["mgr"],e:"S:+ GM:~ EB:+ EI:~ EPS:~ FCF:0 WC:+ ROC:- LEV:+",
+  w:"Sales and EBITDA rise from the first day. Amortisation of acquired intangibles and interest reduce reported profit, so adjusted EPS rises more than reported EPS. The purchase price enters capital employed in full.",
+  t:"Total growth is bought, not earned. The return on capital falls at first and recovers only if the acquired business grows and synergies are realised."},
+ {n:"Buy back shares",r:[],e:"S:0 GM:0 EB:0 EI:0 EPS:+ FCF:0 WC:0 ROC:0 LEV:+",
+  w:"The same profit is divided by fewer shares, so EPS rises. No operating figure changes. Cash leaves and net debt rises.",
+  t:"EPS growth from buybacks says nothing about the business. It creates value for remaining owners only if the shares are bought below their worth."},
+ {n:"Repay debt from free cash flow",r:[],e:"S:0 GM:0 EB:0 EI:0 EPS:+ FCF:0 WC:0 ROC:0 LEV:-",
+  w:"Interest expense falls, so net income and EPS rise a little. Leverage falls and financial room grows.",
+  t:"Safe but modest. The alternative uses of the same cash (investment, acquisitions, dividends) must be judged against it."}
+];
+DECISIONS.forEach(d=>{d.x={};d.e.split(" ").forEach(p=>{const[a,b]=p.split(":");d.x[a]=b;});});
+function arrow(code,sense){
+  if(code==="0")return '<span class="ar flat" title="no direct effect">●</span>';
+  if(code==="~")return '<span class="ar mix" title="depends">◆</span>';
+  const up=code==="+", good=(up?1:-1)*sense>0;
+  return `<span class="ar ${up?"up":"down"} ${good?"good":"bad"}" title="${up?"up":"down"}, ${good?"favourable":"unfavourable"}">${up?"▲":"▼"}</span>`;
+}
+function labOptions(){
+  const role=document.body.dataset.active, mine=$("labMine").checked, keep=$("labSel").value;
+  const list=DECISIONS.map((d,i)=>[d,i]).filter(([d])=>!mine||d.r.includes(role));
+  $("labSel").innerHTML=list.map(([d,i])=>`<option value="${i}">${d.n}</option>`).join("");
+  if(list.some(([d,i])=>String(i)===keep))$("labSel").value=keep;
+  labShow();
+}
+function labShow(){
+  const d=DECISIONS[+$("labSel").value]; if(!d){$("labOut").innerHTML="";return;}
+  const word=c=>c==="+"?"up":c==="-"?"down":c==="0"?"no direct effect":"depends on the outcome";
+  $("labOut").innerHTML=`<div class="kpi"><h4><span>${d.n}</span></h4>
+    <div class="effgrid">${LABK.map(([k,name,sense])=>`<div>${arrow(d.x[k],sense)} <b>${name}</b><br><span class="meta">${word(d.x[k])}</span></div>`).join("")}</div>
+    <p><b>Why.</b> ${d.w}</p><p><b>Trade-off.</b> ${d.t}</p>
+    <div class="meta">Typically decided by: ${d.r.length?d.r.map(r=>ROLE[r]).join(", "):"the board and group finance"}</div></div>`;
+}
+$("labSel").addEventListener("input",labShow); $("labMine").addEventListener("input",labOptions);
+$("labMatrix").innerHTML="<tr><th>Decision</th>"+LABK.map(k=>`<th title="${k[1]}">${k[0]}</th>`).join("")+"</tr>"+
+  DECISIONS.map(d=>`<tr><td>${d.n}</td>${LABK.map(([k,,s])=>`<td class="c">${arrow(d.x[k],s)}</td>`).join("")}</tr>`).join("")+
+  `<tr><td colspan="${LABK.length+1}" class="meta">${LABK.map(k=>k[0]+" = "+k[1]).join(" · ")}</td></tr>`;
+
+/* ===================== reading the signals ===================== */
+const SIGNALS=[
+ {h:"Growth with a falling margin",s:["Sales +8%","Gross margin −2 points","Average discount up","Receivables days +6"],
+  m:"The growth was bought. Price concessions and longer terms won the volume, so more sales produced little or no additional profit and tied up more cash.",
+  c:"Split the sales change into price, volume and mix. Compare gross profit in dollars, not sales, with last year.",
+  d:"Discount approvals, payment terms, which customers and products were pushed."},
+ {h:"Profit on plan, stock rising",s:["EBIT on budget","Production above sales for three months","Inventory +20%","Operating cash flow below plan"],
+  m:"Part of the profit comes from fixed overhead absorbed into stock. It has been moved from future periods and will reverse when stock is reduced or written down.",
+  c:"Compare production volume with sales volume. Look at the age of the finished goods and at open orders covering them.",
+  d:"Production planning, batch sizes, the wish to keep utilisation and monthly profit up."},
+ {h:"Excellent margin, ageing plant",s:["EBITDA margin up three years running","Capital expenditure below depreciation each year","OEE and on-time delivery slipping","Scrap rate rising"],
+  m:"The margin is being supported by under-investment. EBITDA cannot show it because it excludes depreciation and ignores what was not spent.",
+  c:"Capital expenditure against depreciation over five years; maintenance spending; age of key machines.",
+  d:"Postponed maintenance and replacement; return targets that reward not investing."},
+ {h:"Sales on plan, order book shrinking",s:["Sales +2%","Order intake −9%","Book-to-bill 0.9 for two quarters","Backlog down from 3.2 to 2.5 months"],
+  m:"Current sales are being delivered from the backlog. Unless intake recovers, sales will fall in the coming quarters, and fixed costs will then weigh on the margin.",
+  c:"Order intake by market and customer; quotation activity and win rate; whether prices or lead times lost the orders.",
+  d:"Capacity, hiring and stock should already follow intake, not sales."},
+ {h:"Adjusted profit up, reported profit down",s:["Adjusted EBITDA +10%","Net income −15%","Restructuring charges for the fourth year running","Acquisition costs every year"],
+  m:"The adjustments are not exceptional any more; they are a regular cost of how the company operates. The adjusted figure overstates sustainable earnings.",
+  c:"List the adjustments for five years. Add back only those that truly do not recur. Compare cumulative free cash flow with cumulative adjusted net income.",
+  d:"The frequency of restructuring and acquisitions is itself a management decision."},
+ {h:"Return falls after an investment",s:["Plant ROCE down from 34% to 33%","EBIT up","Economic value added up","New machine installed"],
+  m:"Nothing is wrong. The investment earns more than the cost of capital but less than the plant's very high average, so the ratio falls while value rises.",
+  c:"The investment's own return against the cost of capital, and whether the planned savings are arriving.",
+  d:"Approving it was right. Rejecting it to protect the ratio would have destroyed value."},
+ {h:"Group margin down, every segment up",s:["Segment A margin +0.4 points","Segment B margin +4 points","Group margin lower than expected","Segment B growing much faster"],
+  m:"A mix effect. The faster-growing segment has the lower margin, so it pulls the weighted average down even though both segments improved.",
+  c:"Recalculate the group margin at last year's sales mix. The difference from the actual figure is the mix effect.",
+  d:"None is needed to 'fix' it. Judge each segment on its own margin and return."},
+ {h:"Strong cash flow that will not repeat",s:["Free cash flow well above net income","Payables days +15","Supplier complaints about late payment","Inventory and receivables unchanged"],
+  m:"The cash came from paying suppliers later, which can be done once. It is a loan from suppliers, not a result of operations.",
+  c:"Cash flow before working-capital changes; overdue payables; lost early-payment discounts; year-end against average balances.",
+  d:"Payment runs held back before the balance sheet date; agreed terms versus actual behaviour."},
+ {h:"Leverage down at the top of the cycle",s:["Net leverage down from 2.4× to 1.6×","Net debt almost unchanged","EBITDA +45% in a boom year","Order intake starting to fall"],
+  m:"The ratio improved because earnings peaked, not because debt was repaid. When earnings return to normal the leverage returns with them.",
+  c:"Net debt in dollars; leverage on average earnings over a full cycle.",
+  d:"How the boom-year cash was used: debt repayment would have made the improvement last."},
+ {h:"Spending steady, renewal fading",s:["R&D intensity constant at 3%","Vitality index down from 25% to 12%","Time to market up from 18 to 30 months","Price pressure on older lines"],
+  m:"The same money produces fewer successful launches. The problem is development effectiveness or project selection, not the budget.",
+  c:"Number of projects per engineer, share of projects stopped early, causes of launch delays, margins of new against old products.",
+  d:"Too many parallel projects, late target-cost checks, weak business cases at approval."}
+];
+$("sigList").innerHTML=SIGNALS.map((x,i)=>`<div class="kpi"><h4><span>Case ${i+1}: ${x.h}</span></h4>
+  <ul>${x.s.map(v=>`<li>${v}</li>`).join("")}</ul>
+  <details><summary>What does it mean?</summary><p><b>Most likely meaning.</b> ${x.m}</p><p><b>Check next.</b> ${x.c}</p><p><b>Decisions behind it.</b> ${x.d}</p></details></div>`).join("");
 
 /* ===================== role, navigation, progress ===================== */
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}},
@@ -1407,7 +1836,7 @@ function setRole(r){
   document.body.dataset.active=r;
   document.querySelectorAll(".roles button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.pick===r));
   $("roleName").textContent=ROLE[r]; $("roleLink").href="#t-"+r;
-  store.set("kpi.role",r); paint(); renderCat();
+  store.set("kpi.role",r); paint(); renderCat(); labOptions();
 }
 document.querySelectorAll(".roles button").forEach(b=>b.addEventListener("click",()=>setRole(b.dataset.pick)));
 document.querySelectorAll(".markdone").forEach(b=>b.addEventListener("click",()=>{

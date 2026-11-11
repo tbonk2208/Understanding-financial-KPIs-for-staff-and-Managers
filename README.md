@@ -21,9 +21,11 @@ Open `index.html` in any browser (download the file, or clone the repository and
 | 1 to 10 | Shared core: three statements, growth, margins, EBITDA, segment EBITDA, working capital and cash, leverage, EPS, return on capital, reading a quarterly report | Example group |
 | 11 | The example plant: a consistent invented data set for plant-level KPIs | Example plant |
 | 12 | Role track, written separately for each of the four roles: line of sight to the group result, role KPIs, worked cases, calculator, exercises with solutions, self-test | Example plant |
-| 13 | KPI catalogue: 75 indicators with formula, worked value, meaning and business impact; searchable, filterable by topic and by role | Both, labelled |
+| 13 | Decision lab: pick one of 23 everyday decisions and see which indicators move, in which direction, why, and what the trade-off is | Qualitative |
+| 14 | Reading the signals: ten cases of several figures read together, with meaning, what to check next and the decisions behind them | Illustrative |
+| 15 | KPI catalogue: 75 indicators with formula, worked value, meaning, how to read it and which decisions move it; searchable, filterable by topic and by role | Both, labelled |
 
-Module 12 and the catalogue highlights change with the selected role.
+Modules 2 to 9 each contain a "How to read it" part and a table of the decisions that move the figure. Module 12, the decision lab and the catalogue highlights change with the selected role.
 
 ## Data and limits
 
