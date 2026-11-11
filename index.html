@@ -114,6 +114,7 @@ table.matrix td:first-child,table.matrix th:first-child{text-align:left;min-widt
 nav.toc a[data-role]{display:none}
 body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a[data-role=sales],body[data-active=rd] nav.toc a[data-role=rd],body[data-active=mgr] nav.toc a[data-role=mgr]{display:flex}
 .rolehow{font-size:.92rem;margin-top:.35rem}.rolehow ul{margin:.2rem 0 0}.rolehow li.me{background:var(--accent-soft);border-radius:6px;padding:.1rem .35rem;margin-left:-.35rem}
+table.wide td:last-child,table.wide th:last-child{min-width:15rem}
 </style>
 </head>
 <body data-active="mgr">
@@ -167,9 +168,6 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
     <tr><td>Adjusted EBITDA margin</td><td class="n" data-v="q.adjEbitdaMargin" data-f="p"></td><td class="n" data-v="q.adjEbitdaMarginPrior" data-f="p"></td><td>Operating earning power before depreciation and one-offs</td></tr>
     <tr><td>Diluted earnings per share</td><td class="n" data-v="q.eps" data-f="d2"></td><td class="n" data-v="q.epsPrior" data-f="d2"></td><td>Net profit attributable to one share</td></tr>
     <tr><td>Free cash flow (nine months)</td><td class="n" data-v="ytd.fcf" data-f="m"></td><td class="n" data-v="ytd.fcfPrior" data-f="m"></td><td>Cash left after running and investing in the business</td></tr>
-    <tr><td>Net present value (NPV)</td><td>Today's value of all future cash flows of an investment minus its cost, discounted at the cost of capital.</td></tr>
-    <tr><td>NOPAT</td><td>Net operating profit after tax: operating profit less the tax that would be due on it, before interest.</td></tr>
-    <tr><td>Absorption costing</td><td>Valuing inventory including a share of fixed production overhead. The reason building stock lifts reported profit.</td></tr>
     <tr><td>Net leverage</td><td class="n" data-v="q.netLeverage" data-f="x"></td><td class="n" data-v="q.netLeveragePrior" data-f="x"></td><td>Net debt in years of adjusted EBITDA</td></tr>
   </table></div>
   <p>By the end you should be able to explain every line of this table, say what moved it, and name two things in your own job that influence it.</p>
@@ -1866,7 +1864,84 @@ KPIS.forEach(k=>{k.h=ROLEHOW[k.n]||{}; k.r=ALL.filter(r=>k.h[r]);});
 "Target cost gap":`The design currently costs $61 a unit to make; the planned price only allows $55. Unless $6 is removed before the design is frozen, every unit sold will earn six points less margin than the business case promised.`
   };
   KPIS.forEach(k=>{ if(MEAN[k.n]) k.t=MEAN[k.n]; else console.error("no meaning: "+k.n); });
-  window.MEAN_KEYS=Object.keys(MEAN);
+  window.MEAN_KEYS=Object.keys(MEAN); window.MEAN=MEAN;
+})();
+
+/* ===================== operational meanings in the module tables (computed from the data) ===================== */
+(function(){
+  const M=window.MEAN, n0=x=>nf(x,0), n1=x=>nf(x,1), n2=x=>nf(x,2), Y=D.ytd;
+  const wk=d=>{const w=Math.round(d/7*2)/2;return Number.isInteger(w)?String(w):Math.floor(w)+"½";};
+  const weeklyCost=(Q.cogs+Q.sga-FY.da/4)/13;
+  function put(sec,table,label,html){
+    const root=document.getElementById(sec); const tables=[...root.querySelectorAll("table:not(.dec):not(.matrix)")];
+    const scope=table==null?tables:[tables[table]];
+    for(const t of scope){ for(const tr of t.rows){ const c=tr.cells; if(c.length>1&&c[0].textContent.trim()===label){ c[c.length-1].innerHTML=html; t.classList.add("wide"); return; } } }
+    console.error("row not found: "+sec+" / "+label);
+  }
+  function head(sec,table,text){const t=[...document.getElementById(sec).querySelectorAll("table:not(.dec):not(.matrix)")][table]; const c=t.rows[0].cells; c[c.length-1].textContent=text;}
+  // ---- Start page
+  head("m0",0,"What it means in practice");
+  put("m0",0,"Sales",`Everything shipped and invoiced in three months: about $${n1(Q.sales/91.25)} million on every day of the quarter.`);
+  put("m0",0,"Operating margin",`After all operating costs, about $${n0(Q.opMargin)} of every $100 invoiced remains.`);
+  put("m0",0,"Adjusted EBITDA margin",`Before charging for wear of equipment and past acquisitions, about $${n0(Q.adjEbitdaMargin)} of every $100 stays in the business to pay for investment, interest, tax and dividends.`);
+  put("m0",0,"Diluted earnings per share",`What one share earned in the quarter. $1 million more profit a year in any plant adds about ${n0((1-C.taxRate/100)/Q.shares*100)} cents a year.`);
+  put("m0",0,"Free cash flow (nine months)",`Money left after paying all running costs and new machines. It is what repaid debt and paid the dividend.`);
+  put("m0",0,"Net leverage",`All operating earnings of about ${n1(Q.netLeverage)} years would be needed to clear the debt.`);
+  // ---- Module 1: income statement
+  put("m1",0,"Net sales",`Everything shipped and invoiced in the year: about $${n0(FY.sales/12)} million a month.`);
+  put("m1",0,"Cost of sales",`What it cost to make those goods: material, plant wages, energy, depreciation of machines. $${n0(FY.cogsPct)} of every $100 invoiced.`);
+  put("m1",0,"Gross profit",`What the plants hand over to the rest of the company: $${n0(FY.gm)} per $100 of sales, from which everything below must be paid.`);
+  put("m1",0,"Selling, general and administrative (SG&A)",`Sales force, usually development, IT, finance, management and the amortisation of acquired businesses: $${n0(FY.sgaPct)} of every $100.`);
+  put("m1",0,"Other operating expense",`One-time costs of reorganising, such as severance or closing a line.`);
+  put("m1",0,"Operating income",`What running the business earned before lenders and tax: $${n0(FY.opMargin)} per $100 of sales, about $${n0(FY.opInc/12)} million a month.`);
+  put("m1",0,"Interest, loss on sale of a business, other (net)",`Mainly interest to lenders ($${n0(FY.netInterest)} million) and the one-time loss on the business sold ($${n0(FY.oneOff)} million). Neither comes from the plants' daily work.`);
+  put("m1",0,"Income tax",`The tax authorities' share: about ${n0(FY.tax/FY.pbt*100)}% of the profit before tax.`);
+  put("m1",0,"Net income",`What is left for the owners: only $${n0(FY.niMargin)} per $100 of sales in this year, held down by the one-time loss.`);
+  // ---- Module 1: balance sheet
+  put("m1",1,"Cash",`Money in the bank: enough to cover about ${n0(B.cash/weeklyCost)} weeks of running costs if nothing came in.`);
+  put("m1",1,"Accounts receivable",`Invoices customers have not yet paid: about ${wk(W.dso)} weeks of sales.`);
+  put("m1",1,"Inventories",`Material, half-finished and finished goods already paid for: about ${wk(W.dio)} weeks of production.`);
+  put("m1",1,"Goodwill and other intangibles",`What was paid for acquired companies above the value of their plants and stock: about ${n0(B.gwIntPct)}% of all assets. It earns its keep only if those businesses grow.`);
+  put("m1",1,"Total assets",`Everything the group owns or is owed.`);
+  put("m1",1,"Accounts payable",`Supplier invoices not yet paid: about ${wk(W.dpo)} weeks of purchases, in effect an interest-free loan from suppliers.`);
+  put("m1",1,"Total debt",`Owed to banks and bondholders. It costs about $${n0(Q.interest)} million of interest every quarter.`);
+  put("m1",1,"Shareholders' equity",`What would be left for the owners if every asset were sold at its book value and every debt paid.`);
+  // ---- Module 1: cash flow
+  head("m1",2,"What it means in practice");
+  put("m1",2,"Cash from operations",`What daily business brought in after paying suppliers, wages, interest and tax: about $${n0(FY.cfo/12)} million a month.`);
+  put("m1",2,"Capital expenditure incl. software",`Spent on machines, buildings and software: about $${n0(FY.capexPct)} per $100 of sales.`);
+  put("m1",2,"Free cash flow",`What was really available for acquisitions, debt repayment and dividends.`);
+  put("m1",2,"Acquisitions",`Paid for buying companies: about ${n1(FY.acq/FY.fcf)} times the year's free cash flow, so the rest had to be borrowed.`);
+  put("m1",2,"Dividends",`Paid out to the owners: about ${n0(FY.div/FY.fcf*100)}% of the free cash flow.`);
+  // ---- Module 6: days
+  head("m6",1,"What it means in practice");
+  put("m6",1,"DSO, days sales outstanding",`The group waits about ${wk(W.dso)} weeks for its money after invoicing; $${n0(B.ar)} million is outstanding.`);
+  put("m6",1,"DIO, days inventory outstanding",`Material arriving today leaves as a sold product in about ${wk(W.dio)} weeks; $${n0(B.inv)} million sits in stock.`);
+  put("m6",1,"DPO, days payables outstanding",`Suppliers are paid after about ${wk(W.dpo)} weeks; their credit covers about ${n0(B.ap/B.inv*100)}% of the stock.`);
+  put("m6",1,"Cash conversion cycle (CCC)",`About ${wk(W.ccc)} weeks pass between paying for material and being paid by the customer.`);
+  // ---- Module 12: operations
+  head("t-ops",0,"What it means in practice");
+  [["Overall equipment effectiveness (OEE)","Overall equipment effectiveness (OEE)"],["Scrap and rework cost","Scrap and rework rate"],["Cost of poor quality","Cost of poor quality"],["On-time delivery","On-time delivery"],["Capacity utilisation","Capacity utilisation"],["Excess and obsolete stock","Excess and obsolete inventory"],["Purchase price variance","Purchase price variance"],["Sales per employee","Sales per employee"]]
+    .forEach(([l,k])=>put("t-ops",0,l,M[k]));
+  put("t-ops",0,"Inventory turnover",`The plant's whole stock is used up and replaced ${n1(E.turns)} times a year. A part bought today is sold about ${wk(E.dio)} weeks later, and $${n1(E.inv)} million is tied up in the meantime.`);
+  put("t-ops",0,"Days payables outstanding",`Suppliers wait about ${wk(E.dpo)} weeks for payment. Their credit of $${n1(E.ap)} million finances about ${n0(E.ap/E.inv*100)}% of the plant's stock.`);
+  // ---- Module 12: sales
+  head("t-sales",0,"What it means in practice");
+  [["Order intake","Order intake"],["Book-to-bill","Book-to-bill ratio"],["Backlog coverage","Backlog coverage"],["Discount rate (price realisation)","Price realisation (discount rate)"],["Customer concentration","Customer concentration"],["Win rate","Win rate"],["Forecast accuracy","Forecast accuracy"]]
+    .forEach(([l,k])=>put("t-sales",0,l,M[k]));
+  put("t-sales",0,"Gross margin by customer or product",`On average $${n2(E.gm)} of every $100 invoiced is left after production cost. The average hides the spread: customer A leaves $${n0(E.cA.gm)}, customer B $${n0(E.cB.gm)}.`);
+  put("t-sales",0,"Days sales outstanding",`The plant's customers pay after about ${wk(E.dso)} weeks on average. $${n1(E.ar)} million of shipped goods is waiting to be collected, as much as the plant earns in about ${n0(E.ar/E.ebit*12)} months.`);
+  // ---- Module 12: R&D
+  head("t-rd",0,"What it means in practice");
+  [["R&D intensity","R&D intensity"],["Vitality index","Vitality index"],["Time to market","Time to market"],["Payback period","Payback period"],["Net present value (NPV)","Net present value (NPV)"],["Internal rate of return (IRR)","Internal rate of return (IRR)"],["Target cost gap","Target cost gap"]]
+    .forEach(([l,k])=>put("t-rd",0,l,M[k]));
+  // ---- Module 12: managers
+  head("t-mgr",0,"What it means in practice");
+  [["Contribution margin","Contribution margin"],["Break-even sales","Break-even sales"],["Margin of safety","Margin of safety"],["Operating leverage","Operating leverage"],["Personnel cost ratio","Personnel cost ratio"],["Return on capital employed (ROCE)","Return on capital employed (ROCE)"],["Cash flow return on investment (CFROI)","Cash flow return on investment (CFROI)"],["Economic value added (EVA)","Economic value added (EVA)"]]
+    .forEach(([l,k])=>put("t-mgr",0,l,M[k]));
+  put("t-mgr",0,"Sales versus budget",`The plant shipped $${n1(E.varSales)} million more than it committed to in the plan. Material, capacity and people for that had to be found during the year.`);
+  put("t-mgr",0,"EBIT versus budget",`$${n1(E.varEbit)} million more profit than promised. Whether that is good depends on what $${n1(E.varSales)} million of extra sales should have brought (worked case 1).`);
+  put("t-mgr",0,"Capex ratio",`$${n1(E.capex)} million a year goes into machines and tooling, slightly more than the $${n1(E.depr)} million by which existing equipment wears out. The plant is being kept up, with little expansion.`);
 })();
 
 /* ===================== decision lab ===================== */
