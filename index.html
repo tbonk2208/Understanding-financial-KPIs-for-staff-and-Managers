@@ -1,0 +1,1422 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Understanding Financial KPIs – a self-study tutorial for staff and managers</title>
+<style>
+:root{
+  --bg:#f6f7f9;--card:#ffffff;--ink:#1c2430;--muted:#5b6675;--line:#dfe3e8;
+  --accent:#0f6b6b;--accent-soft:#e3f1f0;--warn:#8a5a00;--warn-soft:#fff4dc;
+  --good:#1d6b3a;--good-soft:#e4f3e9;--bad:#9b2c2c;--bad-soft:#fbe9e9;--bar:#3b7ea1;--bar2:#c98a2b;
+}
+@media (prefers-color-scheme:dark){
+  :root{--bg:#12161c;--card:#1a2029;--ink:#e7ebf0;--muted:#9aa6b5;--line:#2c3542;
+  --accent:#5cc4c0;--accent-soft:#17302f;--warn:#f0c46a;--warn-soft:#33290f;
+  --good:#7bd49a;--good-soft:#163022;--bad:#f09a9a;--bad-soft:#3a1c1c;--bar:#6fb1d3;--bar2:#e0b062;}
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+header.top{position:sticky;top:0;z-index:10;background:var(--card);border-bottom:1px solid var(--line);padding:.6rem 1rem}
+.topin{max-width:1100px;margin:0 auto;display:flex;flex-wrap:wrap;gap:.6rem;align-items:center;justify-content:space-between}
+.brand{font-weight:700;font-size:1rem}
+.brand small{display:block;font-weight:400;color:var(--muted);font-size:.75rem}
+.roles{display:flex;flex-wrap:wrap;gap:.35rem}
+.roles button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:999px;padding:.35rem .8rem;font:inherit;font-size:.85rem;cursor:pointer}
+.roles button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+@media (prefers-color-scheme:dark){.roles button[aria-pressed=true]{color:#0b1416}}
+.wrap{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:230px 1fr;gap:1.5rem;padding:1rem}
+nav.toc{position:sticky;top:5.2rem;align-self:start;max-height:calc(100vh - 6rem);overflow:auto;font-size:.9rem}
+nav.toc a{display:flex;gap:.4rem;padding:.3rem .5rem;border-radius:6px;color:var(--ink);text-decoration:none}
+nav.toc a:hover{background:var(--accent-soft)}
+nav.toc .done::after{content:"✓";color:var(--good);margin-left:auto}
+.progress{height:6px;background:var(--line);border-radius:3px;margin:.5rem 0 1rem;overflow:hidden}
+.progress i{display:block;height:100%;background:var(--accent);width:0}
+main{min-width:0}
+nav.toc details{border:0;padding:0;margin:0}
+@media (min-width:821px){nav.toc summary{display:none}}
+@media (max-width:820px){.wrap{grid-template-columns:1fr;padding:.6rem}.brand small{display:none}.roles{flex-wrap:nowrap;overflow-x:auto;width:100%;padding-bottom:.2rem}.roles button{white-space:nowrap;flex:none}section.mod{padding:1rem .9rem;scroll-margin-top:7rem}.barrow{grid-template-columns:minmax(90px,36%) 1fr 54px}nav.toc{position:static;max-height:none;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:.5rem}}
+section.mod{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:1.2rem 1.3rem;margin-bottom:1.3rem;scroll-margin-top:5.5rem}
+h1{font-size:1.6rem;line-height:1.25;margin:.2rem 0 .6rem}
+h2{font-size:1.3rem;line-height:1.3;margin:0 0 .2rem}
+h3{font-size:1.02rem;margin:1.3rem 0 .4rem}
+.kicker{color:var(--accent);font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.lead{color:var(--muted);margin:.2rem 0 1rem}
+p{margin:.5rem 0}
+table{border-collapse:collapse;width:100%;font-size:.92rem;margin:.6rem 0}
+th,td{padding:.4rem .5rem;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+td.n,th.n{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+tr.tot td{font-weight:700;border-top:2px solid var(--ink)}
+.tblwrap{overflow-x:auto}
+.box{border-radius:10px;padding:.8rem 1rem;margin:.9rem 0}
+.box.role{background:var(--accent-soft);border-left:4px solid var(--accent)}
+.box.caveat{background:var(--warn-soft);border-left:4px solid var(--warn)}
+.box.key{border:1px dashed var(--accent)}
+.box h4{margin:0 0 .3rem;font-size:.9rem}
+.box p:last-child{margin-bottom:0}
+[data-role]{display:none}
+body[data-active=ops] [data-role~=ops],body[data-active=sales] [data-role~=sales],
+body[data-active=rd] [data-role~=rd],body[data-active=mgr] [data-role~=mgr]{display:block}
+.formula{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:.88rem;background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:.5rem .7rem;margin:.5rem 0;overflow-x:auto;white-space:nowrap}
+.tag{display:inline-block;font-size:.7rem;border:1px solid var(--line);border-radius:4px;padding:0 .35rem;color:var(--muted);vertical-align:middle}
+.tag.own{border-color:var(--warn);color:var(--warn)}
+details{border:1px solid var(--line);border-radius:8px;padding:.5rem .8rem;margin:.5rem 0}
+summary{cursor:pointer;font-weight:600}
+.quiz{margin:.8rem 0}
+.q{border:1px solid var(--line);border-radius:10px;padding:.7rem .9rem;margin:.6rem 0}
+.q p{margin:.1rem 0 .5rem;font-weight:600}
+.q button{display:block;width:100%;text-align:left;margin:.3rem 0;padding:.5rem .7rem;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);font:inherit;cursor:pointer}
+.q button.right{background:var(--good-soft);border-color:var(--good)}
+.q button.wrong{background:var(--bad-soft);border-color:var(--bad)}
+.q .fb{font-size:.9rem;margin-top:.4rem;color:var(--muted)}
+.bars{margin:.6rem 0}
+.barrow{display:grid;grid-template-columns:minmax(120px,38%) 1fr 62px;gap:.5rem;align-items:center;font-size:.86rem;margin:.25rem 0}
+.bartrack{position:relative;height:18px;background:var(--bg);border-radius:4px}
+.bartrack i{position:absolute;top:0;height:100%;background:var(--bar);border-radius:4px}
+.bartrack i.alt{background:var(--bar2)}
+.barrow .n{text-align:right;font-variant-numeric:tabular-nums}
+.calc{border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;margin:.8rem 0}
+.calc label{display:block;font-size:.9rem;margin:.5rem 0 .1rem}
+.calc input[type=range]{width:100%}
+.calc output{font-weight:700}
+.calc .res{background:var(--accent-soft);border-radius:8px;padding:.6rem .8rem;margin-top:.6rem;font-size:.95rem}
+.markdone{margin-top:1rem;padding:.5rem .9rem;border-radius:8px;border:1px solid var(--accent);background:transparent;color:var(--accent);font:inherit;cursor:pointer}
+.markdone.is{background:var(--accent);color:#fff}
+footer{max-width:1100px;margin:0 auto;padding:1rem;color:var(--muted);font-size:.82rem}
+a{color:var(--accent)}
+ol,ul{padding-left:1.2rem;margin:.4rem 0}
+li{margin:.2rem 0}
+
+.tag.ill{border-color:#7a4fb5;color:#7a4fb5}
+.tag.rep{border-color:var(--good);color:var(--good)}
+@media (prefers-color-scheme:dark){.tag.ill{border-color:#c3a6ee;color:#c3a6ee}}
+.catbar{display:flex;flex-wrap:wrap;gap:.5rem;align-items:center;margin:.6rem 0}
+.catbar input[type=search],.catbar select{font:inherit;padding:.45rem .6rem;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--ink);min-width:0;flex:1 1 180px}
+.catbar .chk{font-size:.9rem;flex:1 1 100%}
+.kpi{border:1px solid var(--line);border-radius:10px;padding:.7rem .9rem;margin:.55rem 0}
+.kpi h4{margin:0 0 .25rem;font-size:1rem;display:flex;flex-wrap:wrap;gap:.4rem;align-items:baseline;justify-content:space-between}
+.kpi .val{font-weight:700;font-variant-numeric:tabular-nums}
+.kpi p{margin:.25rem 0;font-size:.92rem}
+.kpi .meta{font-size:.76rem;color:var(--muted)}
+.kpi.mine{border-left:4px solid var(--accent)}
+.rolebanner{background:var(--accent-soft);border-radius:10px;padding:.7rem .9rem;margin:.8rem 0}
+.rolebanner a{font-weight:700}
+</style>
+</head>
+<body data-active="mgr">
+
+<header class="top"><div class="topin">
+  <div class="brand">Understanding Financial KPIs<small>Independent self-study material · figures of an example group and an example plant</small></div>
+  <div class="roles" role="group" aria-label="Choose your role">
+    <button data-pick="ops">Operations &amp; supply chain</button>
+    <button data-pick="sales">Sales &amp; marketing</button>
+    <button data-pick="rd">R&amp;D &amp; engineering</button>
+    <button data-pick="mgr">Managers (budget / P&amp;L)</button>
+  </div>
+</div></header>
+
+<div class="wrap">
+<nav class="toc" aria-label="Modules">
+  <div class="progress"><i id="pbar"></i></div>
+  <details id="tocd"><summary>Modules</summary><div id="toc"></div></details>
+</nav>
+
+<main>
+
+<section class="mod" id="m0" data-title="Start here">
+  <div class="kicker">Start here</div>
+  <h1>What the numbers mean, and what you can do about them</h1>
+  <p class="lead">A tutorial for staff and managers. Every indicator is explained with the figures of an example group and an example plant, then translated into your role.</p>
+
+  <div class="rolebanner">You are viewing the <b id="roleName"></b> track. Change it with the buttons at the top. Your dedicated module: <a id="roleLink" href="#">Module 12</a>.</div>
+  <h3>How this tutorial works</h3>
+  <ol>
+    <li><b>Pick your role</b> at the top. Modules 1 to 10 are a shared core using the figures of an example group. Module 12 is written separately for each role, with its own KPIs, cases, calculator and exercises. The catalogue in Module 13 can be filtered to your role.</li>
+    <li><b>Each module follows one pattern:</b> a number from the examples → what it means → what drives it → what you can influence → a self-test.</li>
+    <li><b>Work top-down.</b> We start from the published result and drill into its causes, instead of memorising formulas first.</li>
+    <li><b>Two data sets.</b> Modules 1 to 10 use an example group: a listed industrial company with two segments. Plant-level figures (scrap, orders, customer margins, projects) come from an invented example plant introduced in Module 11, always labelled <span class="tag ill">illustrative</span>.</li>
+    <li><b>Apply it.</b> Use the quarterly routine (Module 10) on the next earnings release and redo the role exercises with your own unit's numbers.</li>
+  </ol>
+
+  <div class="box caveat">
+    <h4>Read this before relying on any number</h4>
+    <p>The <b>example group</b> in Modules 1 to 10 is invented: a fictional listed industrial company with two segments that has grown partly through acquisitions. Its figures are internally consistent and of a realistic order of magnitude, but they describe no real company. "Reported" means reported by this fictional group.</p>
+    <p>The <b>example plant</b> from Module 11 onward is invented. Its values are marked <span class="tag ill">illustrative</span>.</p>
+    <p>Values marked <span class="tag own">own calculation</span> are computed here from the example group's figures with simplified textbook formulas. Your own company's definitions (for example for working-capital days or return on capital) may differ. This material does not describe any company's internal targets or reporting, and it is not investment advice.</p>
+  </div>
+
+  <h3>The one-minute picture (third quarter 2026)</h3>
+  <div class="tblwrap"><table>
+    <tr><th>Indicator</th><th class="n">Q3 2026</th><th class="n">Q3 2025</th><th>Plain meaning</th></tr>
+    <tr><td>Sales</td><td class="n" data-v="q.sales" data-f="m"></td><td class="n" data-v="q.salesPrior" data-f="m"></td><td>What customers were invoiced</td></tr>
+    <tr><td>Operating margin</td><td class="n" data-v="q.opMargin" data-f="p"></td><td class="n" data-v="q.opMarginPrior" data-f="p"></td><td>Cents of operating profit per dollar of sales</td></tr>
+    <tr><td>Adjusted EBITDA margin</td><td class="n" data-v="q.adjEbitdaMargin" data-f="p"></td><td class="n" data-v="q.adjEbitdaMarginPrior" data-f="p"></td><td>Operating earning power before depreciation and one-offs</td></tr>
+    <tr><td>Diluted earnings per share</td><td class="n" data-v="q.eps" data-f="d2"></td><td class="n" data-v="q.epsPrior" data-f="d2"></td><td>Net profit attributable to one share</td></tr>
+    <tr><td>Free cash flow (nine months)</td><td class="n" data-v="ytd.fcf" data-f="m"></td><td class="n" data-v="ytd.fcfPrior" data-f="m"></td><td>Cash left after running and investing in the business</td></tr>
+    <tr><td>Net leverage</td><td class="n" data-v="q.netLeverage" data-f="x"></td><td class="n" data-v="q.netLeveragePrior" data-f="x"></td><td>Net debt in years of adjusted EBITDA</td></tr>
+  </table></div>
+  <p>By the end you should be able to explain every line of this table, say what moved it, and name two things in your own job that influence it.</p>
+  <button class="markdone" data-done="m0">Mark as read</button>
+</section>
+
+<section class="mod" id="m1" data-title="1 · The three statements">
+  <div class="kicker">Module 1</div>
+  <h2>The three statements: profit, position, cash</h2>
+  <p class="lead">Every KPI is built from three reports. Know what each one answers and most indicators explain themselves.</p>
+
+  <h3>Income statement: did we earn more than we consumed?</h3>
+  <p>It covers a period (a quarter, a year). It records sales when goods are delivered and costs when they are used, regardless of when cash moves.</p>
+  <div class="tblwrap"><table>
+    <tr><th>Full-year 2025, $ million</th><th class="n">Amount</th><th class="n">% of sales</th><th>What it is</th></tr>
+    <tr><td>Net sales</td><td class="n" data-v="fy.sales" data-f="n"></td><td class="n">100.0%</td><td>Invoiced products and services</td></tr>
+    <tr><td>Cost of sales</td><td class="n" data-v="fy.cogs" data-f="neg"></td><td class="n" data-v="fy.cogsPct" data-f="p"></td><td>Material, labour and factory cost of what was sold</td></tr>
+    <tr class="tot"><td>Gross profit</td><td class="n" data-v="fy.gp" data-f="n"></td><td class="n" data-v="fy.gm" data-f="p"></td><td>What is left to pay for everything else</td></tr>
+    <tr><td>Selling, general and administrative (SG&amp;A)</td><td class="n" data-v="fy.sga" data-f="neg"></td><td class="n" data-v="fy.sgaPct" data-f="p"></td><td>Sales force, R&amp;D, administration, amortisation of acquired intangibles</td></tr>
+    <tr><td>Other operating expense</td><td class="n" data-v="fy.otherOp" data-f="neg"></td><td class="n"></td><td>Restructuring, impairments</td></tr>
+    <tr class="tot"><td>Operating income</td><td class="n" data-v="fy.opInc" data-f="n"></td><td class="n" data-v="fy.opMargin" data-f="p"></td><td>Profit from running the business</td></tr>
+    <tr><td>Interest, loss on sale of a business, other (net)</td><td class="n" data-v="fy.belowOp" data-f="neg"></td><td class="n"></td><td>Financing and non-operating items</td></tr>
+    <tr><td>Income tax</td><td class="n" data-v="fy.tax" data-f="neg"></td><td class="n"></td><td></td></tr>
+    <tr class="tot"><td>Net income</td><td class="n" data-v="fy.ni" data-f="n"></td><td class="n" data-v="fy.niMargin" data-f="p"></td><td>What belongs to shareholders</td></tr>
+  </table></div>
+  <p>Notice the jump from an operating margin of <span data-v="fy.opMargin" data-f="p"></span> to a net margin of only <span data-v="fy.niMargin" data-f="p"></span>. The main cause in 2025 was a one-time, non-cash loss of $<span data-v="fy.oneOff" data-f="n"></span> million on the sale of a small business. Module 4 shows why such items are stripped out in "adjusted" figures.</p>
+
+  <h3>Balance sheet: what do we own and owe on one day?</h3>
+  <div class="tblwrap"><table>
+    <tr><th>$ million</th><th class="n">30 Sep 2026</th><th class="n">31 Dec 2025</th><th>Why it matters</th></tr>
+    <tr><td>Cash</td><td class="n" data-v="bs.cash" data-f="n"></td><td class="n" data-v="bs0.cash" data-f="n"></td><td>Room to manoeuvre</td></tr>
+    <tr><td>Accounts receivable</td><td class="n" data-v="bs.ar" data-f="n"></td><td class="n" data-v="bs0.ar" data-f="n"></td><td>Sold but not yet paid</td></tr>
+    <tr><td>Inventories</td><td class="n" data-v="bs.inv" data-f="n"></td><td class="n" data-v="bs0.inv" data-f="n"></td><td>Paid for but not yet sold</td></tr>
+    <tr><td>Goodwill and other intangibles</td><td class="n" data-v="bs.gwInt" data-f="n"></td><td class="n" data-v="bs0.gwInt" data-f="n"></td><td>Price paid for acquired businesses above their tangible assets</td></tr>
+    <tr class="tot"><td>Total assets</td><td class="n" data-v="bs.ta" data-f="n"></td><td class="n" data-v="bs0.ta" data-f="n"></td><td></td></tr>
+    <tr><td>Accounts payable</td><td class="n" data-v="bs.ap" data-f="n"></td><td class="n" data-v="bs0.ap" data-f="n"></td><td>Received but not yet paid to suppliers</td></tr>
+    <tr><td>Total debt</td><td class="n" data-v="bs.debt" data-f="n"></td><td class="n" data-v="bs0.debt" data-f="n"></td><td>Borrowed money</td></tr>
+    <tr><td>Shareholders' equity</td><td class="n" data-v="bs.equity" data-f="n"></td><td class="n" data-v="bs0.equity" data-f="n"></td><td>Owners' share</td></tr>
+  </table></div>
+  <p>Two observations. Goodwill and intangibles are about <span data-v="bs.gwIntPct" data-f="p0"></span> of total assets <span class="tag own">own calculation</span>: this is a company built substantially through acquisitions, which shapes several KPIs later. And receivables and inventories both rose during 2026, which is normal when sales grow but ties up cash (Module 6).</p>
+
+  <h3>Cash flow statement: where did the cash come from and go?</h3>
+  <div class="tblwrap"><table>
+    <tr><th>Full-year 2025, $ million</th><th class="n">Amount</th><th>Meaning</th></tr>
+    <tr><td>Cash from operations</td><td class="n" data-v="fy.cfo" data-f="n"></td><td>Profit converted to cash, after working-capital changes</td></tr>
+    <tr><td>Capital expenditure incl. software</td><td class="n" data-v="fy.capex" data-f="neg"></td><td>Machines, buildings, systems</td></tr>
+    <tr class="tot"><td>Free cash flow</td><td class="n" data-v="fy.fcf" data-f="n"></td><td>Freely available cash</td></tr>
+    <tr><td>Acquisitions</td><td class="n" data-v="fy.acq" data-f="neg"></td><td>Buying businesses</td></tr>
+    <tr><td>Dividends</td><td class="n" data-v="fy.div" data-f="neg"></td><td>Paid to shareholders</td></tr>
+  </table></div>
+  <p>Net income was $<span data-v="fy.ni" data-f="n"></span> million, yet operations produced $<span data-v="fy.cfo" data-f="n"></span> million of cash. Profit and cash are different things: depreciation, amortisation and the loss on the sale reduced profit without any cash leaving in that year.</p>
+
+  <div class="box key"><h4>How the three connect</h4>
+  <p>Net income flows into equity. Sales that are not yet paid sit in receivables. Purchases not yet sold sit in inventories. The cash flow statement reconciles profit with the change in cash by undoing these timing differences.</p></div>
+
+  <div class="box role" data-role="ops"><h4>In your role: operations &amp; supply chain</h4><p>You mostly act on cost of sales (scrap, yield, labour hours, freight) and on inventories. A pallet in the warehouse is on the balance sheet, not in the income statement, until it ships. That is why building stock can make a month's profit look better while cash gets worse.</p></div>
+  <div class="box role" data-role="sales"><h4>In your role: sales &amp; marketing</h4><p>You act on the top line and on receivables. An order becomes sales only on delivery, and it becomes cash only when the customer pays. Payment terms you agree are a balance-sheet decision.</p></div>
+  <div class="box role" data-role="rd"><h4>In your role: R&amp;D &amp; engineering</h4><p>Your salaries and project costs are mostly expensed in SG&amp;A as they occur. Equipment you request is capital expenditure: it lands on the balance sheet and is depreciated over years.</p></div>
+  <div class="box role" data-role="mgr"><h4>In your role: managers</h4><p>Your budget is a slice of the income statement, but you are also accountable for the balance-sheet items your decisions create: stock levels, customer terms, capital requests. Ask for all three views of your unit, not only the P&amp;L.</p></div>
+
+  <div class="quiz" data-quiz="m1"></div>
+  <button class="markdone" data-done="m1">Mark module complete</button>
+</section>
+
+<section class="mod" id="m2" data-title="2 · Growth">
+  <div class="kicker">Module 2</div>
+  <h2>Sales growth: organic, acquired or currency?</h2>
+  <p class="lead">"Sales up <span data-v="q.growth" data-f="p"></span>" says little until you know where the growth came from.</p>
+
+  <p>Third-quarter 2026 sales were $<span data-v="q.sales" data-f="n"></span> million, up from $<span data-v="q.salesPrior" data-f="n"></span> million. Growth has three sources of very different quality:</p>
+  <ul>
+    <li><b>Organic:</b> more volume, better prices or a richer product mix in businesses already owned. This shows competitive strength.</li>
+    <li><b>Acquisitions:</b> sales bought with capital. They cost money and must earn it back.</li>
+    <li><b>Currency translation:</b> foreign sales converted at a different exchange rate. Nobody sold more.</li>
+  </ul>
+  <h3>Segment A, Q3 2026</h3>
+  <div class="bars" id="growthBars"></div>
+  <p>Of the segment's <span data-v="segA.growth" data-f="p"></span> growth, a little more than half was organic. In Segment B the whole <span data-v="segB.growth" data-f="p"></span> was organic, driven by a recovery in its main end market.</p>
+
+  <h3>What drives organic growth</h3>
+  <div class="formula">Sales change ≈ volume effect + price effect + mix effect</div>
+  <p>Price is the most powerful of the three because a price increase has almost no cost attached (Module 3). Mix means selling relatively more of the products with higher prices or margins. The report names stronger demand in several end markets and pricing actions as drivers, with weaker demand in one region working against them.</p>
+
+  <div class="box role" data-role="ops"><h4>In your role: operations &amp; supply chain</h4><p>Organic growth only counts when it ships. On-time delivery, lead time and capacity decide whether an order book becomes sales this quarter or next. Late deliveries shift sales, and in aftermarket business they can lose them.</p></div>
+  <div class="box role" data-role="sales"><h4>In your role: sales &amp; marketing</h4><p>Separate your own growth into volume, price and mix before you celebrate it. Ten per cent from price is worth far more profit than ten per cent from discount-driven volume. Report all three for your territory.</p></div>
+  <div class="box role" data-role="rd"><h4>In your role: R&amp;D &amp; engineering</h4><p>New products feed organic growth and, more importantly, mix: differentiated products carry higher prices. A useful personal KPI is the share of sales from products launched in the last few years.</p></div>
+  <div class="box role" data-role="mgr"><h4>In your role: managers</h4><p>When comparing your unit with the group, compare organic with organic. Acquired growth at group level is not a benchmark for a site that has not acquired anything.</p></div>
+
+  <div class="quiz" data-quiz="m2"></div>
+  <button class="markdone" data-done="m2">Mark module complete</button>
+</section>
+
+<section class="mod" id="m3" data-title="3 · Margins">
+  <div class="kicker">Module 3</div>
+  <h2>Margins: how much of each dollar stays</h2>
+  <p class="lead">A margin is profit divided by sales. Each margin level answers a different question.</p>
+
+  <div class="tblwrap"><table>
+    <tr><th>Q3 2026</th><th class="n">$ million</th><th class="n">% of sales</th><th class="n">Q3 2025</th><th>Question answered</th></tr>
+    <tr><td>Gross profit</td><td class="n" data-v="q.gp" data-f="n"></td><td class="n" data-v="q.gm" data-f="p"></td><td class="n" data-v="q.gmPrior" data-f="p"></td><td>Do we make and price products well?</td></tr>
+    <tr><td>SG&amp;A</td><td class="n" data-v="q.sga" data-f="n"></td><td class="n" data-v="q.sgaPct" data-f="p"></td><td class="n" data-v="q.sgaPctPrior" data-f="p"></td><td>What does the organisation around the product cost?</td></tr>
+    <tr><td>Operating income</td><td class="n" data-v="q.opInc" data-f="n"></td><td class="n" data-v="q.opMargin" data-f="p"></td><td class="n" data-v="q.opMarginPrior" data-f="p"></td><td>Does the business as a whole earn money?</td></tr>
+  </table></div>
+  <p class="lead">Gross margin and SG&amp;A percentages are <span class="tag own">own calculation</span> from the published income statement.</p>
+
+  <h3>Operating leverage: why margins rise when sales rise</h3>
+  <p>Sales grew <span data-v="q.growth" data-f="p"></span>, but SG&amp;A grew only <span data-v="q.sgaGrowth" data-f="p"></span>. Costs that do not rise in step with sales (buildings, management, systems, part of the workforce) are spread over more dollars of sales. As a result, SG&amp;A fell from <span data-v="q.sgaPctPrior" data-f="p"></span> to <span data-v="q.sgaPct" data-f="p"></span> of sales and the operating margin rose by about <span data-v="q.opMarginDelta" data-f="pp"></span>.</p>
+  <p>The same mechanism works in reverse. When sales fall, fixed costs stay and margins drop faster than sales. This is why Segment B's margin moved by four percentage points within a year as demand in its main end market recovered.</p>
+
+  <h3>Why price matters most</h3>
+  <div class="calc" id="calcPrice">
+    <b>Try it: a small change on $<span data-v="guide.revMid" data-f="n0"></span> million of annual sales</b> <span class="tag own">illustration</span>
+    <label>Price change: <output id="pOut"></output></label>
+    <input type="range" id="pIn" min="-3" max="3" step="0.5" value="1">
+    <label>Volume change: <output id="vOut"></output></label>
+    <input type="range" id="vIn" min="-5" max="5" step="0.5" value="0">
+    <div class="res" id="pRes"></div>
+    <p class="lead" style="font-size:.82rem;margin:.5rem 0 0">Assumptions: sales at the midpoint of 2026 guidance; a price change falls fully to profit; extra volume earns the Q3 2026 gross margin (which understates the effect, because part of cost of sales is fixed). Real effects depend on product, customer and capacity.</p>
+  </div>
+
+  <div class="box role" data-role="ops"><h4>In your role: operations &amp; supply chain</h4><p>Gross margin is your scoreboard. Scrap, rework, yield, overtime, expedited freight and purchase prices all sit in cost of sales. One percentage point of cost of sales saved on Q3 volumes is roughly $<span data-v="q.cogs1pct" data-f="n1"></span> million per quarter. <span class="tag own">own calculation</span></p></div>
+  <div class="box role" data-role="sales"><h4>In your role: sales &amp; marketing</h4><p>Use the calculator: a one per cent discount needs a clearly larger volume gain just to break even. Before conceding price, calculate the volume you need to make up for it, and ask whether the customer will really deliver it.</p></div>
+  <div class="box role" data-role="rd"><h4>In your role: R&amp;D &amp; engineering</h4><p>Most of a product's cost is fixed by its design: material choice, tolerances, number of process steps. Design-to-cost decisions influence gross margin for the product's whole life, long after the project budget is forgotten.</p></div>
+  <div class="box role" data-role="mgr"><h4>In your role: managers</h4><p>Know which of your costs are fixed and which vary with volume. That split tells you your break-even point and how exposed your unit's margin is to a downturn. Adding fixed cost in a good year is easy; removing it in a bad one is slow.</p></div>
+
+  <div class="quiz" data-quiz="m3"></div>
+  <button class="markdone" data-done="m3">Mark module complete</button>
+</section>
+
+<section class="mod" id="m4" data-title="4 · EBITDA and adjusted EBITDA">
+  <div class="kicker">Module 4</div>
+  <h2>EBITDA and "adjusted" EBITDA</h2>
+  <p class="lead">The headline profit number in the example group's reports, as in those of many listed companies. Understand what is added back, and why you should still look at what was removed.</p>
+
+  <p><b>EBITDA</b> is earnings before interest, taxes, depreciation and amortisation. It approximates the cash earning power of operations, independent of how the company is financed, where it is taxed and how much it paid for past investments and acquisitions.</p>
+  <p><b>Adjusted EBITDA</b> also removes items management considers unrelated to ongoing operations. It is a non-GAAP measure: there is no accounting standard that defines it, so each company sets its own rules and must publish a reconciliation.</p>
+
+  <h3>From net income to adjusted EBITDA, full-year 2025</h3>
+  <div class="bars" id="bridgeBars"></div>
+  <p>Net income of $<span data-v="fy.ni" data-f="n"></span> million becomes adjusted EBITDA of $<span data-v="fy.adjEbitda" data-f="n"></span> million. The two largest steps are depreciation and amortisation and the one-time loss on the sale of a business.</p>
+
+  <h3>How to read it critically</h3>
+  <ul>
+    <li><b>Depreciation is a real cost.</b> Machines wear out and must be replaced. EBITDA ignores this, so always look at capital expenditure and free cash flow as well (Module 6).</li>
+    <li><b>Amortisation of acquired intangibles is large here</b> because the company grew by acquisition. It is non-cash today, but the cash was spent when the business was bought (Module 9).</li>
+    <li><b>"One-off" items that recur every year</b> (restructuring, acquisition costs) are partly a normal cost of the strategy. Check whether the same adjustments appear year after year.</li>
+    <li><b>Its strength:</b> it lets you compare periods and businesses without distortion from the sale of a business or a refinancing.</li>
+  </ul>
+
+  <div class="box role" data-role="ops"><h4>In your role: operations &amp; supply chain</h4><p>Everything you do to cost of sales shows up in EBITDA directly. Depreciation of your machines does not, so EBITDA does not reward running equipment longer or penalise a new line. Watch that this does not hide the true cost of capital-heavy solutions.</p></div>
+  <div class="box role" data-role="sales"><h4>In your role: sales &amp; marketing</h4><p>EBITDA margin is the reason "profitable growth" is not the same as growth. An order at a margin far below the segment's average raises sales and lowers the margin percentage at the same time.</p></div>
+  <div class="box role" data-role="rd"><h4>In your role: R&amp;D &amp; engineering</h4><p>Development spending reduces EBITDA today for sales in later years. The releases repeatedly mention "growth investments" holding margins back; your project is one of these, so be ready to say when and how it pays back.</p></div>
+  <div class="box role" data-role="mgr"><h4>In your role: managers</h4><p>If you propose treating a cost as "one-off", ask whether it would be reasonable to exclude it three years in a row. And never judge an investment on EBITDA alone: it ignores the capital it consumes.</p></div>
+
+  <div class="quiz" data-quiz="m4"></div>
+  <button class="markdone" data-done="m4">Mark module complete</button>
+</section>
+
+<section class="mod" id="m5" data-title="5 · Segment EBITDA">
+  <div class="kicker">Module 5</div>
+  <h2>Segment EBITDA: the number the businesses are steered by</h2>
+  <p class="lead">The example group, like many companies, uses adjusted segment EBITDA to allocate resources and to assess segment performance.</p>
+
+  <div class="tblwrap"><table>
+    <tr><th>Q3 2026, $ million</th><th class="n">Sales</th><th class="n">Adj. segment EBITDA</th><th class="n">Margin</th><th class="n">Margin Q3 2025</th></tr>
+    <tr><td>Segment A</td><td class="n" data-v="segA.sales" data-f="n"></td><td class="n" data-v="segA.ebitda" data-f="n"></td><td class="n" data-v="segA.margin" data-f="p"></td><td class="n" data-v="segA.marginPrior" data-f="p"></td></tr>
+    <tr><td>Segment B</td><td class="n" data-v="segB.sales" data-f="n"></td><td class="n" data-v="segB.ebitda" data-f="n"></td><td class="n" data-v="segB.margin" data-f="p"></td><td class="n" data-v="segB.marginPrior" data-f="p"></td></tr>
+    <tr class="tot"><td>Total segments</td><td class="n" data-v="q.sales" data-f="n"></td><td class="n" data-v="q.segEbitda" data-f="n"></td><td class="n" data-v="q.segMargin" data-f="p"></td><td class="n" data-v="q.segMarginPrior" data-f="p"></td></tr>
+    <tr><td>Corporate expense</td><td class="n"></td><td class="n" data-v="q.corp" data-f="neg"></td><td class="n"></td><td class="n"></td></tr>
+    <tr class="tot"><td>Company adjusted EBITDA</td><td class="n"></td><td class="n" data-v="q.adjEbitda" data-f="n"></td><td class="n" data-v="q.adjEbitdaMargin" data-f="p"></td><td class="n" data-v="q.adjEbitdaMarginPrior" data-f="p"></td></tr>
+  </table></div>
+
+  <h3>The puzzle: why is the company margin lower than the segment total?</h3>
+  <p>The segments together earned <span data-v="q.segMargin" data-f="p"></span>, the company <span data-v="q.adjEbitdaMargin" data-f="p"></span>. The gap is the cost of the corporate centre (headquarters, group functions, incentive compensation), which is not charged to the segments. It was $<span data-v="q.corp" data-f="n"></span> million in the quarter, about <span data-v="q.corpPct" data-f="p"></span> of sales. <span class="tag own">own calculation</span></p>
+  <p>Segment total minus corporate expense gives $<span data-v="q.segLessCorp" data-f="n"></span> million, slightly different from the reported $<span data-v="q.adjEbitda" data-f="n"></span> million. The small remainder comes from adjustments within corporate items, which are not itemised in the figures used here.</p>
+
+  <h3>Mix: the average can move when nothing inside changes</h3>
+  <p>Segment A earns a higher margin than Segment B. If Segment B grows faster, the company's average margin is pulled toward Segment B's level even if each segment holds its own margin. The same happens inside every business between product lines, customers and regions. Always ask whether a margin change is a real change in performance or a change in mix.</p>
+
+  <div class="box role" data-role="ops"><h4>In your role: operations &amp; supply chain</h4><p>Your site's results roll up into one of the two segment figures. Costs you control are inside segment EBITDA; corporate costs are not. Depreciation of your equipment is excluded too, so capital discipline is measured elsewhere (Modules 6 and 9).</p></div>
+  <div class="box role" data-role="sales"><h4>In your role: sales &amp; marketing</h4><p>Mix is your lever. Two territories with the same sales can contribute very different EBITDA. Know the relative margin of your product lines and channels (in the example group, aftermarket and original-equipment business each account for roughly half of sales).</p></div>
+  <div class="box role" data-role="rd"><h4>In your role: R&amp;D &amp; engineering</h4><p>A project that shifts mix toward higher-margin, harder-to-copy products raises segment margin even at flat sales. State the expected margin of a new product relative to the segment's current level in your business case.</p></div>
+  <div class="box role" data-role="mgr"><h4>In your role: managers</h4><p>Because resources are allocated on this measure, your requests for people and capital are judged by their effect on it. Present proposals in those terms: sales, margin, and when the growth investment turns positive.</p></div>
+
+  <div class="quiz" data-quiz="m5"></div>
+  <button class="markdone" data-done="m5">Mark module complete</button>
+</section>
+
+<section class="mod" id="m6" data-title="6 · Working capital and cash">
+  <div class="kicker">Module 6</div>
+  <h2>Working capital and free cash flow</h2>
+  <p class="lead">Profit is an opinion formed by accounting rules; cash is what pays wages, debt, dividends and acquisitions.</p>
+
+  <h3>Free cash flow</h3>
+  <div class="formula">Free cash flow = cash from operations − capital expenditure</div>
+  <p>In the first nine months of 2026: $<span data-v="ytd.cfo" data-f="n"></span> million − $<span data-v="ytd.capex" data-f="n"></span> million = $<span data-v="ytd.fcf" data-f="n"></span> million, up from $<span data-v="ytd.fcfPrior" data-f="n"></span> million. That is about <span data-v="ytd.fcfConv" data-f="p0"></span> of adjusted net income <span class="tag own">own calculation</span>, a rough measure of how much of the reported earnings turned into cash.</p>
+
+  <h3>Working capital: cash parked in daily operations</h3>
+  <div class="tblwrap"><table>
+    <tr><th>$ million</th><th class="n">30 Sep 2026</th><th class="n">31 Dec 2025</th><th class="n">Change</th></tr>
+    <tr><td>Accounts receivable</td><td class="n" data-v="bs.ar" data-f="n"></td><td class="n" data-v="bs0.ar" data-f="n"></td><td class="n" data-v="wc.dAr" data-f="s"></td></tr>
+    <tr><td>Inventories</td><td class="n" data-v="bs.inv" data-f="n"></td><td class="n" data-v="bs0.inv" data-f="n"></td><td class="n" data-v="wc.dInv" data-f="s"></td></tr>
+    <tr><td>Accounts payable</td><td class="n" data-v="bs.ap" data-f="neg"></td><td class="n" data-v="bs0.ap" data-f="neg"></td><td class="n" data-v="wc.dApNeg" data-f="s"></td></tr>
+    <tr class="tot"><td>Trade working capital</td><td class="n" data-v="wc.now" data-f="n"></td><td class="n" data-v="wc.then" data-f="n"></td><td class="n" data-v="wc.delta" data-f="s"></td></tr>
+  </table></div>
+  <p>Growth absorbed about $<span data-v="wc.delta" data-f="n"></span> million of cash in nine months <span class="tag own">own calculation</span>. Every additional dollar of sales needs receivables and stock before the customer pays. Growth is not free.</p>
+
+  <h3>The three "days" indicators</h3>
+  <div class="tblwrap"><table>
+    <tr><th>Indicator</th><th>Formula (quarterly)</th><th class="n">Q3 2026</th><th>Meaning</th></tr>
+    <tr><td>DSO, days sales outstanding</td><td>Receivables ÷ sales × 91</td><td class="n" data-v="wc.dso" data-f="d0"></td><td>Days until customers pay</td></tr>
+    <tr><td>DIO, days inventory outstanding</td><td>Inventories ÷ cost of sales × 91</td><td class="n" data-v="wc.dio" data-f="d0"></td><td>Days goods sit before being sold</td></tr>
+    <tr><td>DPO, days payables outstanding</td><td>Payables ÷ cost of sales × 91</td><td class="n" data-v="wc.dpo" data-f="d0"></td><td>Days until we pay suppliers</td></tr>
+    <tr class="tot"><td>Cash conversion cycle</td><td>DSO + DIO − DPO</td><td class="n" data-v="wc.ccc" data-f="d0"></td><td>Days our cash is tied up per cycle</td></tr>
+  </table></div>
+  <p><span class="tag own">own calculation</span> These use quarter-end balances and one quarter of sales, a simplification. Acquisitions and seasonality distort them; trends matter more than the absolute level.</p>
+
+  <div class="calc" id="calcWc">
+    <b>Try it: what is one day worth?</b> <span class="tag own">illustration</span>
+    <label>Customers pay faster by <output id="dsoOut"></output> days</label>
+    <input type="range" id="dsoIn" min="0" max="15" step="1" value="3">
+    <label>Inventory turns faster by <output id="dioOut"></output> days</label>
+    <input type="range" id="dioIn" min="0" max="20" step="1" value="5">
+    <div class="res" id="wcRes"></div>
+    <p class="lead" style="font-size:.82rem;margin:.5rem 0 0">Based on Q3 2026 group sales and cost of sales. The cash is released once; the interest saving repeats every year.</p>
+  </div>
+
+  <div class="box role" data-role="ops"><h4>In your role: operations &amp; supply chain</h4><p>Inventory is the largest working-capital item and it is yours: batch sizes, safety stock, lead times, slow-moving and obsolete parts. Stock also hides problems and risks write-downs, which hit profit directly. Supplier payment terms set DPO.</p></div>
+  <div class="box role" data-role="sales"><h4>In your role: sales &amp; marketing</h4><p>DSO is yours: agreed payment terms, invoice accuracy, and following up overdue accounts. Granting 60 instead of 30 days is an interest-free loan to the customer. Good forecasts also reduce the stock operations must hold for you.</p></div>
+  <div class="box role" data-role="rd"><h4>In your role: R&amp;D &amp; engineering</h4><p>Design choices create inventory: every unique part number needs its own safety stock. Using common parts and materials across products lowers DIO for years. Capital you request reduces free cash flow in the year it is spent.</p></div>
+  <div class="box role" data-role="mgr"><h4>In your role: managers</h4><p>Track cash conversion for your unit alongside profit. A unit that hits its profit target by building stock or extending customer terms has borrowed from the balance sheet. Ask for working-capital days in every monthly review.</p></div>
+
+  <div class="quiz" data-quiz="m6"></div>
+  <button class="markdone" data-done="m6">Mark module complete</button>
+</section>
+
+<section class="mod" id="m7" data-title="7 · Debt and capital allocation">
+  <div class="kicker">Module 7</div>
+  <h2>Leverage and capital allocation</h2>
+  <p class="lead">How much debt the company carries, and what it does with the cash it generates.</p>
+
+  <h3>Net leverage</h3>
+  <div class="formula">Net leverage = (total debt − cash) ÷ adjusted EBITDA of the last twelve months</div>
+  <p>At 30 September 2026: ($<span data-v="bs.debt" data-f="n"></span> − $<span data-v="bs.cash" data-f="n"></span>) ÷ $<span data-v="lev.ttm" data-f="n"></span> million = <span data-v="lev.calc" data-f="x2"></span>, which matches the reported <span data-v="q.netLeverage" data-f="x"></span>. The trailing-twelve-month EBITDA is <span class="tag own">own calculation</span> (nine months 2026 plus fourth quarter 2025).</p>
+  <p>Read it as: with all operating earnings and no other use of cash, net debt could be repaid in about <span data-v="q.netLeverage" data-f="n1"></span> years. At the end of 2025, after the acquisitions of that year, it stood at <span data-v="lev.ye" data-f="x"></span>. Since then $<span data-v="q.revolverYtd" data-f="n0"></span> million of revolving debt has been repaid.</p>
+  <p><b>Why it matters to everyone:</b> low leverage means lower interest cost, resilience in a downturn, and capacity to invest or acquire. High leverage means lenders' conditions start to limit decisions.</p>
+
+  <h3>Where the cash goes</h3>
+  <div class="bars" id="allocBars"></div>
+  <p>A company can use cash in five ways: invest in its own operations (capital expenditure), buy businesses, repay debt, pay dividends, or buy back shares. In 2025 acquisitions were the largest use. In 2026 so far it has been debt repayment. The quarterly dividend is <span data-v="q.divPerShare" data-f="d2"></span> per share, and the board has authorised up to $<span data-v="q.buyback" data-f="n0"></span> million of share repurchases.</p>
+
+  <div class="box role" data-role="ops"><h4>In your role: operations &amp; supply chain</h4><p>Your capital requests compete with acquisitions, debt repayment and dividends for the same cash. A request with a clear payback (capacity for confirmed demand, safety, quality, cost reduction) is much easier to approve.</p></div>
+  <div class="box role" data-role="sales"><h4>In your role: sales &amp; marketing</h4><p>Customers and distributors read these numbers too. Low leverage and steady cash generation signal a reliable long-term supplier, which matters when you sell critical components with long service lives.</p></div>
+  <div class="box role" data-role="rd"><h4>In your role: R&amp;D &amp; engineering</h4><p>Organic growth projects are one of the uses of cash the company names first. They are judged against the alternative of buying a technology through acquisition. Know why building is better than buying in your case.</p></div>
+  <div class="box role" data-role="mgr"><h4>In your role: managers</h4><p>Think of yourself as competing for capital. Present investments with their cash profile over time, not only the profit effect, and compare the return with what the same money would achieve elsewhere (Module 9).</p></div>
+
+  <div class="quiz" data-quiz="m7"></div>
+  <button class="markdone" data-done="m7">Mark module complete</button>
+</section>
+
+<section class="mod" id="m8" data-title="8 · Earnings per share">
+  <div class="kicker">Module 8</div>
+  <h2>Earnings per share, reported and adjusted</h2>
+  <p class="lead">The number investors watch most closely, and one of the three figures in the example group's guidance.</p>
+
+  <div class="formula">Diluted EPS = net income ÷ diluted number of shares</div>
+  <div class="tblwrap"><table>
+    <tr><th>Q3 2026</th><th class="n">Reported (GAAP)</th><th class="n">Adjusted</th></tr>
+    <tr><td>Net income, $ million</td><td class="n" data-v="q.ni" data-f="n"></td><td class="n" data-v="q.adjNi" data-f="n"></td></tr>
+    <tr><td>Diluted EPS</td><td class="n" data-v="q.eps" data-f="d2"></td><td class="n" data-v="q.adjEps" data-f="d2"></td></tr>
+    <tr><td>Implied diluted shares, million</td><td class="n" data-v="q.shares" data-f="n1"></td><td class="n" data-v="q.sharesAdj" data-f="n1"></td></tr>
+  </table></div>
+  <p>The share count is <span class="tag own">own calculation</span> (net income ÷ EPS), roughly 25 million shares. This is a small number of shares, so each dollar of EPS corresponds to only about $25 million of profit.</p>
+
+  <h3>Why adjusted EPS is higher</h3>
+  <p>Adjusted net income removes the same kind of items as adjusted EBITDA and, in addition, the amortisation of intangible assets recorded in acquisitions. Other intangible assets fell from $<span data-v="bs0.intang" data-f="n"></span> million to $<span data-v="bs.intang" data-f="n"></span> million in nine months, which suggests amortisation of roughly $20 million per quarter. <span class="tag own">own estimate</span></p>
+  <div class="box caveat"><h4>In a real report</h4><p>Companies publish a table that reconciles net income to adjusted net income line by line. Read it before quoting adjusted EPS: it shows exactly which items were removed and how large each one is.</p></div>
+
+  <h3>How EPS grows</h3>
+  <ul>
+    <li>Higher operating profit (Modules 2 to 5)</li>
+    <li>Lower interest through debt repayment (Module 7)</li>
+    <li>A lower tax rate</li>
+    <li>Fewer shares through buybacks</li>
+  </ul>
+  <p>Only the first is created in day-to-day operations, and it is by far the largest in a growing company.</p>
+
+  <div class="box role" data-role="ops sales rd"><h4>In your role</h4><p>You do not manage EPS, but it is how the outside world scores the sum of everyone's work. A useful translation: $1 million of sustained cost saving or margin gain is worth roughly 3 cents of annual EPS after tax. <span class="tag own">own estimate, assuming a tax rate of about 25%</span></p></div>
+  <div class="box role" data-role="mgr"><h4>In your role: managers</h4><p>If part of your compensation is share-based, EPS and its growth are directly relevant to you. Use the translation into cents per share to give your team a sense of scale: $1 million of sustained profit is roughly 3 cents of annual EPS. <span class="tag own">own estimate, assuming a tax rate of about 25%</span></p></div>
+
+  <div class="quiz" data-quiz="m8"></div>
+  <button class="markdone" data-done="m8">Mark module complete</button>
+</section>
+
+<section class="mod" id="m9" data-title="9 · Return on capital">
+  <div class="kicker">Module 9</div>
+  <h2>Return on invested capital</h2>
+  <p class="lead">Margins say how much is earned per dollar of sales. Returns say how much is earned per dollar of money tied up. This is the test of whether growth creates value.</p>
+
+  <div class="formula">ROIC = operating profit after tax ÷ (debt + equity − cash)</div>
+  <div class="tblwrap"><table>
+    <tr><th>Full-year 2025, simplified</th><th class="n">$ million</th></tr>
+    <tr><td>Operating income</td><td class="n" data-v="fy.opInc" data-f="n"></td></tr>
+    <tr><td>Invested capital at year-end (debt + equity − cash)</td><td class="n" data-v="roic.ic" data-f="n"></td></tr>
+    <tr class="tot"><td>Pre-tax return on invested capital</td><td class="n" data-v="roic.pre" data-f="p"></td></tr>
+    <tr><td>Same, adding back amortisation and using adjusted EBITDA less capital expenditure</td><td class="n" data-v="roic.cash" data-f="p"></td></tr>
+  </table></div>
+  <div class="box caveat"><h4>Uncertainty</h4><p><span class="tag own">own calculation</span> Both lines are rough illustrations with year-end capital, which includes acquisitions completed late in 2025 that contributed profit for only part of the year. They are not reported figures and say nothing about how any company measures returns internally. They show the mechanism, not a verdict.</p></div>
+
+  <h3>What the two lines teach</h3>
+  <p>The capital base is dominated by goodwill and intangibles from acquisitions (about <span data-v="bs.gwIntPct" data-f="p0"></span> of total assets). An acquirer pays for future profits up front, so its accounting return starts low and must rise as the acquired businesses grow. The businesses themselves need little physical capital: capital expenditure in 2025 was only about <span data-v="fy.capexPct" data-f="p"></span> of sales.</p>
+  <p>Value is created when the return exceeds the cost of capital, the return lenders and shareholders require (commonly estimated at high single digits for industrial companies).</p>
+
+  <h3>The return tree</h3>
+  <div class="formula">Return on capital = margin (profit ÷ sales) × capital turnover (sales ÷ capital)</div>
+  <p>There are two ways to raise it: earn more per dollar of sales, or need less capital per dollar of sales. Modules 3 to 5 covered the first; working capital and capital expenditure are the second.</p>
+
+  <div class="box role" data-role="ops"><h4>In your role: operations &amp; supply chain</h4><p>You influence capital turnover more than anyone: inventory, machine utilisation, and whether new capacity is really needed or existing equipment can deliver more. Higher output from the same assets raises returns twice, through margin and through turnover.</p></div>
+  <div class="box role" data-role="sales"><h4>In your role: sales &amp; marketing</h4><p>A customer with thin margins, long payment terms and consignment stock can have a poor return even at high sales. Look at profit and the capital tied up for a customer together.</p></div>
+  <div class="box role" data-role="rd"><h4>In your role: R&amp;D &amp; engineering</h4><p>A business case is a return calculation: cash out now (development, tooling, launch stock), cash in later. Payback period, net present value and internal rate of return are the same idea applied to one project.</p></div>
+  <div class="box role" data-role="mgr"><h4>In your role: managers</h4><p>Ask of every proposal: what capital does it tie up, and what does it earn on that capital compared with the alternatives? Profit growth that needs disproportionate capital can lower the return.</p></div>
+
+  <div class="quiz" data-quiz="m9"></div>
+  <button class="markdone" data-done="m9">Mark module complete</button>
+</section>
+
+<section class="mod" id="m10" data-title="10 · Reading a quarterly release">
+  <div class="kicker">Module 10</div>
+  <h2>Guidance, and a routine for every quarter</h2>
+  <p class="lead">Apply everything to the next release yourself. Fifteen minutes, four times a year.</p>
+
+  <h3>Guidance: the company's own forecast</h3>
+  <div class="tblwrap"><table>
+    <tr><th>Full-year 2026</th><th class="n">At the start of the year</th><th class="n">After the third quarter</th></tr>
+    <tr><td>Sales growth</td><td class="n">9% to 12%</td><td class="n">15% to 16%</td></tr>
+    <tr><td>Adjusted EBITDA, $ million</td><td class="n">325 to 340</td><td class="n">352 to 358</td></tr>
+    <tr><td>Adjusted diluted EPS</td><td class="n">$7.80 to $8.40</td><td class="n">$8.70 to $8.85</td></tr>
+  </table></div>
+  <p>Guidance is given as a range and narrows as the year progresses. Raised guidance means the year is running better than management expected. It also resets expectations: next year's comparison starts from the higher level.</p>
+
+  <h3>The routine</h3>
+  <ol>
+    <li><b>Growth:</b> how much, and how much of it organic? (Module 2)</li>
+    <li><b>Margins:</b> did adjusted EBITDA margin rise or fall, and is the reason volume, price, mix or cost? (Modules 3 to 5)</li>
+    <li><b>Segments:</b> which segment drove the change? What does management say about my end markets?</li>
+    <li><b>Adjustments:</b> what was excluded from adjusted figures, and is any of it recurring? (Module 4)</li>
+    <li><b>Cash:</b> free cash flow against last year; receivables and inventories against sales growth (Module 6)</li>
+    <li><b>Balance sheet:</b> net leverage, and what the cash was used for (Module 7)</li>
+    <li><b>Guidance:</b> raised, held or lowered, and why?</li>
+    <li><b>My part:</b> which two of these did my team influence, and what will we do next quarter?</li>
+  </ol>
+
+  <details><summary>Worked example: the routine applied to Q3 2026</summary>
+    <ol>
+      <li>Sales +<span data-v="q.growth" data-f="p"></span>; Segment A <span data-v="segA.organic" data-f="p"></span> organic, Segment B <span data-v="segB.growth" data-f="p"></span> organic.</li>
+      <li>Adjusted EBITDA margin <span data-v="q.adjEbitdaMargin" data-f="p"></span>, up from <span data-v="q.adjEbitdaMarginPrior" data-f="p"></span>: operating leverage on higher volume, partly offset by growth spending.</li>
+      <li>Segment B margin up four points as its main end market recovered; Segment A stable near 28%.</li>
+      <li>Small in the quarter (acquisition expenses of $0.2 million at segment level).</li>
+      <li>Nine-month free cash flow $<span data-v="ytd.fcf" data-f="n"></span> million against $<span data-v="ytd.fcfPrior" data-f="n"></span> million; receivables and inventories grew faster than sales since year-end, partly seasonal and acquisition-related.</li>
+      <li>Net leverage down to <span data-v="q.netLeverage" data-f="x"></span>; cash used to repay revolving debt.</li>
+      <li>Guidance raised above the range given at the start of the year.</li>
+      <li>Your answer.</li>
+    </ol>
+  </details>
+
+  <div class="box role" data-role="ops"><h4>Your exercise: operations &amp; supply chain</h4><p>Find your site's inventory value and last quarter's cost of sales. Calculate your DIO. Compare it with the group figure in Module 6 and list the three largest stock positions that explain the difference.</p></div>
+  <div class="box role" data-role="sales"><h4>Your exercise: sales &amp; marketing</h4><p>Split your last quarter's sales change into volume, price and mix. Then list your five largest overdue receivables and what each costs per month at a 6% interest rate.</p></div>
+  <div class="box role" data-role="rd"><h4>Your exercise: R&amp;D &amp; engineering</h4><p>Take your current project. Write down total cash out before launch, expected annual sales and margin, and the year in which cumulative cash turns positive. State the two assumptions the result is most sensitive to.</p></div>
+  <div class="box role" data-role="mgr"><h4>Your exercise: managers</h4><p>Build the one-page view of your unit: organic growth, margin, working-capital days, capital spending. Mark each as better or worse than the group trend, and explain the two largest gaps to your team in plain language.</p></div>
+
+  <div class="quiz" data-quiz="m10"></div>
+  <button class="markdone" data-done="m10">Mark module complete</button>
+</section>
+
+<section class="mod" id="ex" data-title="11 · The example plant">
+  <div class="kicker">Module 11</div>
+  <h2>The example plant: invented data for everything the public figures cannot show</h2>
+  <p class="lead">The example group's reports show group and segment figures. Like any listed company's reports, they do not show scrap rates, order intake, customer margins or project returns. For those, this tutorial uses one consistent, invented business.</p>
+  <div class="box caveat"><h4>Invented data</h4><p>Everything marked <span class="tag ill">illustrative</span> belongs to a fictional sealing-products plant created for this tutorial. The numbers are plausible for a mid-sized industrial site but they describe no real site and are not benchmarks. Replace them with your own unit's figures wherever you can.</p></div>
+  <div class="tblwrap"><table>
+    <tr><th>Example plant, one year, $ million</th><th class="n">Amount</th><th class="n">% of sales</th></tr>
+    <tr><td>Sales</td><td class="n" data-v="ex.sales"></td><td class="n">100.0%</td></tr>
+    <tr><td>Material</td><td class="n" data-v="ex.material" data-f="neg"></td><td class="n" data-v="ex.materialPct" data-f="p"></td></tr>
+    <tr><td>Direct labour</td><td class="n" data-v="ex.labour" data-f="neg"></td><td class="n" data-v="ex.labourPct" data-f="p"></td></tr>
+    <tr><td>Variable overhead (energy, consumables, freight)</td><td class="n" data-v="ex.varOh" data-f="neg"></td><td class="n"></td></tr>
+    <tr><td>Fixed manufacturing overhead incl. depreciation</td><td class="n" data-v="ex.fixOh" data-f="neg"></td><td class="n"></td></tr>
+    <tr class="tot"><td>Gross profit</td><td class="n" data-v="ex.gp"></td><td class="n" data-v="ex.gm" data-f="p"></td></tr>
+    <tr><td>Selling</td><td class="n" data-v="ex.selling" data-f="neg"></td><td class="n"></td></tr>
+    <tr><td>Research and development</td><td class="n" data-v="ex.rd" data-f="neg"></td><td class="n" data-v="ex.rdPct" data-f="p"></td></tr>
+    <tr><td>Administration</td><td class="n" data-v="ex.admin" data-f="neg"></td><td class="n"></td></tr>
+    <tr class="tot"><td>Operating profit (EBIT)</td><td class="n" data-v="ex.ebit"></td><td class="n" data-v="ex.ebitMargin" data-f="p"></td></tr>
+    <tr><td>Depreciation and amortisation (included above)</td><td class="n" data-v="ex.da"></td><td class="n"></td></tr>
+    <tr class="tot"><td>EBITDA</td><td class="n" data-v="ex.ebitda"></td><td class="n" data-v="ex.ebitdaMargin" data-f="p"></td></tr>
+  </table></div>
+  <div class="tblwrap"><table>
+    <tr><th>Capital employed, $ million</th><th class="n">Amount</th></tr>
+    <tr><td>Machinery, buildings, tooling</td><td class="n" data-v="ex.fixedAssets"></td></tr>
+    <tr><td>Inventories (raw <span data-v="ex.invRaw"></span>, in process <span data-v="ex.invWip"></span>, finished <span data-v="ex.invFg"></span>)</td><td class="n" data-v="ex.inv"></td></tr>
+    <tr><td>Receivables</td><td class="n" data-v="ex.ar"></td></tr>
+    <tr><td>Payables</td><td class="n" data-v="ex.ap" data-f="neg"></td></tr>
+    <tr class="tot"><td>Capital employed</td><td class="n" data-v="ex.ce"></td></tr>
+  </table></div>
+  <p>The plant has <span data-v="ex.employees" data-f="n0"></span> employees. Its return on capital employed is <span data-v="ex.roce" data-f="p"></span>, far above the group-level return in Module 9. That is typical: a plant carries no goodwill from acquisitions and no corporate costs. A plant-level return and a group-level return are not comparable.</p>
+  <p><b>Now open your role track</b> (Module 12). It changes completely with the role chosen at the top.</p>
+  <button class="markdone" data-done="ex">Mark module complete</button>
+</section>
+
+<!-- ======================= ROLE TRACK: OPERATIONS ======================= -->
+<section class="mod" id="t-ops" data-role="ops" data-title="12 · Your track: operations &amp; supply chain">
+  <div class="kicker">Module 12 · Operations &amp; supply chain</div>
+  <h2>From the shop floor to the group result</h2>
+  <p class="lead">Your KPIs are physical: pieces, hours, days, kilograms. This module converts each one into money.</p>
+
+  <h3>Your line of sight</h3>
+  <ul>
+    <li><b>Scrap, rework, yield, purchase prices</b> → material and labour cost → gross margin → segment EBITDA</li>
+    <li><b>Machine availability, speed, quality (OEE)</b> → output per fixed cost dollar → gross margin; and avoided capital spending → return on capital</li>
+    <li><b>On-time delivery, lead time</b> → sales booked this quarter, repeat orders → organic growth</li>
+    <li><b>Batch sizes, safety stock, supplier terms</b> → inventory and payables → free cash flow, cash conversion cycle</li>
+  </ul>
+
+  <h3>Your KPIs at the example plant <span class="tag ill">illustrative</span></h3>
+  <div class="tblwrap"><table>
+    <tr><th>KPI</th><th>How it is calculated</th><th class="n">Value</th><th>What it means in money</th></tr>
+    <tr><td>Overall equipment effectiveness (OEE)</td><td>Availability × performance × quality</td><td class="n" data-v="ex.oee" data-f="p"></td><td><span data-v="ex.avail" data-f="p0"></span> × <span data-v="ex.perf" data-f="p0"></span> × <span data-v="ex.qual" data-f="p"></span>. Roughly a fifth of paid machine time yields no good product.</td></tr>
+    <tr><td>Scrap and rework cost</td><td>Cost of rejected material and labour ÷ sales</td><td class="n" data-v="ex.scrapPct" data-f="p"></td><td>$<span data-v="ex.scrap"></span> million a year, straight out of EBIT.</td></tr>
+    <tr><td>Cost of poor quality</td><td>Scrap + rework + complaints + warranty + sorting, ÷ sales</td><td class="n" data-v="ex.copqPct" data-f="p"></td><td>$<span data-v="ex.copq" data-f="n2"></span> million. Usually larger than the visible scrap figure.</td></tr>
+    <tr><td>On-time delivery</td><td>Order lines delivered on the confirmed date ÷ all lines</td><td class="n" data-v="ex.otd" data-f="p0"></td><td>Late lines delay sales and cash, and cost expedited freight.</td></tr>
+    <tr><td>Capacity utilisation</td><td>Actual output ÷ practical capacity</td><td class="n" data-v="ex.util" data-f="p0"></td><td>Decides how thinly fixed overhead of $<span data-v="ex.fixOh"></span> million is spread.</td></tr>
+    <tr><td>Inventory turnover</td><td>Cost of sales ÷ inventory</td><td class="n" data-v="ex.turns" data-f="x"></td><td>Stock is replaced <span data-v="ex.turns"></span> times a year; equals <span data-v="ex.dio" data-f="d0"></span> of inventory.</td></tr>
+    <tr><td>Excess and obsolete stock</td><td>Stock without demand ÷ total inventory</td><td class="n" data-v="ex.obsPct" data-f="p"></td><td>$<span data-v="ex.obsolete"></span> million at risk of write-down, which would hit profit in full.</td></tr>
+    <tr><td>Purchase price variance</td><td>Actual purchase cost − standard cost</td><td class="n">+$<span data-v="ex.ppv"></span>M</td><td>Unfavourable: material cost more than planned; reduces gross margin unless passed on in price.</td></tr>
+    <tr><td>Days payables outstanding</td><td>Payables ÷ cost of sales × 365</td><td class="n" data-v="ex.dpo" data-f="d0"></td><td>Supplier credit that finances part of your stock.</td></tr>
+    <tr><td>Sales per employee</td><td>Sales ÷ headcount</td><td class="n">$<span data-v="ex.salesPerEmp" data-f="n0"></span>k</td><td>Rough productivity measure; compare over time, not across different businesses.</td></tr>
+  </table></div>
+
+  <h3>Worked case: is the bulk discount worth it?</h3>
+  <p>A supplier offers 4% off a material you buy for $2.0 million a year if you order six months' demand at a time instead of monthly.</p>
+  <div class="tblwrap"><table>
+    <tr><td>Price saving: 4% of $2.0 million</td><td class="n">+$80,000</td></tr>
+    <tr><td>Average stock with six-month lots: $2.0M × 6/12 ÷ 2</td><td class="n">$500,000</td></tr>
+    <tr><td>Average stock with monthly lots: $2.0M ÷ 12 ÷ 2</td><td class="n">$83,000</td></tr>
+    <tr><td>Additional capital tied up</td><td class="n">$417,000</td></tr>
+    <tr><td>Carrying cost at 15% (9% cost of capital + 6% storage, handling, obsolescence risk)</td><td class="n">−$62,500</td></tr>
+    <tr class="tot"><td>Net benefit per year</td><td class="n">+$17,500</td></tr>
+  </table></div>
+  <p>The income statement shows only the $80,000 saving and a better purchase price variance. The balance sheet shows $417,000 more inventory and about four more days of DIO. The decision is marginal, and it turns negative if the material has a shelf life or the design may change. This is why purchasing savings must be judged together with inventory.</p>
+
+  <div class="calc" id="calcOps">
+    <b>Try it: your levers on the example plant</b> <span class="tag ill">illustrative</span>
+    <label>Scrap and rework cost reduced by <output id="oScrapO"></output></label>
+    <input type="range" id="oScrap" min="0" max="60" step="5" value="30">
+    <label>OEE improved by <output id="oOeeO"></output> points (extra output sold at the plant's contribution margin)</label>
+    <input type="range" id="oOee" min="0" max="8" step="0.5" value="2">
+    <label>Inventory reduced by <output id="oInvO"></output> days</label>
+    <input type="range" id="oInv" min="0" max="30" step="1" value="10">
+    <div class="res" id="oRes"></div>
+  </div>
+
+  <h3>Exercises</h3>
+  <details><summary>1. Scrap falls from 1.5% to 1.0% of sales. What happens to EBIT and EBIT margin?</summary><p>0.5% of $60 million = $0.3 million more EBIT. Margin rises from 17.5% to 18.0%. To earn the same $0.3 million through sales at a 43% contribution margin, the plant would need about $0.7 million of additional sales.</p></details>
+  <details><summary>2. Availability rises from 88% to 91%; performance and quality are unchanged. New OEE?</summary><p>0.91 × 0.92 × 0.965 = 80.8%, up 2.7 points. If demand exists, that is about 3.4% more output from the same machines and people (80.8 ÷ 78.1).</p></details>
+  <details><summary>3. Inventory falls from $9.0 million to $7.5 million. Effect on cash, DIO and ROCE?</summary><p>Cash: +$1.5 million, once. DIO: 7.5 ÷ 40.5 × 365 = 68 days (from 81). ROCE: 10.5 ÷ (31.1 − 1.5) = 35.5% (from 33.8%), with unchanged profit.</p></details>
+  <details><summary>4. With your own data</summary><p>Take last month's scrap value, your site's cost of sales and inventory value. Compute scrap as a percentage of sales, inventory turnover and DIO. Name the three part numbers that hold the most stock value and their last movement date.</p></details>
+
+  <div class="quiz" data-quiz="tops"></div>
+  <button class="markdone" data-done="t-ops">Mark module complete</button>
+</section>
+
+<!-- ======================= ROLE TRACK: SALES ======================= -->
+<section class="mod" id="t-sales" data-role="sales" data-title="12 · Your track: sales &amp; marketing">
+  <div class="kicker">Module 12 · Sales &amp; marketing</div>
+  <h2>From the order to the group result</h2>
+  <p class="lead">Sales volume is only one of your KPIs, and usually not the most valuable one.</p>
+
+  <h3>Your line of sight</h3>
+  <ul>
+    <li><b>Order intake, win rate, backlog</b> → future sales → organic growth</li>
+    <li><b>Price realisation and discounts</b> → gross margin → segment EBITDA (the strongest single lever)</li>
+    <li><b>Product, customer and channel mix</b> → average margin</li>
+    <li><b>Payment terms, overdue accounts, consignment stock</b> → receivables and inventory → free cash flow</li>
+    <li><b>Forecast accuracy</b> → the plant's stock levels and delivery performance</li>
+  </ul>
+
+  <h3>Your KPIs at the example plant <span class="tag ill">illustrative</span></h3>
+  <div class="tblwrap"><table>
+    <tr><th>KPI</th><th>How it is calculated</th><th class="n">Value</th><th>What it means</th></tr>
+    <tr><td>Order intake</td><td>Value of orders received</td><td class="n">$<span data-v="ex.orders"></span>M</td><td>The earliest indicator of next quarters' sales.</td></tr>
+    <tr><td>Book-to-bill</td><td>Order intake ÷ sales</td><td class="n" data-v="ex.btb" data-f="n2"></td><td>Above 1: the order book grows. Below 1: sales will fall unless intake recovers.</td></tr>
+    <tr><td>Backlog coverage</td><td>Order backlog ÷ monthly sales</td><td class="n"><span data-v="ex.backlogMonths"></span> months</td><td>Visibility. Short in aftermarket business, long in project business.</td></tr>
+    <tr><td>Discount rate (price realisation)</td><td>(List value − invoiced value) ÷ list value</td><td class="n" data-v="ex.discount" data-f="p"></td><td>$<span data-v="ex.discountAbs"></span> million given away from list. One point less discount is $<span data-v="ex.discount1pt" data-f="n2"></span> million of profit.</td></tr>
+    <tr><td>Gross margin by customer or product</td><td>(Net price − cost) ÷ net price</td><td class="n" data-v="ex.gm" data-f="p"></td><td>Plant average; individual customers range widely around it.</td></tr>
+    <tr><td>Customer concentration</td><td>Sales to five largest customers ÷ sales</td><td class="n" data-v="ex.top5" data-f="p0"></td><td>Risk: losing one large account moves the whole result.</td></tr>
+    <tr><td>Win rate</td><td>Quotes won ÷ quotes submitted (by value)</td><td class="n" data-v="ex.win" data-f="p0"></td><td>Very high can mean prices are too low; very low wastes engineering time.</td></tr>
+    <tr><td>Days sales outstanding</td><td>Receivables ÷ sales × 365</td><td class="n" data-v="ex.dso" data-f="d0"></td><td>$<span data-v="ex.ar"></span> million waiting to be collected.</td></tr>
+    <tr><td>Forecast accuracy</td><td>1 − |forecast − actual| ÷ actual</td><td class="n" data-v="ex.fcAcc" data-f="p0"></td><td>Poor forecasts are paid for in safety stock or late deliveries.</td></tr>
+  </table></div>
+
+  <h3>Worked case 1: where did the growth come from?</h3>
+  <p>The plant's sales rose from $<span data-v="ex.salesPrior"></span> million to $<span data-v="ex.sales"></span> million.</p>
+  <div class="bars" id="pvmBars"></div>
+  <p>Volume brought $<span data-v="ex.bVol"></span> million of sales but, at a 43% contribution margin, only about $<span data-v="ex.bVolProfit" data-f="n2"></span> million of profit. Price brought $<span data-v="ex.bPrice"></span> million of sales and nearly the same amount of profit. Less sales, twice the profit.</p>
+
+  <h3>Worked case 2: which customer is worth more?</h3>
+  <div class="tblwrap"><table>
+    <tr><th>$ million per year</th><th class="n">Customer A</th><th class="n">Customer B</th></tr>
+    <tr><td>Sales</td><td class="n" data-v="ex.cA.sales"></td><td class="n" data-v="ex.cB.sales"></td></tr>
+    <tr><td>Gross margin</td><td class="n" data-v="ex.cA.gm" data-f="p0"></td><td class="n" data-v="ex.cB.gm" data-f="p0"></td></tr>
+    <tr><td>Gross profit</td><td class="n" data-v="ex.cA.gp" data-f="n2"></td><td class="n" data-v="ex.cB.gp" data-f="n2"></td></tr>
+    <tr><td>Cost to serve (visits, special packaging, small lots, claims)</td><td class="n" data-v="ex.cA.serve" data-f="n2"></td><td class="n" data-v="ex.cB.serve" data-f="n2"></td></tr>
+    <tr><td>Payment terms</td><td class="n" data-v="ex.cA.days" data-f="d0"></td><td class="n" data-v="ex.cB.days" data-f="d0"></td></tr>
+    <tr><td>Capital tied up (receivables + consignment stock)</td><td class="n" data-v="ex.cA.cap" data-f="n2"></td><td class="n" data-v="ex.cB.cap" data-f="n2"></td></tr>
+    <tr><td>Cost of that capital at 9%</td><td class="n" data-v="ex.cA.capCost" data-f="n2"></td><td class="n" data-v="ex.cB.capCost" data-f="n2"></td></tr>
+    <tr class="tot"><td>Contribution after cost to serve and capital</td><td class="n" data-v="ex.cA.net" data-f="n2"></td><td class="n" data-v="ex.cB.net" data-f="n2"></td></tr>
+    <tr><td>… as % of sales</td><td class="n" data-v="ex.cA.netPct" data-f="p0"></td><td class="n" data-v="ex.cB.netPct" data-f="p0"></td></tr>
+  </table></div>
+  <p>B is the larger account by half, and A earns almost twice as much. A sales ranking by revenue would put B first.</p>
+
+  <div class="calc" id="calcSales">
+    <b>Try it: renegotiate customer B</b> <span class="tag ill">illustrative</span>
+    <label>Price change: <output id="sPriceO"></output></label>
+    <input type="range" id="sPrice" min="-5" max="5" step="0.5" value="0">
+    <label>Payment terms: <output id="sDaysO"></output> days</label>
+    <input type="range" id="sDays" min="30" max="120" step="5" value="90">
+    <label>Consignment stock: $<output id="sConsO"></output> million</label>
+    <input type="range" id="sCons" min="0" max="1.5" step="0.1" value="0.8">
+    <div class="res" id="sRes"></div>
+  </div>
+
+  <h3>Exercises</h3>
+  <details><summary>1. Customer A (40% gross margin) asks for a 3% price cut and promises more volume. How much more volume makes you whole?</summary><p>3 ÷ (40 − 3) = 8.1% more volume, just to earn the same gross profit as before. For customer B at 24% margin the same cut needs 3 ÷ 21 = 14.3%.</p></details>
+  <details><summary>2. Customer B agrees to pay in 60 instead of 90 days. Cash effect?</summary><p>$6.0 million × 30 ÷ 365 = $0.49 million of cash released once, and about $44,000 less capital cost each year at 9%.</p></details>
+  <details><summary>3. Book-to-bill has been 0.92 for two quarters while sales are still on plan. What do you tell the plant?</summary><p>Sales are being fed from backlog, which is shrinking by 8% of sales per quarter. Unless intake recovers, sales will fall once the backlog is consumed. The plant should plan capacity and stock on order intake, not on current sales.</p></details>
+  <details><summary>4. With your own data</summary><p>List your ten largest customers with sales, gross margin, payment terms and overdue amount. Rank them once by sales and once by gross profit after capital cost. Which three change position most?</p></details>
+
+  <div class="quiz" data-quiz="tsales"></div>
+  <button class="markdone" data-done="t-sales">Mark module complete</button>
+</section>
+
+<!-- ======================= ROLE TRACK: R&D ======================= -->
+<section class="mod" id="t-rd" data-role="rd" data-title="12 · Your track: R&amp;D &amp; engineering">
+  <div class="kicker">Module 12 · R&amp;D &amp; engineering</div>
+  <h2>From the project to the group result</h2>
+  <p class="lead">Development costs money today and earns it years later. Your KPIs are about that exchange.</p>
+
+  <h3>Your line of sight</h3>
+  <ul>
+    <li><b>Project spending</b> → SG&amp;A today → lower EBITDA margin now ("growth investments")</li>
+    <li><b>New products</b> → organic growth and better mix → higher margin later</li>
+    <li><b>Design decisions</b> (material, tolerances, process steps, part variety) → product cost for its whole life → gross margin; and inventory → cash</li>
+    <li><b>Tooling and equipment</b> → capital expenditure → free cash flow and return on capital</li>
+    <li><b>Time to market</b> → when the cash comes back, and how much of the market window remains</li>
+  </ul>
+
+  <h3>Your KPIs <span class="tag ill">illustrative</span></h3>
+  <div class="tblwrap"><table>
+    <tr><th>KPI</th><th>How it is calculated</th><th class="n">Value</th><th>What it means</th></tr>
+    <tr><td>R&amp;D intensity</td><td>R&amp;D expense ÷ sales</td><td class="n" data-v="ex.rdPct" data-f="p"></td><td>$<span data-v="ex.rd"></span> million a year. An input measure: it says what is spent, not what is achieved.</td></tr>
+    <tr><td>Vitality index</td><td>Sales from products launched in the last five years ÷ sales</td><td class="n" data-v="ex.vitality" data-f="p0"></td><td>The output measure: is development renewing the portfolio?</td></tr>
+    <tr><td>Time to market</td><td>Months from project approval to first sale</td><td class="n"><span data-v="ex.ttm" data-f="n0"></span> months</td><td>Every month of delay pushes back the payback and shortens the selling period.</td></tr>
+    <tr><td>Payback period</td><td>Time until cumulative cash flow turns positive</td><td class="n"><span data-v="ex.prj.payback"></span> years</td><td>Simple risk measure: how long is the money exposed?</td></tr>
+    <tr><td>Net present value (NPV)</td><td>Sum of all cash flows, each discounted to today</td><td class="n">$<span data-v="ex.prj.npv" data-f="n2"></span>M</td><td>Value created above the required return. Positive means the project is worth more than it costs.</td></tr>
+    <tr><td>Internal rate of return (IRR)</td><td>The discount rate at which NPV is zero</td><td class="n" data-v="ex.prj.irr" data-f="p0"></td><td>The project's own interest rate; compare with the cost of capital (<span data-v="ex.wacc" data-f="p0"></span> assumed).</td></tr>
+    <tr><td>Target cost gap</td><td>Estimated unit cost − allowable unit cost</td><td class="n">see exercise 2</td><td>What design still has to remove to reach the planned margin.</td></tr>
+  </table></div>
+
+  <h3>Worked case: the business case for a new segA design</h3>
+  <div class="tblwrap"><table id="prjTable"></table></div>
+  <p>Before launch the project spends $<span data-v="ex.prj.invest"></span> million: development $<span data-v="ex.prj.dev"></span> million (an expense, reducing EBITDA in that year), tooling $<span data-v="ex.prj.tool"></span> million (capital expenditure) and launch stock $<span data-v="ex.prj.stock"></span> million (working capital, recovered at the end). Three different places in the accounts, one cash outflow.</p>
+  <p><b>Why discount?</b> A dollar received in year 4 is worth less than a dollar today because today's dollar could repay debt or earn a return in the meantime. At <span data-v="ex.wacc" data-f="p0"></span>, $1.00 in four years is worth about $0.71 today.</p>
+
+  <div class="calc" id="calcRd">
+    <b>Try it: what hurts the business case most?</b> <span class="tag ill">illustrative</span>
+    <label>Launch delay: <output id="rDelayO"></output> months</label>
+    <input type="range" id="rDelay" min="0" max="12" step="1" value="0">
+    <label>Development budget overrun: <output id="rDevO"></output></label>
+    <input type="range" id="rDev" min="0" max="50" step="5" value="0">
+    <label>Unit cost above target: <output id="rCostO"></output></label>
+    <input type="range" id="rCost" min="0" max="15" step="1" value="0">
+    <label>Selling price versus plan: <output id="rPriceO"></output></label>
+    <input type="range" id="rPrice" min="-10" max="5" step="1" value="0">
+    <label>Volume versus plan: <output id="rVolO"></output></label>
+    <input type="range" id="rVol" min="-30" max="20" step="5" value="0">
+    <div class="res" id="rRes"></div>
+    <p class="lead" style="font-size:.82rem;margin:.5rem 0 0">Before tax. A delay shifts all income later and cuts the final year by the same number of months, because the market window does not move.</p>
+  </div>
+  <p>Move one slider at a time. In most product projects a 5% price miss or a unit cost 5% above target destroys more value than a 25% overrun of the development budget, yet the budget is what project reviews usually track.</p>
+
+  <h3>Exercises</h3>
+  <details><summary>1. Use the calculator: compare a six-month delay with a 25% development overrun.</summary><p>The delay costs clearly more NPV. The overrun is a one-time $0.3 million; the delay pushes every dollar of income back and removes half a year of sales at the mature level.</p></details>
+  <details><summary>2. Target costing: planned net price $100, required contribution margin 45%. Current cost estimate $61. What is the gap?</summary><p>Allowable cost = $100 × (1 − 0.45) = $55. Gap = $6, or about 10% of the current estimate. It must be closed in design, because after launch most of the cost is fixed by the drawing.</p></details>
+  <details><summary>3. A design uses six new part numbers; an alternative reuses four existing ones at 2% higher unit cost. Which KPIs differ?</summary><p>The reuse option has a slightly lower gross margin but lower inventory (no separate safety stock for four parts), less tooling (capital expenditure), lower obsolescence risk and a faster launch. Compare both on NPV, not on unit cost alone.</p></details>
+  <details><summary>4. With your own data</summary><p>For your current project write down: cash spent before first sale (split into expense, capital expenditure and stock), planned annual sales and margin, and the payback year. Then name the two assumptions the NPV is most sensitive to and how you will test them early.</p></details>
+
+  <div class="quiz" data-quiz="trd"></div>
+  <button class="markdone" data-done="t-rd">Mark module complete</button>
+</section>
+
+<!-- ======================= ROLE TRACK: MANAGERS ======================= -->
+<section class="mod" id="t-mgr" data-role="mgr" data-title="12 · Your track: managers">
+  <div class="kicker">Module 12 · Managers with budget or P&amp;L responsibility</div>
+  <h2>Running a unit by its numbers</h2>
+  <p class="lead">You answer for a result, not for a single KPI. This module covers the tools that tie the others together: budget variance, break-even, the return tree and value added.</p>
+
+  <h3>Your line of sight</h3>
+  <ul>
+    <li><b>Budget and forecast</b> → your unit's contribution to segment EBITDA → group guidance</li>
+    <li><b>Fixed cost decisions</b> (headcount, sites, systems) → break-even point → how the unit behaves in a downturn</li>
+    <li><b>Capital requests and working capital</b> → capital employed → return on capital, free cash flow</li>
+    <li><b>The mix of all three</b> → value added above the cost of capital</li>
+  </ul>
+
+  <h3>Your KPIs at the example plant <span class="tag ill">illustrative</span></h3>
+  <div class="tblwrap"><table>
+    <tr><th>KPI</th><th>How it is calculated</th><th class="n">Value</th><th>What it means</th></tr>
+    <tr><td>Sales versus budget</td><td>(Actual − budget) ÷ budget</td><td class="n" data-v="ex.varSalesPct" data-f="sp"></td><td>$<span data-v="ex.sales"></span> million against $<span data-v="ex.budgetSales"></span> million.</td></tr>
+    <tr><td>EBIT versus budget</td><td>(Actual − budget) ÷ budget</td><td class="n" data-v="ex.varEbitPct" data-f="sp"></td><td>$<span data-v="ex.ebit"></span> million against $<span data-v="ex.budgetEbit"></span> million.</td></tr>
+    <tr><td>Contribution margin</td><td>(Sales − variable costs) ÷ sales</td><td class="n" data-v="ex.cmPct" data-f="p"></td><td>Each extra dollar of sales adds 43 cents of profit, as long as capacity exists.</td></tr>
+    <tr><td>Break-even sales</td><td>Fixed costs ÷ contribution margin</td><td class="n">$<span data-v="ex.breakeven"></span>M</td><td>Below this the plant loses money. Fixed costs are $<span data-v="ex.fixed"></span> million.</td></tr>
+    <tr><td>Margin of safety</td><td>(Sales − break-even sales) ÷ sales</td><td class="n" data-v="ex.safety" data-f="p0"></td><td>How far sales can fall before a loss.</td></tr>
+    <tr><td>Operating leverage</td><td>Contribution ÷ EBIT</td><td class="n" data-v="ex.dol" data-f="x"></td><td>A 10% change in volume moves EBIT by about <span data-v="ex.dol10" data-f="p0"></span>.</td></tr>
+    <tr><td>Personnel cost ratio</td><td>Personnel cost ÷ sales</td><td class="n" data-v="ex.persPct" data-f="p0"></td><td>The largest cost block you decide on directly.</td></tr>
+    <tr><td>Return on capital employed (ROCE)</td><td>EBIT ÷ capital employed</td><td class="n" data-v="ex.roce" data-f="p"></td><td>= margin <span data-v="ex.ebitMargin" data-f="p"></span> × capital turnover <span data-v="ex.capTurn" data-f="x2"></span>.</td></tr>
+    <tr><td>Economic value added (EVA)</td><td>EBIT after tax − capital employed × cost of capital</td><td class="n">$<span data-v="ex.eva"></span>M</td><td>Profit left after paying for the capital used. Positive means value is created.</td></tr>
+    <tr><td>Capex ratio</td><td>Capital expenditure ÷ sales</td><td class="n" data-v="ex.capexPct" data-f="p"></td><td>Compare with depreciation (<span data-v="ex.depr"></span>): spending at or above it maintains the asset base.</td></tr>
+  </table></div>
+
+  <h3>Worked case 1: reading a budget variance</h3>
+  <p>Sales are $<span data-v="ex.varSales"></span> million above budget and EBIT is $<span data-v="ex.varEbit"></span> million above budget. Is that good cost control?</p>
+  <p>A flexible budget answers it. At a contribution margin of <span data-v="ex.cmPct" data-f="p"></span>, $<span data-v="ex.varSales"></span> million of extra sales should bring about $<span data-v="ex.flexEbit" data-f="n2"></span> million of extra EBIT if costs behave as planned. The actual gain is $<span data-v="ex.varEbit"></span> million, so costs ran almost exactly on plan. Had EBIT been only $0.3 million above budget, the unit would have been "over budget" on profit while hiding a cost overrun of more than half a million.</p>
+
+  <h3>Worked case 2: profit up, return down</h3>
+  <p>A new machine costs $1.5 million, saves $0.35 million of labour a year and is depreciated over ten years.</p>
+  <div class="tblwrap"><table>
+    <tr><th></th><th class="n">Before</th><th class="n">After</th></tr>
+    <tr><td>EBITDA, $ million</td><td class="n" data-v="ex.ebitda"></td><td class="n" data-v="ex.m.ebitda" data-f="n2"></td></tr>
+    <tr><td>EBIT, $ million (after $0.15 million extra depreciation)</td><td class="n" data-v="ex.ebit"></td><td class="n" data-v="ex.m.ebit" data-f="n2"></td></tr>
+    <tr><td>Capital employed, $ million</td><td class="n" data-v="ex.ce"></td><td class="n" data-v="ex.m.ce"></td></tr>
+    <tr><td>ROCE</td><td class="n" data-v="ex.roce" data-f="p"></td><td class="n" data-v="ex.m.roce" data-f="p"></td></tr>
+    <tr><td>Simple payback</td><td class="n"></td><td class="n">4.3 years</td></tr>
+  </table></div>
+  <p>EBITDA and EBIT both rise, and ROCE falls, because the machine earns about 13% on its cost (0.20 ÷ 1.5) while the plant as a whole earns 34%. It is still a good investment: 13% is above the 9% cost of capital, so value added rises. Lesson: a ratio can fall while value increases. Judge investments against the cost of capital, not against the unit's current average.</p>
+
+  <div class="calc" id="calcMgr">
+    <b>Try it: stress-test the example plant</b> <span class="tag ill">illustrative</span>
+    <label>Volume change: <output id="gVolO"></output></label>
+    <input type="range" id="gVol" min="-30" max="20" step="1" value="-10">
+    <label>Price change: <output id="gPriceO"></output></label>
+    <input type="range" id="gPrice" min="-5" max="5" step="0.5" value="0">
+    <label>Fixed cost change: <output id="gFixO"></output></label>
+    <input type="range" id="gFix" min="-15" max="15" step="1" value="0">
+    <div class="res" id="gRes"></div>
+    <p class="lead" style="font-size:.82rem;margin:.5rem 0 0">Working capital is assumed to move in proportion to sales; fixed assets stay unchanged.</p>
+  </div>
+
+  <h3>Exercises</h3>
+  <details><summary>1. You want to hire two application engineers at $120,000 each. How much additional sales pays for them?</summary><p>$0.24 million of new fixed cost ÷ 0.43 contribution margin = $0.56 million of additional sales per year to break even, more if discounts are needed to win it. Break-even sales for the plant rise from $35.6 million to $36.1 million.</p></details>
+  <details><summary>2. Use the calculator: at what volume decline does the plant stop creating value (EVA below zero)?</summary><p>At a decline of about 28%, well before the break-even point at about −41%. A unit can be profitable and still not earn its cost of capital.</p></details>
+  <details><summary>3. Your unit hits its EBIT budget, but inventory is $1.2 million above plan. How do you report it?</summary><p>Profit on plan, cash $1.2 million behind plan, capital employed higher and ROCE lower (10.5 ÷ 32.3 = 32.5%). If the stock was built to absorb fixed overhead, part of the profit is borrowed from future periods. Report all three views together.</p></details>
+  <details><summary>4. With your own data</summary><p>Split your cost centre's costs into fixed and variable. Compute your contribution margin and break-even sales. Then write the one-page view from Module 10 for your unit and present it to your team.</p></details>
+
+  <div class="quiz" data-quiz="tmgr"></div>
+  <button class="markdone" data-done="t-mgr">Mark module complete</button>
+</section>
+
+<!-- ======================= KPI CATALOGUE ======================= -->
+<section class="mod" id="catalogue" data-title="13 · KPI catalogue">
+  <div class="kicker">Module 13 · Reference</div>
+  <h2>KPI catalogue: all the usual indicators</h2>
+  <p class="lead">Every indicator with its formula, a worked value, what it tells you and what it does to the business. Filter by topic, or show only those your role influences.</p>
+  <p style="font-size:.88rem">Value labels: <span class="tag rep">example group, reported</span> as in the group's reports · <span class="tag own">example group, own calculation</span> computed here from those figures · <span class="tag ill">illustrative</span> invented example plant (Module 11).</p>
+  <div class="catbar">
+    <input type="search" id="catQ" placeholder="Search, e.g. margin, inventory, EPS" aria-label="Search KPIs">
+    <select id="catCat" aria-label="Topic"></select>
+    <label class="chk"><input type="checkbox" id="catMine"> Only KPIs my role influences</label>
+  </div>
+  <p id="catCount" class="lead" style="font-size:.85rem"></p>
+  <div id="catList"></div>
+</section>
+
+<section class="mod" id="glossary" data-title="Glossary">
+  <div class="kicker">Reference</div>
+  <h2>Glossary</h2>
+  <div class="tblwrap"><table>
+    <tr><th>Term</th><th>Meaning</th></tr>
+    <tr><td>Adjusted (non-GAAP)</td><td>A figure from which management has removed items it considers non-recurring or non-operating. Must be reconciled to the reported figure.</td></tr>
+    <tr><td>Amortisation</td><td>Spreading the cost of an intangible asset (customer relationships, technology) over its useful life.</td></tr>
+    <tr><td>Basis point (bp)</td><td>One hundredth of a percentage point. 500 bps = 5.0 percentage points.</td></tr>
+    <tr><td>Capital expenditure (capex)</td><td>Spending on long-lived assets such as machinery and buildings.</td></tr>
+    <tr><td>Cash conversion cycle</td><td>DSO + DIO − DPO: days between paying suppliers and collecting from customers.</td></tr>
+    <tr><td>Depreciation</td><td>Spreading the cost of a physical asset over its useful life.</td></tr>
+    <tr><td>EBITDA</td><td>Earnings before interest, taxes, depreciation and amortisation.</td></tr>
+    <tr><td>EPS</td><td>Earnings per share: net income divided by the number of shares.</td></tr>
+    <tr><td>Free cash flow</td><td>Cash from operations minus capital expenditure.</td></tr>
+    <tr><td>GAAP</td><td>US Generally Accepted Accounting Principles, the rules for reported figures.</td></tr>
+    <tr><td>Goodwill</td><td>The part of an acquisition price that exceeds the fair value of the identifiable assets acquired.</td></tr>
+    <tr><td>Guidance</td><td>Management's published forecast for the current year.</td></tr>
+    <tr><td>Mix</td><td>The composition of sales by product, customer, channel or region.</td></tr>
+    <tr><td>Net leverage</td><td>Net debt divided by twelve months of adjusted EBITDA.</td></tr>
+    <tr><td>Operating leverage</td><td>The effect of fixed costs: profit changes faster than sales.</td></tr>
+    <tr><td>Organic growth</td><td>Growth excluding acquisitions, divestitures and currency translation.</td></tr>
+    <tr><td>ROIC</td><td>Return on invested capital: operating profit relative to the capital employed.</td></tr>
+    <tr><td>SG&amp;A</td><td>Selling, general and administrative expenses.</td></tr>
+    <tr><td>Working capital</td><td>Receivables plus inventories minus payables: cash tied up in day-to-day operations.</td></tr>
+  </table></div>
+</section>
+
+<section class="mod" id="sources" data-title="Sources and method">
+  <div class="kicker">Reference</div>
+  <h2>Sources and method</h2>
+  <ul>
+    <li><b>Example group (Modules 1 to 10).</b> Invented: a fictional listed industrial company with two segments. The figures are internally consistent (for example, the reconciliation in Module 4 sums to the adjusted EBITDA shown, and the leverage calculation in Module 7 reproduces the stated ratio) and of a realistic order of magnitude, but they describe no real company.</li>
+    <li><b>Example plant (Modules 11 to 13).</b> Invented. The plant, its customers and its development project do not exist. The values were chosen to be internally consistent and plausible, not to represent any real site.</li>
+    <li><b>Own calculations.</b> Ratios marked "own calculation", "own estimate" or "illustration" use simplified textbook formulas. Company-specific definitions often differ in detail.</li>
+    <li><b>Scope.</b> The tutorial does not describe any company's internal KPI definitions, targets or incentive systems. It is not investment advice.</li>
+    <li><b>Didactic design</b> (worked examples that fade into independent problem solving): Sweller, J. &amp; Cooper, G. A. (1985). The use of worked examples as a substitute for problem solving in learning algebra. <i>Cognition and Instruction</i>, 2(1), 59–89.</li>
+    <li><b>Updating.</b> To use other figures, change the <code>DATA</code> block (example group) or the <code>EX</code> block (example plant) at the top of the script in <code>index.html</code>; tables, charts and calculators recompute automatically. Explanatory sentences that describe causes need a manual review.</li>
+  </ul>
+</section>
+
+</main>
+</div>
+<footer>Independent learning material. The example group and the example plant are teaching examples; no real company is described. Not investment advice.</footer>
+
+<script>
+/* ===================== DATA: update this block each quarter ===================== */
+const DATA = {
+  // EXAMPLE GROUP: invented figures for a fictional listed industrial company, $ million unless stated
+  q: { // third quarter 2026 vs third quarter 2025
+    sales:420.0, salesPrior:365.0, cogs:252.0, cogsPrior:224.5, gp:168.0, gpPrior:140.5,
+    sga:105.0, sgaPrior:97.5, opInc:62.5, opIncPrior:42.5, opMargin:14.9, opMarginPrior:11.6,
+    ni:39.4, eps:1.58, epsPrior:0.96, adjNi:57.5, adjEps:2.30,
+    adjEbitda:93.0, adjEbitdaMargin:22.1, adjEbitdaMarginPrior:20.5,
+    segEbitda:107.4, segMargin:25.6, segMarginPrior:23.8, corp:15.0,
+    netLeverage:1.5, netLeveragePrior:1.3, revolverYtd:140.0, divPerShare:0.30, buyback:60,
+    tax:13.1, pbt:52.5, interest:10.0
+  },
+  segA:{ sales:250.0, ebitda:70.0, margin:28.0, marginPrior:27.6, growth:13.6, organic:7.5, acq:5.5, fx:0.6 },
+  segB:{ sales:170.0, ebitda:37.4, margin:22.0, marginPrior:18.0, growth:17.2 },
+  ytd:{ sales:1190.0, cfo:185.0, capex:50.0, fcf:135.0, fcfPrior:112.0, adjNi:160.0, adjEbitda:259.0, div:22.5 },
+  q4prior:{ adjEbitda:76.0 }, // fourth quarter 2025, for trailing twelve months
+  bs:{ cash:95.0, ar:210.0, inv:215.0, ap:105.0, goodwill:1150.0, intang:800.0, ta:2900.0, debt:600.0, equity:1700.0 },
+  bs0:{ cash:120.0, ar:175.0, inv:185.0, ap:90.0, goodwill:1148.0, intang:860.0, ta:2880.0, debt:740.0, equity:1610.0 },
+  fy:{ // full-year 2025
+    sales:1400.0, cogs:854.0, gp:546.0, sga:384.0, otherOp:4.0, opInc:158.0,
+    pbt:60.0, tax:16.0, ni:44.0, oneOff:55.0, adjEbitda:294.0,
+    netInterest:36.0, da:120.0, otherAdj:23.0,
+    cfo:215.0, capex:55.0, fcf:160.0, acq:290.0, div:30.0,
+    adjNi:172.0, interest:40.0, salesPrior:1290.0
+  },
+  mkt:{ price:165.00, guideEpsLow:8.70, guideEpsHigh:8.85, guideEbitdaLow:352, guideEbitdaHigh:358 },
+  guide:{ revLow:1615, revHigh:1625 }
+};
+/* ===================== derived values (do not edit) ===================== */
+const D = JSON.parse(JSON.stringify(DATA));
+(function(){
+  const q=D.q, fy=D.fy, bs=D.bs, bs0=D.bs0;
+  q.growth=(q.sales/q.salesPrior-1)*100;
+  q.gm=q.gp/q.sales*100; q.gmPrior=q.gpPrior/q.salesPrior*100;
+  q.sgaPct=q.sga/q.sales*100; q.sgaPctPrior=q.sgaPrior/q.salesPrior*100;
+  q.sgaGrowth=(q.sga/q.sgaPrior-1)*100;
+  q.opMarginDelta=q.opMargin-q.opMarginPrior;
+  q.cogs1pct=q.cogs*0.01;
+  q.corpPct=q.corp/q.sales*100; q.segLessCorp=q.segEbitda-q.corp;
+  q.shares=q.ni/q.eps; q.sharesAdj=q.adjNi/q.adjEps;
+  fy.cogsPct=fy.cogs/fy.sales*100; fy.gm=fy.gp/fy.sales*100; fy.sgaPct=fy.sga/fy.sales*100;
+  fy.opMargin=fy.opInc/fy.sales*100; fy.niMargin=fy.ni/fy.sales*100;
+  fy.belowOp=fy.opInc-fy.pbt; fy.capexPct=fy.capex/fy.sales*100;
+  bs.gwInt=bs.goodwill+bs.intang; bs0.gwInt=bs0.goodwill+bs0.intang; bs.gwIntPct=bs.gwInt/bs.ta*100;
+  D.ytd.fcfConv=D.ytd.fcf/D.ytd.adjNi*100;
+  const wc=D.wc={};
+  wc.now=bs.ar+bs.inv-bs.ap; wc.then=bs0.ar+bs0.inv-bs0.ap; wc.delta=wc.now-wc.then;
+  wc.dAr=bs.ar-bs0.ar; wc.dInv=bs.inv-bs0.inv; wc.dApNeg=-(bs.ap-bs0.ap);
+  const days=365/4;
+  wc.dso=bs.ar/q.sales*days; wc.dio=bs.inv/q.cogs*days; wc.dpo=bs.ap/q.cogs*days; wc.ccc=wc.dso+wc.dio-wc.dpo;
+  wc.dayAr=q.sales/days; wc.dayInv=q.cogs/days;
+  const lev=D.lev={};
+  lev.ttm=D.ytd.adjEbitda+D.q4prior.adjEbitda; lev.calc=(bs.debt-bs.cash)/lev.ttm;
+  lev.ye=(bs0.debt-bs0.cash)/fy.adjEbitda;
+  const r=D.roic={};
+  r.ic=bs0.debt+bs0.equity-bs0.cash; r.pre=fy.opInc/r.ic*100; r.cash=(fy.adjEbitda-fy.capex)/r.ic*100;
+  D.guide.revMid=(D.guide.revLow+D.guide.revHigh)/2;
+})();
+
+/* ===================== EXAMPLE PLANT: invented, illustrative data ===================== */
+const EX = {
+  sales:60.0, salesPrior:56.0, bVol:1.8, bPrice:1.5, bMix:0.7,
+  material:21.0, labour:9.0, varOh:3.0, fixOh:7.5, depr:2.4, amort:0.3,
+  selling:4.2, varSelling:1.2, rd:1.8, admin:3.0,
+  fixedAssets:18.0, inv:9.0, invRaw:3.2, invWip:2.0, invFg:3.8, ar:8.5, ap:4.4, cash:3.0, otherCurLiab:5.0,
+  capex:2.6, wcChange:0.8, employees:240, personnel:16.8,
+  avail:88, perf:92, qual:96.5, scrap:0.9, copq:1.44, otd:91, util:78, obsolete:0.5, ppv:0.3,
+  orders:63.0, backlog:14.0, listSales:68.0, top5:38, win:31, fcAcc:82,
+  newProdSales:10.8, ttm:22,
+  budgetSales:58.0, budgetEbit:9.6, wacc:9, taxRate:25,
+  cA:{ sales:4.0, gm:40, serve:0.20, days:30, consign:0 },
+  cB:{ sales:6.0, gm:24, serve:0.45, days:90, consign:0.8 },
+  prj:{ dev:1.2, tool:0.8, stock:0.3, sales:[1.5,3.0,4.0,4.0,3.5], cm:45, fixed:0.3 }
+};
+function npv(rate,flows){return flows.reduce((a,f)=>a+f.v/Math.pow(1+rate,f.t),0);}
+function irr(flows){let lo=-0.9,hi=5;for(let k=0;k<80;k++){const m=(lo+hi)/2;(npv(m,flows)>0)?lo=m:hi=m;}return (lo+hi)/2;}
+function payback(flows){let c=0;for(let k=0;k<flows.length;k++){const n=c+flows[k].v;if(c<0&&n>=0){const pt=k?flows[k-1].t:0;return pt+(-c/flows[k].v)*(flows[k].t-pt);}c=n;}return null;}
+function project(o){ // o: delay (months), devOver, costOver, price, vol (all in %)
+  const P=EX.prj, d=(o.delay||0)/12, price=(o.price||0)/100, vol=(o.vol||0)/100;
+  const cm=P.cm/100 - (1-P.cm/100)*(o.costOver||0)/100;
+  const flows=[{t:0,v:-(P.dev*(1+(o.devOver||0)/100)+P.tool+P.stock)}];
+  P.sales.forEach((sv,k)=>{
+    let sales=sv*(1+vol), last=k===P.sales.length-1, frac=last?(1-d):1;
+    let v=(sales*(1+price)*((cm+price)/(1+price))-P.fixed)*frac;
+    if(last)v+=P.stock;
+    flows.push({t:k+1+d,v});
+  });
+  return {flows,npv:npv(EX.wacc/100,flows),irr:irr(flows)*100,payback:payback(flows)};
+}
+(function(){
+  const e=D.ex=JSON.parse(JSON.stringify(EX));
+  e.cogs=e.material+e.labour+e.varOh+e.fixOh; e.gp=e.sales-e.cogs; e.gm=e.gp/e.sales*100;
+  e.materialPct=e.material/e.sales*100; e.labourPct=e.labour/e.sales*100;
+  e.sga=e.selling+e.rd+e.admin; e.ebit=e.gp-e.sga; e.ebitMargin=e.ebit/e.sales*100;
+  e.da=e.depr+e.amort; e.ebitda=e.ebit+e.da; e.ebitdaMargin=e.ebitda/e.sales*100;
+  e.varCost=e.material+e.labour+e.varOh+e.varSelling; e.cm=e.sales-e.varCost; e.cmPct=e.cm/e.sales*100;
+  e.fixed=e.cm-e.ebit; e.breakeven=e.fixed/(e.cmPct/100); e.safety=(e.sales-e.breakeven)/e.sales*100;
+  e.dol=e.cm/e.ebit; e.dol10=e.dol*10;
+  e.wc=e.inv+e.ar-e.ap; e.ce=e.fixedAssets+e.wc; e.roce=e.ebit/e.ce*100; e.capTurn=e.sales/e.ce;
+  e.turns=e.cogs/e.inv; e.dio=e.inv/e.cogs*365; e.dso=e.ar/e.sales*365; e.dpo=e.ap/e.cogs*365; e.ccc=e.dio+e.dso-e.dpo;
+  e.salesPerEmp=e.sales/e.employees*1000; e.persPct=e.personnel/e.sales*100;
+  e.oee=e.avail*e.perf*e.qual/10000; e.scrapPct=e.scrap/e.sales*100; e.copqPct=e.copq/e.sales*100; e.obsPct=e.obsolete/e.inv*100;
+  e.btb=e.orders/e.sales; e.backlogMonths=e.backlog/e.sales*12;
+  e.discountAbs=e.listSales-e.sales; e.discount=e.discountAbs/e.listSales*100; e.discount1pt=e.listSales*0.01;
+  e.bVolProfit=e.bVol*e.cmPct/100;
+  e.rdPct=e.rd/e.sales*100; e.vitality=e.newProdSales/e.sales*100; e.capexPct=e.capex/e.sales*100;
+  e.nopat=e.ebit*(1-e.taxRate/100); e.eva=e.nopat-e.ce*e.wacc/100;
+  e.varSales=e.sales-e.budgetSales; e.varEbit=e.ebit-e.budgetEbit;
+  e.varSalesPct=e.varSales/e.budgetSales*100; e.varEbitPct=e.varEbit/e.budgetEbit*100; e.flexEbit=e.varSales*e.cmPct/100;
+  e.curRatio=(e.cash+e.ar+e.inv)/(e.ap+e.otherCurLiab); e.quick=(e.cash+e.ar)/(e.ap+e.otherCurLiab);
+  e.fcf=e.ebitda-e.ebit*e.taxRate/100-e.capex-e.wcChange;
+  e.m={ebitda:e.ebitda+0.35, ebit:e.ebit+0.35-0.15, ce:e.ce+1.5}; e.m.roce=e.m.ebit/e.m.ce*100;
+  ["cA","cB"].forEach(k=>{const c=e[k]; c.gp=c.sales*c.gm/100; c.cap=c.sales*c.days/365+c.consign; c.capCost=c.cap*e.wacc/100; c.net=c.gp-c.serve-c.capCost; c.netPct=c.net/c.sales*100;});
+  const pr=project({}); e.prj.invest=e.prj.dev+e.prj.tool+e.prj.stock; e.prj.npv=pr.npv; e.prj.irr=pr.irr; e.prj.payback=pr.payback; e.prj.base=pr;
+  // additional group-level ratios for the catalogue
+  const q=D.q, fy=D.fy, bs=D.bs, bs0=D.bs0, m=D.mkt, c=D.cat={};
+  c.cagr=(Math.pow(D.guide.revMid/fy.salesPrior,1/2)-1)*100;
+  c.netMargin=q.ni/q.sales*100; c.taxRate=q.tax/q.pbt*100;
+  c.fcfMargin=D.ytd.fcf/D.ytd.sales*100; c.capexPct=D.ytd.capex/D.ytd.sales*100;
+  c.invTurns=q.cogs*4/bs.inv; c.wcPct=D.wc.now/(q.sales*4)*100;
+  c.netDebt=bs.debt-bs.cash; c.intCov=q.adjEbitda/q.interest; c.ebitCov=q.opInc/q.interest;
+  c.equityRatio=bs.equity/bs.ta*100; c.gearing=c.netDebt/bs.equity*100;
+  c.roe=fy.ni/bs0.equity*100; c.roeAdj=fy.adjNi/bs0.equity*100; c.roa=fy.ni/bs0.ta*100; c.assetTurn=fy.sales/bs0.ta;
+  c.epsMid=(m.guideEpsLow+m.guideEpsHigh)/2; c.pe=m.price/c.epsMid;
+  c.mcap=m.price*q.shares; c.ev=c.mcap+c.netDebt; c.evEbitda=c.ev/((m.guideEbitdaLow+m.guideEbitdaHigh)/2);
+  c.divAnnual=q.divPerShare*4; c.divYield=c.divAnnual/m.price*100; c.payout=fy.div/fy.adjNi*100;
+  c.cashConvFy=fy.fcf/fy.adjNi*100;
+})();
+
+/* ===================== formatting ===================== */
+const nf=(x,d)=>x.toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d});
+const F={
+  n:x=>nf(x,1), n0:x=>nf(x,0), n1:x=>nf(x,1), m:x=>"$"+nf(x,1)+"M", neg:x=>"("+nf(Math.abs(x),1)+")",
+  p:x=>nf(x,1)+"%", p0:x=>nf(x,0)+"%", pp:x=>nf(x,1)+" percentage points", d2:x=>"$"+nf(x,2),
+  d0:x=>nf(x,0)+" days", n2:x=>nf(x,2), sp:x=>(x>=0?"+":"−")+nf(Math.abs(x),1)+"%", x:x=>nf(x,1)+"×", x2:x=>nf(x,2)+"×", s:x=>(x>=0?"+":"−")+nf(Math.abs(x),1)
+};
+function get(path){return path.split(".").reduce((o,k)=>o==null?o:o[k],D);}
+document.querySelectorAll("[data-v]").forEach(el=>{
+  const v=get(el.dataset.v); if(v==null){el.textContent="n/a";return;}
+  el.textContent=typeof v==="string"?v:(F[el.dataset.f||"n"])(v);
+});
+
+/* ===================== bar charts ===================== */
+function bars(id,rows,unit){
+  const host=document.getElementById(id); if(!host)return;
+  const max=Math.max(...rows.map(r=>Math.abs(r.end!=null?r.end:r.v)),...rows.map(r=>Math.abs(r.start||0)));
+  host.innerHTML=rows.map(r=>{
+    const a=r.start||0, b=r.end!=null?r.end:r.v, lo=Math.min(a,b), w=Math.abs(b-a);
+    return `<div class="barrow"><div>${r.label}</div><div class="bartrack"><i class="${r.alt?"alt":""}" style="left:${lo/max*100}%;width:${Math.max(w/max*100,.6)}%"></i></div><div class="n">${r.text||nf(r.v,1)+(unit||"")}</div></div>`;
+  }).join("");
+}
+bars("growthBars",[
+  {label:"Organic",v:D.segA.organic,start:0,end:D.segA.organic},
+  {label:"Acquisitions",v:D.segA.acq,start:D.segA.organic,end:D.segA.organic+D.segA.acq,alt:true},
+  {label:"Currency",v:D.segA.fx,start:D.segA.organic+D.segA.acq,end:D.segA.growth,alt:true},
+  {label:"Total growth",v:D.segA.growth,start:0,end:D.segA.growth}
+],"%");
+(function(){
+  const f=D.fy; let c=0; const step=(label,v,alt)=>{const r={label,v,start:c,end:c+v,alt,text:(alt?"+":"")+nf(v,1)};c+=v;return r;};
+  bars("bridgeBars",[
+    step("Net income",f.ni,false),
+    step("+ Income tax",f.tax,true),
+    step("+ Net interest",f.netInterest,true),
+    step("+ Depreciation & amortisation",f.da,true),
+    step("+ Loss on sale of a business",f.oneOff,true),
+    step("+ Other adjustments (net)",f.otherAdj,true),
+    {label:"Adjusted EBITDA",v:f.adjEbitda,start:0,end:f.adjEbitda}
+  ]);
+})();
+bars("allocBars",[
+  {label:"2025: acquisitions",v:D.fy.acq},
+  {label:"2025: capital expenditure",v:D.fy.capex},
+  {label:"2025: dividends",v:D.fy.div},
+  {label:"2026 (9 months): revolver repaid",v:D.q.revolverYtd,alt:true},
+  {label:"2026 (9 months): capital expenditure",v:D.ytd.capex,alt:true},
+  {label:"2026 (9 months): dividends",v:D.ytd.div,alt:true}
+]);
+
+/* ===================== calculators ===================== */
+(function(){
+  const p=document.getElementById("pIn"), v=document.getElementById("vIn");
+  function upd(){
+    const pc=+p.value, vc=+v.value, rev=D.guide.revMid, gm=D.q.gm/100;
+    document.getElementById("pOut").textContent=(pc>0?"+":"")+pc+"%";
+    document.getElementById("vOut").textContent=(vc>0?"+":"")+vc+"%";
+    const eff=rev*(1+vc/100)*pc/100 + rev*vc/100*gm;
+    const base=(D.mkt.guideEbitdaLow+D.mkt.guideEbitdaHigh)/2;
+    const be = pc<0 ? (-pc/100)/((gm)+(pc/100))*100 : null;
+    document.getElementById("pRes").innerHTML=
+      `Profit effect: <b>${eff>=0?"+":"−"}$${nf(Math.abs(eff),1)} million</b> per year, about ${nf(Math.abs(eff)/base*100,1)}% of guided adjusted EBITDA.`+
+      (be!=null?`<br>To make up for a ${-pc}% price cut you would need about <b>${nf(be,1)}% more volume</b>.`:"");
+  }
+  p.addEventListener("input",upd); v.addEventListener("input",upd); upd();
+  const a=document.getElementById("dsoIn"), b=document.getElementById("dioIn");
+  function upd2(){
+    const x=+a.value, y=+b.value;
+    document.getElementById("dsoOut").textContent=x; document.getElementById("dioOut").textContent=y;
+    const cash=x*D.wc.dayAr+y*D.wc.dayInv;
+    document.getElementById("wcRes").innerHTML=
+      `One day of receivables ≈ $${nf(D.wc.dayAr,1)} million; one day of inventory ≈ $${nf(D.wc.dayInv,1)} million.<br>`+
+      `Cash released: <b>$${nf(cash,1)} million</b>. At 6% interest that saves about $${nf(cash*0.06,1)} million a year.`;
+  }
+  a.addEventListener("input",upd2); b.addEventListener("input",upd2); upd2();
+})();
+
+/* ===================== quizzes ===================== */
+const QUIZ={
+ m1:[
+  {q:"A site builds $2 million of extra finished goods in December that are sold in February. What happens in December?",
+   o:["Profit falls by $2 million","Cash falls, inventory rises, profit is largely unaffected","Sales rise by $2 million","Nothing changes until February"],c:1,
+   e:"Cash was spent on material and labour and now sits in inventory on the balance sheet. It reaches the income statement as cost of sales when the goods are sold."},
+  {q:"In 2025 net income was far below cash from operations. The main reason was:",
+   o:["Customers paid in advance","Large non-cash charges such as amortisation and the loss on the sale of a business","Capital expenditure","Dividends"],c:1,
+   e:"Depreciation, amortisation and the loss on the sale reduced profit without a matching cash outflow in that year."}],
+ m2:[
+  {q:"Segment A grew 13.6% in Q3 2026. Which part shows that existing businesses sold more or at better prices?",
+   o:["All 13.6%","The 5.5% from acquisitions","The 7.5% organic growth","The 0.6% currency effect"],c:2,
+   e:"Organic growth excludes acquisitions and currency translation."},
+  {q:"Two sales regions each grow 6%. Region A through price increases, region B through higher volume at unchanged prices. Which adds more profit?",
+   o:["A, because price has almost no additional cost","B, because volume is more sustainable","Both the same","Cannot be said without the tax rate"],c:0,
+   e:"A price increase falls almost entirely to profit. Additional volume first has to be produced."}],
+ m3:[
+  {q:"Sales rise 15% and SG&A rises 8%. What is this effect called?",
+   o:["Mix effect","Operating leverage","Dilution","Currency translation"],c:1,
+   e:"Costs that grow more slowly than sales are spread over more revenue, so margins expand."},
+  {q:"With a gross margin of 40%, roughly how much more volume is needed to make up for a 2% price cut?",
+   o:["About 2%","About 5%","About 10%","About 20%"],c:1,
+   e:"Break-even volume ≈ price cut ÷ (margin − price cut) = 2 ÷ (40 − 2) ≈ 5.3%. Try it in the calculator."}],
+ m4:[
+  {q:"Which of these is NOT removed when moving from net income to EBITDA?",
+   o:["Depreciation","Interest","Cost of materials","Income tax"],c:2,
+   e:"Material cost is an operating cost and stays in. EBITDA adds back interest, taxes, depreciation and amortisation."},
+  {q:"What is the most important weakness of EBITDA as a measure?",
+   o:["It includes taxes","It ignores the cost of replacing and adding assets","It cannot be compared between years","It is defined by accounting law"],c:1,
+   e:"Depreciation stands for real spending on equipment. Look at capital expenditure and free cash flow alongside EBITDA."}],
+ m5:[
+  {q:"Segment EBITDA margin was 25.6% in total, company adjusted EBITDA margin 22.1%. The main reason for the gap:",
+   o:["Taxes","Corporate expenses not charged to the segments","Depreciation","Currency effects"],c:1,
+   e:"Corporate costs of $15.0 million sit between the segment total and the company figure."},
+  {q:"Both segments keep their margins exactly constant, but the lower-margin segment grows faster. The company margin:",
+   o:["Rises","Stays the same","Falls","Cannot change"],c:2,
+   e:"This is a pure mix effect: the weighted average moves toward the faster-growing, lower-margin part."}],
+ m6:[
+  {q:"A customer asks to extend payment terms from 30 to 60 days. Which indicator worsens?",
+   o:["DIO","DPO","DSO","Gross margin"],c:2,
+   e:"Receivables stay outstanding longer: days sales outstanding rises and cash arrives later."},
+  {q:"Sales grow strongly and profit rises, yet free cash flow falls. The most likely cause:",
+   o:["Lower taxes","Working capital and capital expenditure grew to support the growth","Higher depreciation","A stronger dollar"],c:1,
+   e:"Growth needs more receivables, more stock and often more capacity before the cash comes back."}],
+ m7:[
+  {q:"Net leverage falls from 2.1× to 1.5×. Which combination explains it?",
+   o:["Higher debt, lower EBITDA","Debt repaid and EBITDA higher","More dividends","More acquisitions"],c:1,
+   e:"The ratio is net debt divided by EBITDA; both moved in the favourable direction during 2026."},
+  {q:"Which is NOT one of the uses of free cash flow?",
+   o:["Repaying debt","Buying businesses","Paying dividends","Recording depreciation"],c:3,
+   e:"Depreciation is an accounting entry, not a use of cash."}],
+ m8:[
+  {q:"Why is adjusted EPS ($2.30) higher than reported EPS ($1.58)?",
+   o:["More shares are counted","Items such as acquisition-related amortisation are added back","Taxes are ignored","Sales are counted differently"],c:1,
+   e:"Adjusted net income excludes items management regards as non-operating, the largest recurring one typically being amortisation of acquired intangibles. Verify the components in the release's reconciliation table."},
+  {q:"Which lever for EPS growth is created in daily operations?",
+   o:["Share buybacks","Lower tax rate","Higher operating profit","Refinancing debt"],c:2,
+   e:"The others are financial decisions taken centrally."}],
+ m9:[
+  {q:"A unit raises profit by 10% but needs 30% more capital to do it. Its return on capital:",
+   o:["Rises","Falls","Is unchanged","Doubles"],c:1,
+   e:"Return is profit divided by capital. Capital grew faster than profit."},
+  {q:"Which action raises capital turnover?",
+   o:["Raising prices","Reducing inventory while holding sales","Cutting the tax rate","Paying a dividend"],c:1,
+   e:"Turnover is sales per dollar of capital. Less stock for the same sales means less capital tied up."}],
+ m10:[
+  {q:"Management raises full-year guidance. What does this tell you first?",
+   o:["The year is running better than management previously expected","The share price will rise","Bonuses will be paid","Costs have fallen"],c:0,
+   e:"Guidance is management's own forecast; a raise is a statement about the year so far and the remaining visibility, nothing more."}]
+,
+ tops:[
+  {q:"Which improvement goes to profit most directly, dollar for dollar?",
+   o:["Higher sales volume","Less scrap and rework","Lower inventory","Longer supplier payment terms"],c:1,
+   e:"Avoided scrap is saved cost with no offsetting expense. Extra sales earn only their margin; inventory and payment terms affect cash, not profit."},
+  {q:"A plant builds finished goods above demand to keep machines busy. Short-term effect?",
+   o:["Profit and cash both improve","Reported profit may look better because fixed overhead is absorbed into stock, while cash gets worse","Cash improves, profit falls","No effect on either"],c:1,
+   e:"Overhead allocated to unsold units sits in inventory instead of the income statement. The cash is spent all the same, and the stock may later be written down."},
+  {q:"OEE is 78%. Availability is 88%, performance 92%. What is the quality rate?",
+   o:["About 85%","About 90%","About 96%","About 99%"],c:2,
+   e:"0.78 ÷ (0.88 × 0.92) ≈ 0.965. OEE is the product of the three rates."},
+  {q:"Purchasing negotiates a 4% discount for buying six months of material at once. Which view is missing if you look only at the purchase price variance?",
+   o:["The tax effect","The capital tied up in stock and the obsolescence risk","The effect on sales","The currency effect"],c:1,
+   e:"The saving appears in the income statement; the cost appears on the balance sheet and in cash flow."}],
+ tsales:[
+  {q:"Sales are on plan, but book-to-bill has been 0.9 for two quarters. What does this signal?",
+   o:["Nothing; sales are what counts","Sales are being fed from a shrinking backlog and will fall","Prices are too high","Receivables are overdue"],c:1,
+   e:"Order intake leads sales. A ratio below 1 means the order book is being consumed."},
+  {q:"Two customers: A buys $4M at 40% margin and pays in 30 days; B buys $6M at 24% margin, pays in 90 days and requires consignment stock. Which creates more value?",
+   o:["B, because sales are higher","A, because gross profit is higher and far less capital is tied up","Both the same","Cannot be compared"],c:1,
+   e:"A's gross profit is $1.6M against $1.44M for B, before B's higher cost to serve and the capital in receivables and consignment stock."},
+  {q:"A 2% price increase that holds, on $60M of sales, is worth about as much profit as how much extra volume at a 43% contribution margin?",
+   o:["$1.2M","$2.8M","$6M","$12M"],c:1,
+   e:"2% of $60M is $1.2M of profit. To earn $1.2M from volume you need 1.2 ÷ 0.43 ≈ $2.8M of additional sales."},
+  {q:"Which of your decisions changes the cash conversion cycle directly?",
+   o:["Visiting more customers","Agreed payment terms","The marketing budget","The price list layout"],c:1,
+   e:"Payment terms set DSO. Forecast quality affects DIO indirectly through the plant's safety stock."}],
+ trd:[
+  {q:"A project has a positive NPV at a 9% discount rate. What does that mean?",
+   o:["It pays back within one year","It earns more than 9% a year on the money invested","Its sales exceed its costs in year one","Its IRR is exactly 9%"],c:1,
+   e:"NPV above zero means the cash flows are worth more than the investment after charging the required 9% return, so the IRR is above 9%."},
+  {q:"In the accounts, where does the $1.2M of development spending for the example project appear?",
+   o:["As capital expenditure on the balance sheet","As an expense that reduces EBITDA in the year it is spent","As inventory","It does not appear until launch"],c:1,
+   e:"Development work is generally expensed as incurred. Tooling is capital expenditure; launch stock is inventory."},
+  {q:"Which usually damages a product business case most?",
+   o:["A 10% overrun of the development budget","A selling price 5% below plan for the product's whole life","One extra design review","A 10% overrun of tooling cost"],c:1,
+   e:"A price miss repeats every year on every unit sold. Budget overruns are one-time and relatively small."},
+  {q:"The vitality index of a unit falls from 25% to 12% over four years while R&D intensity is constant. Interpretation?",
+   o:["R&D is becoming more efficient","Spending is unchanged but it is producing fewer successful new products","Sales are falling","Margins are rising"],c:1,
+   e:"Intensity measures input, vitality measures output. Constant input with falling output means the portfolio is ageing."}],
+ tmgr:[
+  {q:"Sales are 3% above budget and EBIT is exactly on budget. What does a flexible budget tell you?",
+   o:["Everything is on plan","Costs ran above plan, because the extra sales should have added profit","Prices were too high","The budget was wrong"],c:1,
+   e:"Extra sales bring contribution margin. If none of it reached EBIT, costs absorbed it."},
+  {q:"An investment earns 13% on its cost. The plant's ROCE is 34% and the cost of capital is 9%. Should it be approved on financial grounds?",
+   o:["No, it lowers ROCE","Yes, it earns more than the cost of capital and adds value","Only if EBITDA margin rises","Only if payback is under two years"],c:1,
+   e:"The hurdle is the cost of capital, not the unit's current average return. Rejecting it would give up value to protect a ratio."},
+  {q:"Fixed costs are $15.3M and the contribution margin is 43%. Break-even sales are about:",
+   o:["$6.6M","$15.3M","$35.6M","$60M"],c:2,
+   e:"15.3 ÷ 0.43 ≈ 35.6. Below that level of sales the unit makes a loss."},
+  {q:"A unit reports positive EBIT but negative economic value added. What does that mean?",
+   o:["An accounting error","It is profitable but does not earn the cost of the capital it uses","It has no debt","It pays too much tax"],c:1,
+   e:"EVA deducts a charge for capital. Profit below that charge means the capital would earn more elsewhere."}]
+};
+document.querySelectorAll(".quiz").forEach(host=>{
+  const items=QUIZ[host.dataset.quiz]||[];
+  host.innerHTML="<h3>Check your understanding</h3>"+items.map((it,i)=>
+    `<div class="q" data-i="${i}"><p>${it.q}</p>${it.o.map((o,j)=>`<button type="button" data-j="${j}">${o}</button>`).join("")}<div class="fb" hidden></div></div>`).join("");
+  host.addEventListener("click",ev=>{
+    const b=ev.target.closest("button[data-j]"); if(!b)return;
+    const box=b.closest(".q"), it=items[+box.dataset.i], j=+b.dataset.j;
+    box.querySelectorAll("button").forEach((x,k)=>{x.classList.remove("right","wrong");if(k===it.c)x.classList.add("right");});
+    if(j!==it.c)b.classList.add("wrong");
+    const fb=box.querySelector(".fb"); fb.hidden=false; fb.textContent=(j===it.c?"Correct. ":"Not quite. ")+it.e;
+  });
+});
+
+/* ===================== role-track charts, tables and calculators ===================== */
+const E=D.ex, $=id=>document.getElementById(id);
+const sgn=(x,d)=>(x>=0?"+":"−")+nf(Math.abs(x),d==null?1:d);
+bars("pvmBars",[
+  {label:"Volume",v:E.bVol,text:"+"+nf(E.bVol,1)},
+  {label:"Price",v:E.bPrice,text:"+"+nf(E.bPrice,1),alt:true},
+  {label:"Mix",v:E.bMix,text:"+"+nf(E.bMix,1)},
+  {label:"Total change",v:E.sales-E.salesPrior,text:"+"+nf(E.sales-E.salesPrior,1)}
+]);
+(function(){
+  const fl=E.prj.base.flows, r=E.wacc/100; let cum=0;
+  $("prjTable").innerHTML="<tr><th>Year</th><th class='n'>Sales</th><th class='n'>Cash flow</th><th class='n'>Discounted at "+E.wacc+"%</th><th class='n'>Cumulative</th></tr>"+
+    fl.map((f,k)=>{cum+=f.v;const dv=f.v/Math.pow(1+r,f.t);
+      return `<tr><td>${k}</td><td class="n">${k?nf(EX.prj.sales[k-1],1):""}</td><td class="n">${sgn(f.v,2)}</td><td class="n">${sgn(dv,2)}</td><td class="n">${sgn(cum,2)}</td></tr>`;}).join("")+
+    `<tr class="tot"><td colspan="3">Net present value</td><td class="n">${sgn(E.prj.npv,2)}</td><td></td></tr>`;
+})();
+function wire(ids,fn){ids.forEach(i=>$(i).addEventListener("input",fn));fn();}
+wire(["oScrap","oOee","oInv"],()=>{
+  const x=+$("oScrap").value, g=+$("oOee").value, d=+$("oInv").value;
+  $("oScrapO").textContent=x+"%"; $("oOeeO").textContent=g; $("oInvO").textContent=d;
+  const dS=E.scrap*x/100, extra=E.sales*g/E.oee, dO=extra*E.cmPct/100, cash=d*E.cogs/365;
+  const ebit=E.ebit+dS+dO, sales=E.sales+extra, ce=E.ce-cash;
+  $("oRes").innerHTML=`EBIT: $${nf(E.ebit,1)}M → <b>$${nf(ebit,2)}M</b> (${sgn(dS+dO,2)}; scrap ${sgn(dS,2)}, output ${sgn(dO,2)})<br>`+
+    `EBIT margin: ${nf(E.ebitMargin,1)}% → <b>${nf(ebit/sales*100,1)}%</b><br>`+
+    `Cash released from stock: <b>$${nf(cash,2)}M</b>; inventory days ${nf(E.dio,0)} → ${nf(E.dio-d,0)}<br>`+
+    `ROCE: ${nf(E.roce,1)}% → <b>${nf(ebit/ce*100,1)}%</b>`;
+});
+wire(["sPrice","sDays","sCons"],()=>{
+  const p=+$("sPrice").value/100, days=+$("sDays").value, cons=+$("sCons").value, B=E.cB;
+  $("sPriceO").textContent=sgn(p*100,1)+"%"; $("sDaysO").textContent=days; $("sConsO").textContent=nf(cons,1);
+  const sales=B.sales*(1+p), gp=B.gp+B.sales*p, cap=sales*days/365+cons, net=gp-B.serve-cap*E.wacc/100;
+  $("sRes").innerHTML=`Contribution after cost to serve and capital: $${nf(B.net,2)}M → <b>$${nf(net,2)}M</b> (${nf(net/sales*100,0)}% of sales)<br>`+
+    `Capital tied up: $${nf(B.cap,2)}M → <b>$${nf(cap,2)}M</b><br>`+
+    `For comparison, customer A: $${nf(E.cA.net,2)}M on $${nf(E.cA.sales,1)}M of sales.`;
+});
+wire(["rDelay","rDev","rCost","rPrice","rVol"],()=>{
+  const o={delay:+$("rDelay").value,devOver:+$("rDev").value,costOver:+$("rCost").value,price:+$("rPrice").value,vol:+$("rVol").value};
+  $("rDelayO").textContent=o.delay; $("rDevO").textContent="+"+o.devOver+"%"; $("rCostO").textContent="+"+o.costOver+"%";
+  $("rPriceO").textContent=sgn(o.price,0)+"%"; $("rVolO").textContent=sgn(o.vol,0)+"%";
+  const r=project(o), b=E.prj.base;
+  $("rRes").innerHTML=`NPV: $${nf(b.npv,2)}M → <b>$${nf(r.npv,2)}M</b> (${sgn(r.npv-b.npv,2)})<br>`+
+    `IRR: ${nf(b.irr,0)}% → <b>${nf(r.irr,0)}%</b> (cost of capital ${E.wacc}%)<br>`+
+    `Payback: ${nf(b.payback,1)} → <b>${r.payback==null?"not within five years":nf(r.payback,1)+" years"}</b>`+
+    (r.npv<0?"<br><b>The project no longer earns its cost of capital.</b>":"");
+});
+wire(["gVol","gPrice","gFix"],()=>{
+  const v=+$("gVol").value/100, p=+$("gPrice").value/100, f=+$("gFix").value/100;
+  $("gVolO").textContent=sgn(v*100,0)+"%"; $("gPriceO").textContent=sgn(p*100,1)+"%"; $("gFixO").textContent=sgn(f*100,0)+"%";
+  const sales=E.sales*(1+v)*(1+p), cm=E.sales*(1+v)*(E.cmPct/100+p), fixed=E.fixed*(1+f), ebit=cm-fixed;
+  const ce=E.fixedAssets+E.wc*sales/E.sales, eva=ebit*(1-E.taxRate/100)-ce*E.wacc/100, be=fixed/(cm/sales);
+  $("gRes").innerHTML=`Sales: $${nf(E.sales,1)}M → <b>$${nf(sales,1)}M</b><br>`+
+    `EBIT: $${nf(E.ebit,1)}M → <b>$${nf(ebit,1)}M</b>; margin ${nf(E.ebitMargin,1)}% → <b>${nf(ebit/sales*100,1)}%</b><br>`+
+    `Break-even sales: $${nf(E.breakeven,1)}M → <b>$${nf(be,1)}M</b><br>`+
+    `ROCE: ${nf(E.roce,1)}% → <b>${nf(ebit/ce*100,1)}%</b>; EVA: $${nf(E.eva,1)}M → <b>$${nf(eva,1)}M</b>`+
+    (ebit<0?"<br><b>The plant makes a loss.</b>":eva<0?"<br><b>Profitable, but below the cost of capital.</b>":"");
+});
+
+/* ===================== KPI catalogue ===================== */
+const C=D.cat, Q=D.q, FY=D.fy, B=D.bs, W=D.wc;
+const pc=(x,d)=>nf(x,d==null?1:d)+"%", usd=(x,d)=>"$"+nf(x,d==null?1:d)+"M", tm=(x,d)=>nf(x,d==null?1:d)+"×";
+const ALL=["ops","sales","rd","mgr"];
+const KPIS=[
+ // ---- Growth
+ {n:"Sales growth",c:"Growth",f:"(Sales − prior-period sales) ÷ prior-period sales",v:pc(Q.growth)+" (Q3 2026)",s:"rep",t:"How fast the top line moves. Growth funds everything else, but its quality depends on the source and on the margin it carries.",r:["sales","mgr"]},
+ {n:"Organic growth",c:"Growth",f:"Sales growth excluding acquisitions, divestitures and currency translation",v:pc(D.segA.organic)+" (Segment A, Q3 2026)",s:"rep",t:"Growth earned by existing businesses through volume, price and mix. The cleanest sign of competitive strength.",r:["sales","rd","ops","mgr"]},
+ {n:"Compound annual growth rate (CAGR)",c:"Growth",f:"(End value ÷ start value)^(1 ÷ years) − 1",v:pc(C.cagr)+" (sales 2024 to 2026 guidance midpoint)",s:"own",t:"Average yearly growth over several years, smoothing single good or bad years. Includes acquisitions here.",r:["mgr"]},
+ {n:"Order intake",c:"Growth",f:"Value of customer orders received in the period",v:usd(E.orders),s:"ill",t:"The earliest signal of future sales. Falling intake shows up in sales one to several quarters later.",r:["sales","mgr"]},
+ {n:"Book-to-bill ratio",c:"Growth",f:"Order intake ÷ sales",v:nf(E.btb,2),s:"ill",t:"Above 1 the order book grows; below 1 it shrinks and sales will follow. Plants should plan capacity on it.",r:["sales","ops","mgr"]},
+ {n:"Backlog coverage",c:"Growth",f:"Order backlog ÷ average monthly sales",v:nf(E.backlogMonths,1)+" months",s:"ill",t:"How many months of work are secured. Low coverage means little visibility and higher forecast risk.",r:["sales","ops"]},
+ // ---- Profitability
+ {n:"Gross margin",c:"Profitability",f:"(Sales − cost of sales) ÷ sales",v:pc(Q.gm)+" (Q3 2026)",s:"own",t:"Shows how well products are made and priced. Pays for selling, development and administration; a falling gross margin cannot be repaired further down.",r:["ops","sales","rd","mgr"]},
+ {n:"SG&A ratio",c:"Profitability",f:"Selling, general and administrative expenses ÷ sales",v:pc(Q.sgaPct)+" (Q3 2026)",s:"own",t:"Cost of the organisation around the product. Should fall as sales grow (operating leverage).",r:["mgr","sales","rd"]},
+ {n:"Operating margin (EBIT margin)",c:"Profitability",f:"Operating income ÷ sales",v:pc(Q.opMargin)+" (Q3 2026)",s:"rep",t:"Profit from running the business per dollar of sales, after depreciation and amortisation.",r:["mgr"]},
+ {n:"EBITDA margin (adjusted)",c:"Profitability",f:"Adjusted EBITDA ÷ sales",v:pc(Q.adjEbitdaMargin)+" (Q3 2026)",s:"rep",t:"Operating earning power before depreciation, amortisation and one-off items. The example group's headline profitability measure and part of its guidance.",r:ALL},
+ {n:"Adjusted segment EBITDA margin",c:"Profitability",f:"Adjusted segment EBITDA ÷ segment sales",v:pc(D.segA.margin)+" Segment A, "+pc(D.segB.margin)+" Segment B (Q3 2026)",s:"rep",t:"The measure the example group uses to allocate resources between segments. Requests for people and capital are judged by their effect on it.",r:ALL},
+ {n:"Net margin (return on sales)",c:"Profitability",f:"Net income ÷ sales",v:pc(C.netMargin)+" (Q3 2026)",s:"own",t:"What is left for shareholders after all costs, interest and tax. Distorted by one-off items such as the 2025 loss on the sale of a business.",r:["mgr"]},
+ {n:"Effective tax rate",c:"Profitability",f:"Income tax expense ÷ income before tax",v:pc(C.taxRate)+" (Q3 2026)",s:"own",t:"Share of pre-tax profit paid in tax. Decided by where profits arise; outside the influence of operating units.",r:[]},
+ // ---- Cost structure
+ {n:"Contribution margin",c:"Cost structure",f:"(Sales − variable costs) ÷ sales",v:pc(E.cmPct),s:"ill",t:"What one extra dollar of sales adds to profit while capacity exists. The basis for pricing, make-or-buy and volume decisions.",r:["sales","mgr","ops"]},
+ {n:"Break-even sales",c:"Cost structure",f:"Fixed costs ÷ contribution margin",v:usd(E.breakeven),s:"ill",t:"Sales level at which profit is zero. Every addition to fixed cost raises it and makes the unit more fragile in a downturn.",r:["mgr"]},
+ {n:"Margin of safety",c:"Cost structure",f:"(Sales − break-even sales) ÷ sales",v:pc(E.safety,0),s:"ill",t:"How far sales can fall before a loss occurs.",r:["mgr"]},
+ {n:"Operating leverage",c:"Cost structure",f:"Contribution ÷ EBIT",v:tm(E.dol),s:"ill",t:"Multiplier between a volume change and the resulting profit change. High leverage means strong gains in upturns and sharp drops in downturns.",r:["mgr"]},
+ {n:"Personnel cost ratio",c:"Cost structure",f:"Personnel cost ÷ sales",v:pc(E.persPct,0),s:"ill",t:"Weight of the largest cost block. Rising ratio at flat sales means productivity is falling.",r:["mgr","ops"]},
+ {n:"Sales per employee",c:"Cost structure",f:"Sales ÷ number of employees",v:"$"+nf(E.salesPerEmp,0)+"k",s:"ill",t:"Rough productivity measure. Meaningful as a trend within one business, misleading between different business models.",r:["mgr","ops"]},
+ {n:"Budget variance",c:"Cost structure",f:"(Actual − budget) ÷ budget",v:sgn(E.varSalesPct)+"% sales, "+sgn(E.varEbitPct)+"% EBIT",s:"ill",t:"Deviation from plan. Must be read against a flexible budget: more sales should bring more profit, so 'on budget' profit with higher sales hides a cost overrun.",r:["mgr"]},
+ // ---- Cash & working capital
+ {n:"Operating cash flow",c:"Cash and working capital",f:"Net income + non-cash charges − increase in working capital",v:usd(D.ytd.cfo)+" (nine months 2026)",s:"rep",t:"Cash produced by day-to-day business. The source of all investment, debt repayment and dividends.",r:ALL},
+ {n:"Free cash flow",c:"Cash and working capital",f:"Operating cash flow − capital expenditure",v:usd(D.ytd.fcf)+" (nine months 2026)",s:"rep",t:"Cash available for acquisitions, debt repayment and shareholders. A company can report profit and still run short of cash if this is weak.",r:ALL},
+ {n:"Free cash flow margin",c:"Cash and working capital",f:"Free cash flow ÷ sales",v:pc(C.fcfMargin)+" (nine months 2026)",s:"own",t:"Cents of free cash per dollar of sales.",r:["mgr"]},
+ {n:"Cash conversion",c:"Cash and working capital",f:"Free cash flow ÷ adjusted net income",v:pc(D.ytd.fcfConv,0)+" (nine months 2026); "+pc(C.cashConvFy,0)+" (2025)",s:"own",t:"How much of reported earnings became cash. Persistently low values point to growing stock or receivables, or heavy investment.",r:["mgr","ops","sales"]},
+ {n:"Capex ratio",c:"Cash and working capital",f:"Capital expenditure ÷ sales",v:pc(C.capexPct)+" (nine months 2026)",s:"own",t:"Investment intensity. Low for the example group: its businesses need little physical capital.",r:["ops","rd","mgr"]},
+ {n:"Days sales outstanding (DSO)",c:"Cash and working capital",f:"Receivables ÷ sales × days in period",v:nf(W.dso,0)+" days (Q3 2026)",s:"own",t:"Average time customers take to pay. Each day is worth about "+usd(W.dayAr)+" of cash at group level.",r:["sales","mgr"]},
+ {n:"Days inventory outstanding (DIO)",c:"Cash and working capital",f:"Inventories ÷ cost of sales × days in period",v:nf(W.dio,0)+" days (Q3 2026)",s:"own",t:"Average time goods sit in stock. Each day is worth about "+usd(W.dayInv)+" of cash at group level. Stock also carries obsolescence risk.",r:["ops","rd","sales","mgr"]},
+ {n:"Days payables outstanding (DPO)",c:"Cash and working capital",f:"Payables ÷ cost of sales × days in period",v:nf(W.dpo,0)+" days (Q3 2026)",s:"own",t:"Average time taken to pay suppliers. Supplier credit finances part of the stock, but stretching it too far strains the supply base.",r:["ops"]},
+ {n:"Cash conversion cycle",c:"Cash and working capital",f:"DSO + DIO − DPO",v:nf(W.ccc,0)+" days (Q3 2026)",s:"own",t:"Days between paying suppliers and collecting from customers. Shorter means growth needs less cash.",r:["ops","sales","mgr"]},
+ {n:"Inventory turnover",c:"Cash and working capital",f:"Annualised cost of sales ÷ inventories",v:tm(C.invTurns)+" a year (Q3 2026)",s:"own",t:"How often stock is replaced in a year; the same information as DIO.",r:["ops"]},
+ {n:"Working capital ratio",c:"Cash and working capital",f:"(Receivables + inventories − payables) ÷ annualised sales",v:pc(C.wcPct)+" (Q3 2026)",s:"own",t:"Cash needed in operations per dollar of sales. Tells you how much cash a dollar of growth absorbs.",r:["ops","sales","mgr"]},
+ // ---- Financing & liquidity
+ {n:"Net debt",c:"Financing and liquidity",f:"Total debt − cash",v:usd(C.netDebt)+" (30 Sep 2026)",s:"own",t:"What the company owes lenders after using its cash.",r:[]},
+ {n:"Net leverage",c:"Financing and liquidity",f:"Net debt ÷ adjusted EBITDA of the last twelve months",v:tm(Q.netLeverage)+" (30 Sep 2026)",s:"rep",t:"Years of operating earnings needed to repay net debt. Low leverage gives resilience and room for investment and acquisitions.",r:["mgr"]},
+ {n:"Interest coverage",c:"Financing and liquidity",f:"Adjusted EBITDA ÷ interest expense (or operating income ÷ interest expense)",v:tm(C.intCov)+" on EBITDA, "+tm(C.ebitCov)+" on operating income (Q3 2026)",s:"own",t:"How comfortably earnings cover interest. Lenders usually set minimum levels.",r:[]},
+ {n:"Equity ratio",c:"Financing and liquidity",f:"Shareholders' equity ÷ total assets",v:pc(C.equityRatio)+" (30 Sep 2026)",s:"own",t:"Share of assets financed by owners. A high ratio means a solid balance sheet.",r:[]},
+ {n:"Gearing",c:"Financing and liquidity",f:"Net debt ÷ shareholders' equity",v:pc(C.gearing)+" (30 Sep 2026)",s:"own",t:"Debt relative to owners' capital; another view of financial risk.",r:[]},
+ {n:"Current ratio",c:"Financing and liquidity",f:"Current assets ÷ current liabilities",v:tm(E.curRatio),s:"ill",t:"Can short-term obligations be met from short-term assets? Below 1 signals a liquidity risk; a very high value can mean idle stock or receivables.",r:["mgr"]},
+ {n:"Quick ratio",c:"Financing and liquidity",f:"(Cash + receivables) ÷ current liabilities",v:tm(E.quick),s:"ill",t:"As the current ratio, but without inventory, which cannot be turned into cash quickly.",r:["mgr"]},
+ // ---- Returns
+ {n:"Return on invested capital (ROIC)",c:"Returns",f:"Operating profit (after tax) ÷ (debt + equity − cash)",v:pc(D.roic.pre)+" before tax (2025, simplified)",s:"own",t:"What the company earns on all capital provided by lenders and owners. Value is created only above the cost of capital. Low here because of acquisition goodwill.",r:["mgr"]},
+ {n:"Return on capital employed (ROCE)",c:"Returns",f:"EBIT ÷ (fixed assets + working capital)",v:pc(E.roce),s:"ill",t:"The plant-level version. High because a plant carries no goodwill. Improves through margin or through less capital.",r:["ops","mgr"]},
+ {n:"Return on equity (ROE)",c:"Returns",f:"Net income ÷ shareholders' equity",v:pc(C.roe)+" reported, "+pc(C.roeAdj)+" on adjusted net income (2025)",s:"own",t:"Return on the owners' capital. The reported 2025 value is depressed by the one-time loss on the sale of a business.",r:[]},
+ {n:"Return on assets (ROA)",c:"Returns",f:"Net income ÷ total assets",v:pc(C.roa)+" (2025)",s:"own",t:"Profit per dollar of everything the company owns, regardless of financing.",r:[]},
+ {n:"Asset turnover",c:"Returns",f:"Sales ÷ total assets",v:tm(C.assetTurn,2)+" (2025)",s:"own",t:"Sales generated per dollar of assets. Low for an acquirer with large goodwill.",r:["ops","mgr"]},
+ {n:"DuPont return tree",c:"Returns",f:"Return = margin × capital turnover (× financial leverage for ROE)",v:pc(E.ebitMargin)+" × "+tm(E.capTurn,2)+" = "+pc(E.roce)+" (example plant)",s:"ill",t:"Splits a return into its levers so you can see whether to work on margin or on capital.",r:["mgr","ops"]},
+ {n:"Cost of capital (WACC)",c:"Returns",f:"Weighted average of the returns required by lenders and shareholders",v:pc(E.wacc,0)+" (assumption used in this tutorial)",s:"ill",t:"The hurdle every investment must clear. Companies rarely publish it; 9% is an assumption for the exercises.",r:["rd","mgr"]},
+ {n:"Economic value added (EVA)",c:"Returns",f:"Operating profit after tax − capital employed × cost of capital",v:usd(E.eva),s:"ill",t:"Profit left after charging for the capital used. A unit can be profitable and still destroy value if this is negative.",r:["mgr"]},
+ // ---- Capital market
+ {n:"Earnings per share (EPS)",c:"Capital market",f:"Net income ÷ diluted number of shares",v:"$"+nf(Q.eps,2)+" (Q3 2026)",s:"rep",t:"Profit attributable to one share; the basis of most share valuations.",r:[]},
+ {n:"Adjusted EPS",c:"Capital market",f:"Adjusted net income ÷ diluted number of shares",v:"$"+nf(Q.adjEps,2)+" (Q3 2026)",s:"rep",t:"EPS without one-offs and acquisition-related amortisation. One of the example group's three guidance figures.",r:["mgr"]},
+ {n:"Price/earnings ratio (P/E)",c:"Capital market",f:"Share price ÷ earnings per share",v:tm(C.pe)+" (price after Q3 release ÷ 2026 adjusted EPS guidance midpoint)",s:"own",t:"What investors pay per dollar of annual earnings. A high multiple expresses expectations of growth, which the business must then deliver.",r:[]},
+ {n:"Market capitalisation",c:"Capital market",f:"Share price × number of shares",v:"about $"+nf(C.mcap/1000,1)+" billion (after the Q3 release)",s:"own",t:"Market value of the equity. Changes daily.",r:[]},
+ {n:"Enterprise value (EV)",c:"Capital market",f:"Market capitalisation + net debt",v:"about $"+nf(C.ev/1000,1)+" billion (after the Q3 release)",s:"own",t:"Value of the whole business to owners and lenders together.",r:[]},
+ {n:"EV/EBITDA",c:"Capital market",f:"Enterprise value ÷ adjusted EBITDA",v:tm(C.evEbitda)+" (on 2026 guidance midpoint)",s:"own",t:"Valuation multiple independent of financing. Also the yardstick for acquisition prices.",r:[]},
+ {n:"Dividend per share",c:"Capital market",f:"Cash paid to shareholders per share",v:"$"+nf(C.divAnnual,2)+" a year ($"+nf(Q.divPerShare,2)+" per quarter)",s:"rep",t:"The direct cash return to owners.",r:[]},
+ {n:"Dividend yield",c:"Capital market",f:"Annual dividend per share ÷ share price",v:pc(C.divYield,2),s:"own",t:"Low here: most cash is reinvested in growth and acquisitions.",r:[]},
+ {n:"Payout ratio",c:"Capital market",f:"Dividends ÷ (adjusted) net income",v:pc(C.payout,0)+" of adjusted net income (2025)",s:"own",t:"Share of earnings distributed. A low ratio leaves room for investment and makes the dividend safe.",r:[]},
+ // ---- Investment appraisal
+ {n:"Payback period",c:"Investment appraisal",f:"Time until cumulative cash flow turns positive",v:nf(E.prj.payback,1)+" years (example project)",s:"ill",t:"How long the money is at risk. Simple, but ignores everything after payback and the time value of money.",r:["rd","ops","mgr"]},
+ {n:"Net present value (NPV)",c:"Investment appraisal",f:"Sum of all cash flows discounted at the cost of capital",v:usd(E.prj.npv,2)+" (example project)",s:"ill",t:"Value created above the required return. The most reliable single criterion: positive means do it, if the assumptions hold.",r:["rd","ops","mgr"]},
+ {n:"Internal rate of return (IRR)",c:"Investment appraisal",f:"Discount rate at which NPV equals zero",v:pc(E.prj.irr,0)+" (example project)",s:"ill",t:"The project's own yield, compared with the cost of capital. Easy to communicate; can mislead when comparing projects of different size.",r:["rd","ops","mgr"]},
+ // ---- Operations
+ {n:"Overall equipment effectiveness (OEE)",c:"Operations",f:"Availability × performance × quality",v:pc(E.oee),s:"ill",t:"Share of planned machine time that yields good product. Higher OEE means more output from the same fixed cost and can avoid capital spending.",r:["ops"]},
+ {n:"Scrap and rework rate",c:"Operations",f:"Cost of scrap and rework ÷ sales (or ÷ cost of sales)",v:pc(E.scrapPct)+" of sales",s:"ill",t:"Lost material and labour. Every dollar saved goes to profit in full.",r:["ops","rd"]},
+ {n:"Cost of poor quality",c:"Operations",f:"(Scrap + rework + complaints + warranty + inspection of defects) ÷ sales",v:pc(E.copqPct)+" of sales",s:"ill",t:"The full bill for defects, including what customers find. Complaints also put repeat orders at risk.",r:["ops","rd"]},
+ {n:"On-time delivery",c:"Operations",f:"Order lines delivered on the confirmed date ÷ all order lines",v:pc(E.otd,0),s:"ill",t:"Reliability towards customers. Late delivery delays sales and cash, adds freight cost and weakens pricing power.",r:["ops","sales"]},
+ {n:"Capacity utilisation",c:"Operations",f:"Actual output ÷ practical capacity",v:pc(E.util,0),s:"ill",t:"Determines how fixed overhead is spread per unit. Low utilisation raises unit cost; very high utilisation hurts delivery performance.",r:["ops","mgr"]},
+ {n:"Purchase price variance",c:"Operations",f:"Actual purchase cost − standard cost of the same quantity",v:"+"+usd(E.ppv)+" (unfavourable)",s:"ill",t:"Whether material cost more or less than planned. Must be judged together with inventory: savings bought with bulk orders tie up cash.",r:["ops"]},
+ {n:"Excess and obsolete inventory",c:"Operations",f:"Stock without foreseeable demand ÷ total inventory",v:pc(E.obsPct),s:"ill",t:"Stock likely to be written down. A write-down reduces profit by the full book value.",r:["ops","rd","sales"]},
+ // ---- Sales
+ {n:"Price realisation (discount rate)",c:"Sales",f:"(List value − invoiced value) ÷ list value",v:pc(E.discount)+" discount",s:"ill",t:"How much of the list price is actually achieved. The strongest profit lever: price changes fall almost fully to profit.",r:["sales"]},
+ {n:"Price, volume and mix effect",c:"Sales",f:"Sales change = volume effect + price effect + mix effect",v:"+"+nf(E.bVol,1)+" / +"+nf(E.bPrice,1)+" / +"+nf(E.bMix,1)+" $M",s:"ill",t:"Separates growth by source. Equal sales growth can carry very different profit depending on the split.",r:["sales","mgr"]},
+ {n:"Customer profitability",c:"Sales",f:"Gross profit − cost to serve − cost of capital tied up",v:pc(E.cA.netPct,0)+" vs "+pc(E.cB.netPct,0)+" of sales (customers A and B)",s:"ill",t:"What a customer really earns after discounts, service effort, payment terms and consignment stock. Ranking by sales alone misleads.",r:["sales","mgr"]},
+ {n:"Customer concentration",c:"Sales",f:"Sales to the largest five customers ÷ total sales",v:pc(E.top5,0),s:"ill",t:"Dependence on few accounts: a risk to sales and a weakness in price negotiations.",r:["sales","mgr"]},
+ {n:"Win rate",c:"Sales",f:"Value of quotes won ÷ value of quotes submitted",v:pc(E.win,0),s:"ill",t:"Effectiveness of quoting. Read together with margin: a very high win rate can mean prices are too low.",r:["sales"]},
+ {n:"Forecast accuracy",c:"Sales",f:"1 − |forecast − actual| ÷ actual",v:pc(E.fcAcc,0),s:"ill",t:"Quality of the demand signal given to the plant. Poor accuracy is paid for in safety stock or late deliveries.",r:["sales","ops"]},
+ // ---- Innovation
+ {n:"R&D intensity",c:"Innovation",f:"R&D expense ÷ sales",v:pc(E.rdPct),s:"ill",t:"How much is invested in future products. An input measure: it reduces today's margin and says nothing about results.",r:["rd","mgr"]},
+ {n:"Vitality index",c:"Innovation",f:"Sales from products launched in the last five years ÷ sales",v:pc(E.vitality,0),s:"ill",t:"Output of development: is the portfolio being renewed? New products usually carry higher prices and margins.",r:["rd","sales"]},
+ {n:"Time to market",c:"Innovation",f:"Months from project approval to first customer sale",v:nf(E.ttm,0)+" months",s:"ill",t:"Delay pushes back all income and shortens the selling period, which usually costs more value than a budget overrun.",r:["rd"]},
+ {n:"Target cost gap",c:"Innovation",f:"Estimated unit cost − (target price × (1 − target margin))",v:"$6 per unit in the exercise (about 10%)",s:"ill",t:"What design must still remove to reach the planned margin. After launch most of the cost is fixed by the drawing.",r:["rd","ops"]}
+];
+const SRC={rep:["rep","example group, reported"],own:["own","example group, own calculation"],ill:["ill","illustrative"]};
+const ROLE={ops:"Operations & supply chain",sales:"Sales & marketing",rd:"R&D & engineering",mgr:"Managers"};
+(function(){
+  const cats=[...new Set(KPIS.map(k=>k.c))];
+  $("catCat").innerHTML='<option value="">All topics ('+KPIS.length+')</option>'+cats.map(c=>`<option>${c}</option>`).join("");
+  ["catQ","catCat","catMine"].forEach(i=>$(i).addEventListener("input",renderCat));
+})();
+function renderCat(){
+  const q=$("catQ").value.trim().toLowerCase(), cat=$("catCat").value, mine=$("catMine").checked, role=document.body.dataset.active;
+  const rows=KPIS.filter(k=>(!cat||k.c===cat)&&(!mine||k.r.includes(role))&&(!q||(k.n+" "+k.f+" "+k.t+" "+k.c).toLowerCase().includes(q)));
+  $("catCount").textContent=rows.length+" of "+KPIS.length+" indicators shown. A coloured edge marks those your current role influences directly.";
+  $("catList").innerHTML=rows.map(k=>`<div class="kpi${k.r.includes(role)?" mine":""}">
+    <h4><span>${k.n}</span><span class="val">${k.v}</span></h4>
+    <div class="meta">${k.c} · <span class="tag ${SRC[k.s][0]}">${SRC[k.s][1]}</span></div>
+    <div class="formula">${k.f}</div>
+    <p>${k.t}</p>
+    <div class="meta">Influenced by: ${k.r.length?k.r.map(r=>ROLE[r]).join(", "):"group finance and capital-market decisions; no direct lever in operating roles"}</div>
+  </div>`).join("")||"<p>No indicator matches.</p>";
+}
+
+/* ===================== role, navigation, progress ===================== */
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}},
+             set(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}};
+const done=new Set(store.get("kpi.done",[]));
+const mods=[...document.querySelectorAll("section.mod")];
+$("toc").innerHTML=mods.map(s=>`<a href="#${s.id}" data-for="${s.id}"${s.dataset.role?` data-role="${s.dataset.role}"`:""}>${s.dataset.title}</a>`).join("");
+function paint(){
+  const role=document.body.dataset.active;
+  const track=mods.filter(s=>s.querySelector(".markdone")&&(!s.dataset.role||s.dataset.role===role));
+  document.querySelectorAll("#toc a").forEach(a=>a.classList.toggle("done",done.has(a.dataset.for)));
+  document.querySelectorAll(".markdone").forEach(b=>{const on=done.has(b.dataset.done);b.classList.toggle("is",on);b.textContent=on?"Completed ✓ (click to undo)":(b.dataset.done==="m0"?"Mark as read":"Mark module complete");});
+  $("pbar").style.width=(track.filter(s=>done.has(s.id)).length/track.length*100)+"%";
+}
+function setRole(r){
+  if(!ROLE[r])r="mgr";
+  document.body.dataset.active=r;
+  document.querySelectorAll(".roles button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.pick===r));
+  $("roleName").textContent=ROLE[r]; $("roleLink").href="#t-"+r;
+  store.set("kpi.role",r); paint(); renderCat();
+}
+document.querySelectorAll(".roles button").forEach(b=>b.addEventListener("click",()=>setRole(b.dataset.pick)));
+document.querySelectorAll(".markdone").forEach(b=>b.addEventListener("click",()=>{
+  const k=b.dataset.done; done.has(k)?done.delete(k):done.add(k); store.set("kpi.done",[...done]); paint();
+}));
+setRole(store.get("kpi.role","mgr"));
+const tocd=$("tocd");
+tocd.open=window.matchMedia("(min-width:821px)").matches;
+$("toc").addEventListener("click",()=>{if(!window.matchMedia("(min-width:821px)").matches)tocd.open=false;});
+</script>
+</body>
+</html>
