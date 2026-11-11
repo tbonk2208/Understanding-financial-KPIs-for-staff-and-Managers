@@ -113,6 +113,7 @@ table.matrix td:first-child,table.matrix th:first-child{text-align:left;min-widt
 .kpi .lbl{font-weight:700}
 nav.toc a[data-role]{display:none}
 body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a[data-role=sales],body[data-active=rd] nav.toc a[data-role=rd],body[data-active=mgr] nav.toc a[data-role=mgr]{display:flex}
+.rolehow{font-size:.92rem;margin-top:.35rem}.rolehow ul{margin:.2rem 0 0}.rolehow li.me{background:var(--accent-soft);border-radius:6px;padding:.1rem .35rem;margin-left:-.35rem}
 </style>
 </head>
 <body data-active="mgr">
@@ -1034,7 +1035,7 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
 <section class="mod" id="catalogue" data-title="15 · KPI catalogue">
   <div class="kicker">Module 15 · Reference</div>
   <h2>KPI catalogue: every indicator, how to read it, what moves it</h2>
-  <p class="lead">Every indicator with its formula, a worked value, what it means for the business, how to interpret it and which decisions move it. Filter by topic, or show only those your role influences.</p>
+  <p class="lead">Every indicator with its formula, a worked value, what it means for the business, how to interpret it, which decisions move it and how each role influences it. Filter by topic, or show only those your role influences.</p>
   <p style="font-size:.88rem">Value labels: <span class="tag rep">example group, reported</span> as in the group's reports · <span class="tag own">example group, own calculation</span> computed here from those figures · <span class="tag ill">illustrative</span> invented example plant (Module 11).</p>
   <div class="catbar">
     <input type="search" id="catQ" placeholder="Search, e.g. margin, inventory, EPS" aria-label="Search KPIs">
@@ -1596,8 +1597,8 @@ const ROLE={ops:"Operations & supply chain",sales:"Sales & marketing",rd:"R&D & 
 })();
 function renderCat(){
   const q=$("catQ").value.trim().toLowerCase(), cat=$("catCat").value, mine=$("catMine").checked, role=document.body.dataset.active;
-  const rows=KPIS.filter(k=>(!cat||k.c===cat)&&(!mine||k.r.includes(role))&&(!q||(k.n+" "+k.f+" "+k.t+" "+k.c+" "+(INTERP[k.n]||[]).join(" ")).toLowerCase().includes(q)));
-  $("catCount").textContent=rows.length+" of "+KPIS.length+" indicators shown. A coloured edge marks those your current role influences directly.";
+  const rows=KPIS.filter(k=>(!cat||k.c===cat)&&(!mine||k.r.includes(role))&&(!q||(k.n+" "+k.f+" "+k.t+" "+k.c+" "+(INTERP[k.n]||[]).join(" ")+" "+Object.values(k.h).join(" ")).toLowerCase().includes(q)));
+  $("catCount").textContent=rows.length+" of "+KPIS.length+" indicators shown. A coloured edge marks those your current role influences directly; that role's line is highlighted.";
   $("catList").innerHTML=rows.map(k=>`<div class="kpi${k.r.includes(role)?" mine":""}">
     <h4><span>${k.n}</span><span class="val">${k.v}</span></h4>
     <div class="meta">${k.c} · <span class="tag ${SRC[k.s][0]}">${SRC[k.s][1]}</span></div>
@@ -1605,7 +1606,7 @@ function renderCat(){
     <p><span class="lbl">What it means.</span> ${k.t}</p>
     <p><span class="lbl">How to read it.</span> ${(INTERP[k.n]||["",""])[0]}</p>
     <p><span class="lbl">Decisions that move it.</span> ${(INTERP[k.n]||["",""])[1]}</p>
-    <div class="meta">Influenced by: ${k.r.length?k.r.map(r=>ROLE[r]).join(", "):"group finance and capital-market decisions; no direct lever in operating roles"}</div>
+    <div class="rolehow"><span class="lbl">How each role influences it.</span>${k.r.length?"<ul>"+k.r.map(r=>`<li class="${r===role?"me":""}"><b>${ROLE[r]}:</b> ${k.h[r]}</li>`).join("")+"</ul>":" "+(k.h._||"No direct lever in operating roles.")}</div>
   </div>`).join("")||"<p>No indicator matches.</p>";
 }
 
@@ -1687,6 +1688,87 @@ const INTERP={
 "Time to market":["Compare with plan and with competitors. Delay usually costs more value than a budget overrun because the selling window does not move.","Number of parallel projects, specification stability, testing and approval capacity, supplier lead times."],
 "Target cost gap":["Should close steadily through the project. A gap still open at design freeze becomes a permanent margin shortfall.","Material and tolerance choices, part count, process selection, reuse of common parts."]
 };
+
+/* ===================== catalogue: how each role influences each KPI ===================== */
+// Only roles with a direct lever are listed. "_" explains KPIs that no operating role moves directly.
+const ROLEHOW={
+"Sales growth":{sales:"Wins orders, sets prices and discounts, and decides which customers and markets get attention.",ops:"Turns orders into invoiced sales by delivering on time; capacity and lead time limit how much can be sold.",rd:"Provides new and improved products that open new applications and justify higher prices.",mgr:"Allocates people and budget to growth areas and sets pricing authority and targets."},
+"Organic growth":{sales:"Raises price realisation, gains share at existing customers and wins new ones.",ops:"Keeps delivery reliability and lead times good enough to win repeat business.",rd:"Renews the portfolio so growth does not depend on ageing products.",mgr:"Decides where to invest for growth and protects that spending when the year is tight."},
+"Compound annual growth rate (CAGR)":{sales:"Builds lasting customer relationships and price discipline that hold over several years.",rd:"Keeps a steady flow of launches, so growth continues after current products mature.",mgr:"Sets the multi-year direction: markets, capacity, and the balance between own growth and acquisitions."},
+"Order intake":{sales:"Generates enquiries, prepares quotations, negotiates price and terms.",ops:"Supplies the lead times and delivery promises that quotations depend on.",rd:"Provides technical solutions and application support that decide whether a quotation can be made at all.",mgr:"Sets approval limits for price and terms and decides which opportunities to pursue."},
+"Book-to-bill ratio":{sales:"Drives the upper half of the ratio through order intake.",ops:"Drives the lower half through deliveries; late delivery raises the ratio for the wrong reason.",mgr:"Uses it to decide early on capacity, hiring and stock."},
+"Backlog coverage":{sales:"Fills the order book and agrees delivery dates and call-off schedules.",ops:"Works the backlog down through output; capacity and lead times set how fast.",mgr:"Balances capacity against the order book so that the backlog is neither too thin nor a delivery problem."},
+"Gross margin":{sales:"Sets net prices and discounts and steers the product and customer mix.",ops:"Controls scrap, yield, labour hours, purchase prices, freight and plant utilisation.",rd:"Fixes most of the product cost through material choice, tolerances and number of process steps.",mgr:"Decides on make-or-buy, site footprint and price increases, and holds the functions to cost targets."},
+"SG&A ratio":{sales:"Spends the selling budget: field force, travel, trade fairs, commissions.",rd:"Spends the development budget, which sits in this line when it is not shown separately.",mgr:"Decides headcount and structure of the support functions and whether cost grows more slowly than sales."},
+"Operating margin (EBIT margin)":{sales:"Through price, mix and selling cost.",ops:"Through cost of sales and, via equipment decisions, through depreciation.",rd:"Through product cost, development spending and the tooling that is depreciated later.",mgr:"Through the overall balance of price, cost and investment in the unit."},
+"EBITDA margin (adjusted)":{sales:"Price realisation and mix have the largest effect per decision.",ops:"Every dollar of scrap, overtime, freight or purchase price saved arrives in full.",rd:"Development spending lowers it today; product cost and differentiation raise it later.",mgr:"Decides how much growth spending the margin carries and when it must pay back."},
+"Adjusted segment EBITDA margin":{sales:"Price and mix within the segment's product lines and channels.",ops:"Plant cost and efficiency of the segment's sites.",rd:"Margin level of the segment's new products compared with its existing ones.",mgr:"Frames requests for people and capital by their effect on this measure, because resources are allocated on it."},
+"Net margin (return on sales)":{_:"Operating roles reach it only through operating profit. Interest, tax and one-off items, which often dominate it, are decided by group finance and the board."},
+"Effective tax rate":{_:"No operating lever. It follows from where profits arise and from the legal and tax structure, which group finance manages."},
+"Contribution margin":{sales:"Net price and the mix of products and customers sold.",ops:"Variable cost per unit: material use, direct labour efficiency, energy, freight.",rd:"Variable cost designed into the product, and features that support a higher price.",mgr:"Make-or-buy and pricing policy; uses it to decide which business to accept."},
+"Break-even sales":{sales:"Higher net prices raise the contribution per unit and lower the break-even point.",ops:"Fixed manufacturing cost (shifts, equipment, floor space) and flexible versus permanent capacity.",mgr:"Every decision on permanent headcount, sites, leases and systems moves it."},
+"Margin of safety":{sales:"Secures volume and price, which widen the distance to break-even.",ops:"Keeps fixed manufacturing cost flexible, for example through shift models and temporary labour.",mgr:"Decides how much fixed cost the unit commits to relative to dependable sales."},
+"Operating leverage":{ops:"Automation and own production raise it; outsourcing and flexible labour lower it.",mgr:"Chooses the cost structure: fixed salaries versus variable pay, own capacity versus bought-in capacity."},
+"Personnel cost ratio":{ops:"Staffing levels, overtime, productivity and absenteeism in the plant.",mgr:"Headcount planning, pay structure and whether wage increases are recovered through price or productivity."},
+"Sales per employee":{sales:"Sales generated per person in the sales organisation.",ops:"Output per person through productivity, automation and outsourcing.",mgr:"Overall headcount relative to the size of the business."},
+"Budget variance":{sales:"Owns the sales, price and selling-cost lines of the plan.",ops:"Owns cost of sales, efficiency and plant spending against plan.",rd:"Owns project budgets and their timing.",mgr:"Owns the total; explains variances by cause and decides corrective action."},
+"Operating cash flow":{sales:"Payment terms and collection decide when sales become cash.",ops:"Stock levels and supplier payment terms decide how much cash operations hold back.",mgr:"Profit plus working-capital discipline across the unit."},
+"Free cash flow":{sales:"Receivables: terms granted and overdue accounts followed up.",ops:"Inventory, supplier terms and the timing and size of equipment purchases.",rd:"Tooling and equipment for new products, and launch stock.",mgr:"Prioritises capital requests and sets working-capital targets."},
+"Free cash flow margin":{sales:"Price (profit) and payment terms (cash timing).",ops:"Cost, stock levels and capital spending.",mgr:"The balance of margin, working capital and investment in the unit."},
+"Cash conversion":{sales:"Collects what has been invoiced; long terms and overdue accounts lower it.",ops:"Stock built faster than sales lowers it; stock reduction raises it.",mgr:"Checks that reported profit is arriving as cash and acts when it is not."},
+"Capex ratio":{ops:"Requests equipment for capacity, replacement and automation.",rd:"Specifies tooling and test equipment for new products.",mgr:"Approves and ranks capital requests against the available budget."},
+"Days sales outstanding (DSO)":{sales:"Agrees payment terms, ensures correct invoices and follows up overdue customers.",mgr:"Sets the policy for terms and credit limits and escalates persistent late payers."},
+"Days inventory outstanding (DIO)":{ops:"Batch sizes, safety stock, lead times, purchasing quantities and removal of dead stock.",sales:"Forecast quality, promised service levels and consignment agreements.",rd:"Number of part variants and the timing of engineering changes.",mgr:"Sets stock targets and resolves the conflict between service, utilisation and cash."},
+"Days payables outstanding (DPO)":{ops:"Purchasing negotiates supplier payment terms and decides on early-payment discounts.",mgr:"Sets payment policy and makes sure suppliers are paid as agreed."},
+"Cash conversion cycle":{sales:"The receivables part: terms and collection.",ops:"The inventory and payables parts.",mgr:"Owns the total and the trade-offs between its three parts."},
+"Inventory turnover":{ops:"Planning, batch sizes, lead times and stock clean-up.",sales:"Forecasts and service promises that determine the stock needed.",rd:"Use of common parts instead of new variants."},
+"Working capital ratio":{sales:"Receivables relative to sales.",ops:"Inventory and payables relative to sales.",mgr:"Target setting and follow-up for the unit as a whole."},
+"Net debt":{_:"Decided by the board and group finance through acquisitions, dividends, buybacks and borrowing. Operating roles contribute only the free cash flow that can repay it."},
+"Net leverage":{mgr:"Unit leaders influence it through operating profit and cash generation; the debt itself is a group decision."},
+"Interest coverage":{_:"Debt level and interest rates are group finance matters. Operating roles affect it only through operating profit."},
+"Equity ratio":{_:"Results from retained profit, dividends, buybacks and acquisitions, all decided at group level."},
+"Gearing":{_:"A financing decision of the board and group finance."},
+"Current ratio":{sales:"Receivables are a large part of current assets.",ops:"Inventories and payables are on both sides of the ratio.",mgr:"Watches liquidity of the unit; note that more stock raises the ratio without improving real liquidity."},
+"Quick ratio":{sales:"Collection speed determines the receivables and cash in the numerator.",mgr:"Monitors short-term liquidity without relying on stock."},
+"Return on invested capital (ROIC)":{sales:"Profit through price and mix; capital through payment terms.",ops:"Profit through cost; capital through stock and equipment.",mgr:"Operating margin and capital discipline of the unit; the price paid for acquisitions, which weighs most, is a board decision."},
+"Return on capital employed (ROCE)":{sales:"Price and mix on the profit side; receivables and consignment stock on the capital side.",ops:"Cost and output on the profit side; inventory and machine utilisation on the capital side.",rd:"Product cost and price potential on the profit side; tooling and part variety on the capital side.",mgr:"Balances both sides and judges investments on value, not on their effect on the ratio."},
+"Return on equity (ROE)":{_:"Depends on net profit and on how much debt is used. Operating roles reach it only through operating profit."},
+"Return on assets (ROA)":{ops:"Gets more output from existing plant and holds less stock.",mgr:"Profit of the unit relative to all assets it uses."},
+"Asset turnover":{sales:"More sales through the existing organisation and assets; shorter payment terms.",ops:"Higher utilisation of machines and lower inventories.",mgr:"Avoids adding assets faster than sales grow."},
+"DuPont return tree":{sales:"Acts mainly on the margin branch (price, mix) and on receivables.",ops:"Acts on both branches: cost on the margin side, stock and equipment on the capital side.",mgr:"Uses the tree to decide whether the unit should work on margin or on capital."},
+"Cost of capital (WACC)":{_:"Set by capital markets and the financing mix. R&D and managers apply it as the hurdle rate in business cases but do not set it."},
+"Economic value added (EVA)":{sales:"Profit from price and mix, less the capital charge on receivables.",ops:"Profit from cost, less the capital charge on stock and equipment.",mgr:"Grows the unit only where the return exceeds the cost of capital."},
+"Earnings per share (EPS)":{_:"No single role manages it. Every role contributes through operating profit: about 3 cents a year per $1 million of sustained profit in the example group. Interest, tax and share count are decided centrally."},
+"Adjusted EPS":{_:"As for EPS: operating roles contribute through operating profit; what counts as an adjustment is decided by group finance."},
+"Price/earnings ratio (P/E)":{_:"Set by investors. The company influences it only indirectly through reliable growth and delivering on its guidance."},
+"Market capitalisation":{_:"Set by the share price. No operating lever beyond sustained results."},
+"Enterprise value (EV)":{_:"Market value plus net debt. No operating lever beyond sustained results and cash generation."},
+"EV/EBITDA":{_:"A market valuation. Relevant to operating roles mainly as the yardstick used when businesses are bought or sold."},
+"Dividend per share":{_:"Decided by the board, based on expected free cash flow."},
+"Dividend yield":{_:"Follows from the board's dividend decision and the share price."},
+"Payout ratio":{_:"Follows from the board's dividend decision relative to earnings."},
+"Payback period":{sales:"Supplies the price and volume assumptions and delivers them after launch.",ops:"Installs and ramps up on time and realises the planned savings or output.",rd:"Controls development time, product cost and the investment in tooling.",mgr:"Selects projects, sets the required payback and checks afterwards whether it was met."},
+"Net present value (NPV)":{sales:"Price and volume are the most sensitive inputs; realistic assumptions and their delivery matter most.",ops:"Unit cost in production, ramp-up speed and the capital actually needed.",rd:"Target cost, launch date and development spend.",mgr:"Approves only cases that stay positive under stress and reviews finished projects against their case."},
+"Internal rate of return (IRR)":{sales:"Early sales and achieved prices raise it strongly.",ops:"Fast ramp-up and investment kept within budget.",rd:"Short time to market and low up-front spend.",mgr:"Compares it with the hurdle rate, and ranks competing projects by NPV rather than IRR."},
+"Overall equipment effectiveness (OEE)":{ops:"Maintenance, changeover times, staffing, material availability and process stability.",rd:"Designs that run stably on existing processes and need few special set-ups.",mgr:"Funds maintenance and improvement work and resists postponing it."},
+"Scrap and rework rate":{ops:"Process control, tool condition, training and material quality.",rd:"Tolerances and designs that the process can hold reliably."},
+"Cost of poor quality":{ops:"Prevents and detects defects in production and at suppliers.",rd:"Robust design and validation before launch."},
+"On-time delivery":{ops:"Planning, capacity, supplier reliability and stock availability.",sales:"Realistic delivery promises and timely, accurate demand information."},
+"Capacity utilisation":{ops:"Shift models, product allocation between lines and plants, make-or-buy.",sales:"Volume and timing of orders; smoothing demand with customers.",mgr:"Decides on adding, closing or reallocating capacity."},
+"Purchase price variance":{ops:"Purchasing: supplier choice, negotiation, order quantities and timing.",rd:"Specifications and the number of approved alternative materials and suppliers."},
+"Excess and obsolete inventory":{ops:"Order quantities, stock reviews and timely disposal.",sales:"Forecasts, minimum-order agreements and end-of-life planning with customers.",rd:"Engineering changes and phase-out timing."},
+"Price realisation (discount rate)":{sales:"Grants discounts order by order and defends the price in negotiation.",mgr:"Sets discount authority, price lists and how sales staff are rewarded."},
+"Price, volume and mix effect":{sales:"Decides price, where volume is pursued and which products are pushed.",rd:"Shifts mix toward newer, higher-value products.",mgr:"Sets priorities between price, volume and mix in targets."},
+"Customer profitability":{sales:"Price, discounts, payment terms and consignment agreements per customer.",ops:"Cost to serve: small lots, special packaging, rush orders, complaint handling.",mgr:"Decides how accounts are prioritised and which terms may be offered."},
+"Customer concentration":{sales:"Develops additional accounts and markets.",mgr:"Decides how much dependence on single customers is acceptable."},
+"Win rate":{sales:"Chooses which enquiries to quote and at what price.",ops:"Lead times and delivery reliability offered in the quotation.",rd:"Technical quality of the offer and application support."},
+"Forecast accuracy":{sales:"Customer contact, honest pipeline assessment and regular updates.",ops:"Feeds back actual demand patterns and agrees planning rules with sales."},
+"R&D intensity":{rd:"Proposes and spends the development budget.",mgr:"Sets the budget and the number of projects it must cover."},
+"Vitality index":{rd:"Number, timing and market fit of launches.",sales:"Sells the new products actively instead of the familiar ones.",mgr:"Selects the projects and stops weak ones early."},
+"Time to market":{rd:"Project planning, specification freeze, testing and number of parallel projects.",ops:"Industrialisation: tooling, process qualification and supplier lead times.",sales:"Stable customer requirements and early customer approvals."},
+"Target cost gap":{rd:"Material, tolerances, part count and process choice.",ops:"Process cost estimates and supplier quotations.",sales:"The target price the cost is derived from."}
+};
+KPIS.forEach(k=>{k.h=ROLEHOW[k.n]||{}; k.r=ALL.filter(r=>k.h[r]);});
 
 /* ===================== decision lab ===================== */
 const LABK=[["S","Sales",1],["GM","Gross margin %",1],["EB","EBITDA (adjusted)",1],["EI","Operating profit (EBIT)",1],["EPS","Net income / EPS",1],["FCF","Free cash flow",1],["WC","Working capital tied up",-1],["ROC","Return on capital",1],["LEV","Net leverage",-1]];

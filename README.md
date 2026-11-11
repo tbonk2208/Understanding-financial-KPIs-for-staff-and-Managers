@@ -23,7 +23,7 @@ Open `index.html` in any browser (download the file, or clone the repository and
 | 12 | Role track, written separately for each of the four roles: line of sight to the group result, role KPIs, worked cases, calculator, exercises with solutions, self-test | Example plant |
 | 13 | Decision lab: pick one of 23 everyday decisions and see which indicators move, in which direction, why, and what the trade-off is | Qualitative |
 | 14 | Reading the signals: ten cases of several figures read together, with meaning, what to check next and the decisions behind them | Illustrative |
-| 15 | KPI catalogue: 75 indicators with formula, worked value, meaning, how to read it and which decisions move it; searchable, filterable by topic and by role | Both, labelled |
+| 15 | KPI catalogue: 75 indicators with formula, worked value, meaning, how to read it, which decisions move it and how each role influences it; searchable, filterable by topic and by role | Both, labelled |
 
 Modules 2 to 9 each contain a "How to read it" part and a table of the decisions that move the figure. Module 12, the decision lab and the catalogue highlights change with the selected role.
 
