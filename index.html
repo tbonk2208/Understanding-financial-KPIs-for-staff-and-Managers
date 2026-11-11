@@ -459,7 +459,7 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
     <tr><td>DSO, days sales outstanding</td><td>Receivables ÷ sales × 91</td><td class="n" data-v="wc.dso" data-f="d0"></td><td>Days until customers pay</td></tr>
     <tr><td>DIO, days inventory outstanding</td><td>Inventories ÷ cost of sales × 91</td><td class="n" data-v="wc.dio" data-f="d0"></td><td>Days goods sit before being sold</td></tr>
     <tr><td>DPO, days payables outstanding</td><td>Payables ÷ cost of sales × 91</td><td class="n" data-v="wc.dpo" data-f="d0"></td><td>Days until we pay suppliers</td></tr>
-    <tr class="tot"><td>Cash conversion cycle</td><td>DSO + DIO − DPO</td><td class="n" data-v="wc.ccc" data-f="d0"></td><td>Days our cash is tied up per cycle</td></tr>
+    <tr class="tot"><td>Cash conversion cycle (CCC)</td><td>DSO + DIO − DPO</td><td class="n" data-v="wc.ccc" data-f="d0"></td><td>Days our cash is tied up per cycle</td></tr>
   </table></div>
   <p><span class="tag own">own calculation</span> These use quarter-end balances and one quarter of sales, a simplification. Strictly, DPO relates payables to purchases; cost of sales is the usual approximation when purchases are not disclosed. Acquisitions and seasonality distort them; trends matter more than the absolute level.</p>
 
@@ -629,7 +629,7 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
   <li><b>The benchmark is the cost of capital, compared like with like.</b> The cost of capital is an after-tax figure, so compare it with the after-tax return (or compare both before tax: 9% after tax corresponds to about 12% before tax at a 25% tax rate). A return above it creates value, below it destroys value, however large the profit.</li>
   <li><b>Read the example group's figure with care.</b> About 5% after tax is below an assumed 9%. On the accounting view the acquisitions have not yet earned their cost. That is common in the first years after acquisitions, which is why the trend matters: the return must rise as the acquired businesses grow. The cash-based view is higher because amortisation of acquired intangibles is a non-cash charge.</li>
   <li><b>Group and plant returns are not comparable.</b> The group carries the price paid for acquisitions; a plant does not. A plant at 34% and a group at 7% can be the same business seen at two levels.</li>
-  <li><b>Old assets flatter the ratio.</b> A fully depreciated plant shows a high return and may be close to needing replacement. A new plant shows a low return and may be the better business.</li>
+  <li><b>Old assets flatter the ratio.</b> A fully depreciated plant shows a high return and may be close to needing replacement. A new plant shows a low return and may be the better business. Cash flow return on investment (CFROI, see the catalogue) corrects for this by measuring cash earned against the original cost of the assets.</li>
   <li><b>Average and marginal return differ.</b> The question for a new investment is its own return against the cost of capital, not whether it raises or lowers the unit's average.</li>
   <li><b>A return can be raised by starving the business.</b> Cutting investment lifts the ratio for a few years. Check capital expenditure against depreciation.</li>
 </ul>
@@ -949,6 +949,7 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
     <tr><td>Operating leverage</td><td>Contribution ÷ EBIT</td><td class="n" data-v="ex.dol" data-f="x"></td><td>A 10% change in volume moves EBIT by about <span data-v="ex.dol10" data-f="p0"></span>.</td></tr>
     <tr><td>Personnel cost ratio</td><td>Personnel cost ÷ sales</td><td class="n" data-v="ex.persPct" data-f="p0"></td><td>The largest cost block you decide on directly.</td></tr>
     <tr><td>Return on capital employed (ROCE)</td><td>EBIT ÷ capital employed</td><td class="n" data-v="ex.roce" data-f="p"></td><td>= margin <span data-v="ex.ebitMargin" data-f="p"></span> × capital turnover <span data-v="ex.capTurn" data-f="x2"></span>.</td></tr>
+    <tr><td>Cash flow return on investment (CFROI)</td><td>(EBIT after tax + depreciation) ÷ (capital employed + accumulated depreciation)</td><td class="n" data-v="ex.cfroi" data-f="p"></td><td>Cash return on the full original investment. Lower than ROCE here because much of the plant is already depreciated.</td></tr>
     <tr><td>Economic value added (EVA)</td><td>EBIT after tax − capital employed × cost of capital</td><td class="n">$<span data-v="ex.eva"></span>M</td><td>Profit left after paying for the capital used. Positive means value is created.</td></tr>
     <tr><td>Capex ratio</td><td>Capital expenditure ÷ sales</td><td class="n" data-v="ex.capexPct" data-f="p"></td><td>Compare with depreciation (<span data-v="ex.depr"></span>): spending at or above it maintains the asset base.</td></tr>
   </table></div>
@@ -1055,7 +1056,8 @@ body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a
     <tr><td>Amortisation</td><td>Spreading the cost of an intangible asset (customer relationships, technology) over its useful life.</td></tr>
     <tr><td>Basis point (bp)</td><td>One hundredth of a percentage point. 500 bps = 5.0 percentage points.</td></tr>
     <tr><td>Capital expenditure (capex)</td><td>Spending on long-lived assets such as machinery and buildings.</td></tr>
-    <tr><td>Cash conversion cycle</td><td>DSO + DIO − DPO: days between paying suppliers and collecting from customers.</td></tr>
+    <tr><td>Cash conversion cycle (CCC)</td><td>DSO + DIO − DPO: days between paying suppliers and collecting from customers.</td></tr>
+    <tr><td>CFROI</td><td>Cash flow return on investment: cash earned by operations relative to the full original cost of the assets in use.</td></tr>
     <tr><td>Contribution margin</td><td>Sales minus variable costs: what each additional sale adds to profit while capacity is free.</td></tr>
     <tr><td>Cost of capital (WACC)</td><td>The weighted average return required by lenders and shareholders, after tax; the hurdle for investments.</td></tr>
     <tr><td>Depreciation</td><td>Spreading the cost of a physical asset over its useful life.</td></tr>
@@ -1162,7 +1164,7 @@ const EX = {
   material:21.0, labour:9.0, varOh:3.0, fixOh:7.5, depr:2.4, amort:0.3,
   selling:4.2, varSelling:1.2, rd:1.8, admin:3.0,
   fixedAssets:18.0, inv:9.0, invRaw:3.2, invWip:2.0, invFg:3.8, ar:8.5, ap:4.4, cash:3.0, otherCurLiab:5.0,
-  capex:2.6, wcChange:0.8, employees:240, personnel:16.8,
+  capex:2.6, wcChange:0.8, accDepr:22.0, employees:240, personnel:16.8,
   avail:88, perf:92, qual:96.5, scrap:0.9, copq:1.44, otd:91, util:78, obsolete:0.5, ppv:0.3,
   orders:63.0, backlog:14.0, listSales:68.0, top5:38, win:31, fcAcc:82,
   newProdSales:10.8, ttm:22,
@@ -1208,6 +1210,7 @@ function project(o){ // o: delay (months), devOver, costOver, price, vol (all in
   e.varSales=e.sales-e.budgetSales; e.varEbit=e.ebit-e.budgetEbit;
   e.varSalesPct=e.varSales/e.budgetSales*100; e.varEbitPct=e.varEbit/e.budgetEbit*100; e.flexEbit=e.varSales*e.cmPct/100;
   e.curRatio=(e.cash+e.ar+e.inv)/(e.ap+e.otherCurLiab); e.quick=(e.cash+e.ar)/(e.ap+e.otherCurLiab);
+  e.grossCf=e.nopat+e.da; e.grossInv=e.ce+e.accDepr; e.cfroi=e.grossCf/e.grossInv*100;
   e.fcf=e.ebitda-e.ebit*e.taxRate/100-e.capex-e.wcChange;
   e.m={ebitda:e.ebitda+0.35, ebit:e.ebit+0.35-0.15, ce:e.ce+1.5}; e.m.roce=e.m.ebit/e.m.ce*100;
   ["cA","cB"].forEach(k=>{const c=e[k]; c.gp=c.sales*c.gm/100; c.cap=c.sales*c.days/365+c.consign; c.capCost=c.cap*e.wacc/100; c.net=c.gp-c.serve-c.capCost; c.netPct=c.net/c.sales*100;});
@@ -1533,7 +1536,7 @@ const KPIS=[
  {n:"Days sales outstanding (DSO)",c:"Cash and working capital",f:"Receivables ÷ sales × days in period",v:nf(W.dso,0)+" days (Q3 2026)",s:"own",t:"Average time customers take to pay. Each day is worth about "+usd(W.dayAr)+" of cash at group level.",r:["sales","mgr"]},
  {n:"Days inventory outstanding (DIO)",c:"Cash and working capital",f:"Inventories ÷ cost of sales × days in period",v:nf(W.dio,0)+" days (Q3 2026)",s:"own",t:"Average time goods sit in stock. Each day is worth about "+usd(W.dayInv)+" of cash at group level. Stock also carries obsolescence risk.",r:["ops","rd","sales","mgr"]},
  {n:"Days payables outstanding (DPO)",c:"Cash and working capital",f:"Payables ÷ cost of sales × days in period",v:nf(W.dpo,0)+" days (Q3 2026)",s:"own",t:"Average time taken to pay suppliers. Supplier credit finances part of the stock, but stretching it too far strains the supply base.",r:["ops"]},
- {n:"Cash conversion cycle",c:"Cash and working capital",f:"DSO + DIO − DPO",v:nf(W.ccc,0)+" days (Q3 2026)",s:"own",t:"Days between paying suppliers and collecting from customers. Shorter means growth needs less cash.",r:["ops","sales","mgr"]},
+ {n:"Cash conversion cycle (CCC)",c:"Cash and working capital",f:"DSO + DIO − DPO",v:nf(W.ccc,0)+" days (Q3 2026)",s:"own",t:"Days between paying suppliers and collecting from customers. Shorter means growth needs less cash.",r:["ops","sales","mgr"]},
  {n:"Inventory turnover",c:"Cash and working capital",f:"Annualised cost of sales ÷ inventories",v:tm(C.invTurns)+" a year (Q3 2026)",s:"own",t:"How often stock is replaced in a year; the same information as DIO.",r:["ops"]},
  {n:"Working capital ratio",c:"Cash and working capital",f:"(Receivables + inventories − payables) ÷ annualised sales",v:pc(C.wcPct)+" (Q3 2026)",s:"own",t:"Cash needed in operations per dollar of sales. Tells you how much cash a dollar of growth absorbs.",r:["ops","sales","mgr"]},
  // ---- Financing & liquidity
@@ -1547,6 +1550,7 @@ const KPIS=[
  // ---- Returns
  {n:"Return on invested capital (ROIC)",c:"Returns",f:"Operating profit (after tax) ÷ (debt + equity − cash)",v:pc(D.roic.post)+" after tax, "+pc(D.roic.pre)+" before tax (2025, simplified)",s:"own",t:"What the company earns on all capital provided by lenders and owners. Value is created only above the cost of capital. Low here because of acquisition goodwill.",r:["mgr"]},
  {n:"Return on capital employed (ROCE)",c:"Returns",f:"EBIT ÷ (fixed assets + working capital)",v:pc(E.roce),s:"ill",t:"The plant-level version. High because a plant carries no goodwill. Improves through margin or through less capital.",r:["ops","mgr"]},
+ {n:"Cash flow return on investment (CFROI)",c:"Returns",f:"Gross cash flow ÷ gross investment = (operating profit after tax + depreciation and amortisation) ÷ (capital employed + accumulated depreciation)",v:pc(E.cfroi)+" (example plant: "+nf(E.grossCf,1)+" ÷ "+nf(E.grossInv,1)+")",s:"ill",t:"The cash the operations earn on everything originally invested in them, whatever has already been depreciated. Removes the distortion that makes old, written-down plants look better than new ones. This is the simplified one-year form; the full method calculates an internal rate of return over the life of the assets.",r:[]},
  {n:"Return on equity (ROE)",c:"Returns",f:"Net income ÷ shareholders' equity",v:pc(C.roe)+" reported, "+pc(C.roeAdj)+" on adjusted net income (2025)",s:"own",t:"Return on the owners' capital. The reported 2025 value is depressed by the one-time loss on the sale of a business.",r:[]},
  {n:"Return on assets (ROA)",c:"Returns",f:"Net income ÷ total assets",v:pc(C.roa)+" (2025)",s:"own",t:"Profit per dollar of everything the company owns, regardless of financing.",r:[]},
  {n:"Asset turnover",c:"Returns",f:"Sales ÷ total assets",v:tm(C.assetTurn,2)+" (2025)",s:"own",t:"Sales generated per dollar of assets. Low for an acquirer with large goodwill.",r:["ops","mgr"]},
@@ -1640,7 +1644,7 @@ const INTERP={
 "Days sales outstanding (DSO)":["Compare with agreed payment terms. DSO far above terms means late payers or disputed invoices. A rise can also come from strong sales late in the period, which is harmless.","Payment terms agreed by sales, invoice accuracy and timing, follow-up of overdue accounts, customer mix by country."],
 "Days inventory outstanding (DIO)":["Judge the trend against sales. Rising before a launch or for confirmed orders is planned; rising at flat sales is a problem. Very low values risk missed deliveries.","Batch sizes, safety stock, lead times, forecast quality, part variety, bulk purchases, consignment stock, write-downs."],
 "Days payables outstanding (DPO)":["Compare with agreed supplier terms. A sudden rise can signal cash shortage. Very high values can mean lost discounts and supplier strain.","Negotiated terms, payment run timing, use of early-payment discounts, supplier mix."],
-"Cash conversion cycle":["Shorter is better as long as service is unharmed. Its level depends on the business model, so follow the trend and its three components separately.","The combined decisions behind DSO, DIO and DPO."],
+"Cash conversion cycle (CCC)":["Shorter is better as long as service is unharmed. Its level depends on the business model, so follow the trend and its three components separately.","The combined decisions behind DSO, DIO and DPO."],
 "Inventory turnover":["The same information as DIO seen the other way. Higher is better until delivery suffers. Raw material, work in process and finished goods should be judged separately.","As for DIO: planning, batch sizes, lead times, variety, forecasts."],
 "Working capital ratio":["Tells you how much cash growth will absorb: at 19%, a $10 million sales increase needs about $1.9 million. A falling ratio at constant service is a real improvement.","Terms with customers and suppliers, stock policy, product and customer mix."],
 "Net debt":["A dollar amount means little alone; relate it to earnings (leverage) and to equity (gearing). Check what the debt financed.","Acquisitions, buybacks and dividends raise it; free cash flow used for repayment lowers it."],
@@ -1652,6 +1656,7 @@ const INTERP={
 "Quick ratio":["Stricter than the current ratio because stock is excluded. Near or above 1 is usually comfortable. A large gap to the current ratio means liquidity rests on inventory.","Collection, cash holdings, short-term debt."],
 "Return on invested capital (ROIC)":["Compare the after-tax figure with the after-tax cost of capital: above creates value, below destroys it. Year-end capital is used here; average capital over the year is more accurate. Low for acquirers because the purchase price is in the capital base. Follow the trend after acquisitions: it should rise.","Operating margin, working capital, investment, and above all the price paid for acquisitions."],
 "Return on capital employed (ROCE)":["A before-tax measure, so compare it with a before-tax hurdle (about 12% if the after-tax cost of capital is 9% and tax is 25%). High at plant level because no goodwill is included, so do not compare with group returns. Old, written-down assets flatter it. A fall after a sound investment is not a problem.","Margin (price, cost) and capital (stock, receivables, machines). Often the fastest lever is working capital."],
+"Cash flow return on investment (CFROI)":["Compare with the cost of capital and with ROCE. The example plant shows a ROCE of 34% but a CFROI of about 20%: the gap is the effect of assets that are largely depreciated. A CFROI falling over the years while ROCE holds steady means the plant is living off old investment. Definitions vary widely between companies, so check which cash flow and which investment base are used.","Cash margin (price, cost), working capital, and how productively the installed assets are used. Unlike ROCE it is not improved by simply letting assets age, and not penalised in the first years after a sound investment."],
 "Return on equity (ROE)":["Can be raised simply by using more debt, which adds risk. Distorted by one-offs. Read it with leverage.","Net profit, debt level, buybacks and dividends."],
 "Return on assets (ROA)":["Independent of financing, so it compares businesses with different debt levels. Low where goodwill is large.","Profitability and the size of the asset base, including acquisitions."],
 "Asset turnover":["Capital-light businesses show high values, acquirers low ones. Rising turnover means more sales from the same assets.","Utilisation of plants, stock and receivable levels, acquisitions."],
@@ -1720,7 +1725,7 @@ const ROLEHOW={
 "Days sales outstanding (DSO)":{sales:"Agrees payment terms, ensures correct invoices and follows up overdue customers.",mgr:"Sets the policy for terms and credit limits and escalates persistent late payers."},
 "Days inventory outstanding (DIO)":{ops:"Batch sizes, safety stock, lead times, purchasing quantities and removal of dead stock.",sales:"Forecast quality, promised service levels and consignment agreements.",rd:"Number of part variants and the timing of engineering changes.",mgr:"Sets stock targets and resolves the conflict between service, utilisation and cash."},
 "Days payables outstanding (DPO)":{ops:"Purchasing negotiates supplier payment terms and decides on early-payment discounts.",mgr:"Sets payment policy and makes sure suppliers are paid as agreed."},
-"Cash conversion cycle":{sales:"The receivables part: terms and collection.",ops:"The inventory and payables parts.",mgr:"Owns the total and the trade-offs between its three parts."},
+"Cash conversion cycle (CCC)":{sales:"The receivables part: terms and collection.",ops:"The inventory and payables parts.",mgr:"Owns the total and the trade-offs between its three parts."},
 "Inventory turnover":{ops:"Planning, batch sizes, lead times and stock clean-up.",sales:"Forecasts and service promises that determine the stock needed.",rd:"Use of common parts instead of new variants."},
 "Working capital ratio":{sales:"Receivables relative to sales.",ops:"Inventory and payables relative to sales.",mgr:"Target setting and follow-up for the unit as a whole."},
 "Net debt":{_:"Decided by the board and group finance through acquisitions, dividends, buybacks and borrowing. Operating roles contribute only the free cash flow that can repay it."},
@@ -1732,6 +1737,7 @@ const ROLEHOW={
 "Quick ratio":{sales:"Collection speed determines the receivables and cash in the numerator.",mgr:"Monitors short-term liquidity without relying on stock."},
 "Return on invested capital (ROIC)":{sales:"Profit through price and mix; capital through payment terms.",ops:"Profit through cost; capital through stock and equipment.",mgr:"Operating margin and capital discipline of the unit; the price paid for acquisitions, which weighs most, is a board decision."},
 "Return on capital employed (ROCE)":{sales:"Price and mix on the profit side; receivables and consignment stock on the capital side.",ops:"Cost and output on the profit side; inventory and machine utilisation on the capital side.",rd:"Product cost and price potential on the profit side; tooling and part variety on the capital side.",mgr:"Balances both sides and judges investments on value, not on their effect on the ratio."},
+"Cash flow return on investment (CFROI)":{sales:"Raises the cash margin through price and mix and shortens the time receivables are outstanding.",ops:"Gets more output and cash from the installed assets, keeps stock low and extends asset life through maintenance.",mgr:"Uses it beside ROCE to judge whether the unit earns enough on its full invested base to justify reinvestment."},
 "Return on equity (ROE)":{_:"Depends on net profit and on how much debt is used. Operating roles reach it only through operating profit."},
 "Return on assets (ROA)":{ops:"Gets more output from existing plant and holds less stock.",mgr:"Profit of the unit relative to all assets it uses."},
 "Asset turnover":{sales:"More sales through the existing organisation and assets; shorter payment terms.",ops:"Higher utilisation of machines and lower inventories.",mgr:"Avoids adding assets faster than sales grow."},
