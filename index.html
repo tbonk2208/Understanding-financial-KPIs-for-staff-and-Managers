@@ -128,6 +128,16 @@ table.wide tr.tot td:last-child{font-weight:400}
   table.wide td:last-child{flex:1 1 100%;min-width:0;margin-top:.15rem}
   table.wide tr.tot td{border-top:0}table.wide tr.tot{border-top:2px solid var(--ink)}
 }
+.sigs{margin:.3rem 0 .5rem}
+table.contrib{font-size:.88rem}table.contrib td{vertical-align:top}
+table.contrib tr.keyrow td{background:var(--accent-soft)}
+.tag.keytag{border-color:var(--accent);color:var(--accent);font-weight:700}
+.kwork{border:1px dashed var(--accent);border-radius:10px;padding:.6rem .9rem;margin:.8rem 0;font-size:.92rem}
+.kwork h4{margin:0 0 .3rem;font-size:.9rem;color:var(--accent)}.kwork ul{margin:0}
+@media (max-width:820px){table.contrib,table.contrib tbody{display:block}table.contrib tr:first-child{display:none}
+ table.contrib tr{display:block;border-bottom:1px solid var(--line);padding:.45rem .4rem}table.contrib td{display:block;border:0;padding:.1rem 0}
+ table.contrib td:nth-child(2)::before{content:"Seen alone, it suggests: ";color:var(--muted);font-size:.78rem}
+ table.contrib td:nth-child(3)::before{content:"What it contributes here: ";color:var(--muted);font-size:.78rem}}
 </style>
 </head>
 <body data-active="mgr">
@@ -785,6 +795,7 @@ table.wide tr.tot td:last-child{font-weight:400}
     <tr class="tot"><td>Net benefit per year</td><td class="n">+$17,500</td></tr>
   </table></div>
   <p>The income statement shows only the $80,000 saving and a better purchase price variance. The balance sheet shows $417,000 more inventory and about four more days of DIO. The decision is marginal, and it turns negative if the material has a shelf life or the design may change. This is why purchasing savings must be judged together with inventory.</p>
+  <div class="kwork"><h4>Which KPI shows what in this case</h4><ul><li><b>Purchase price variance:</b> improves by $80,000. This is the figure the buyer is measured on, and it shows only the benefit.</li><li><b>Gross margin:</b> rises slightly, because material is cheaper.</li><li><b>Days inventory outstanding (DIO):</b> rises by about four days. This is where the cost of the decision becomes visible.</li><li><b>Free cash flow:</b> falls once by $417,000, the extra stock paid for in advance.</li><li><b>Return on capital employed (ROCE):</b> barely changes: $17,500 more profit on $417,000 more capital is about 4%, far below the plant's average and below the cost of capital.</li><li><b>Excess and obsolete inventory:</b> the risk grows with every month of stock held; a design change would turn part of the saving into a loss.</li></ul></div>
 
   <div class="calc" id="calcOps">
     <b>Try it: your levers on the example plant</b> <span class="tag ill">illustrative</span>
@@ -840,6 +851,7 @@ table.wide tr.tot td:last-child{font-weight:400}
   <p>The plant's sales rose from $<span data-v="ex.salesPrior"></span> million to $<span data-v="ex.sales"></span> million.</p>
   <div class="bars" id="pvmBars"></div>
   <p>Volume brought $<span data-v="ex.bVol"></span> million of sales but, at a 43% contribution margin, only about $<span data-v="ex.bVolProfit" data-f="n2"></span> million of profit. Price brought $<span data-v="ex.bPrice"></span> million of sales and nearly the same amount of profit. Less sales, twice the profit.</p>
+  <div class="kwork"><h4>Which KPI shows what in this case</h4><ul><li><b>Sales growth:</b> gives the total: +$4.0 million. It does not say how good the growth is.</li><li><b>Price, volume and mix effect:</b> splits the total into its three sources. This is the figure that makes the growth interpretable.</li><li><b>Contribution margin:</b> converts the volume part into profit: only 43 cents of each extra dollar shipped.</li><li><b>Price realisation (discount rate):</b> is the lever behind the price part: every point less discount goes to profit almost in full.</li></ul></div>
 
   <h3>Worked case 2: which customer is worth more?</h3>
   <div class="tblwrap"><table>
@@ -855,6 +867,7 @@ table.wide tr.tot td:last-child{font-weight:400}
     <tr><td>… as % of sales</td><td class="n" data-v="ex.cA.netPct" data-f="p0"></td><td class="n" data-v="ex.cB.netPct" data-f="p0"></td></tr>
   </table></div>
   <p>B is the larger account by half, and A earns almost twice as much. A sales ranking by revenue would put B first.</p>
+  <div class="kwork"><h4>Which KPI shows what in this case</h4><ul><li><b>Sales:</b> ranks B first. Used alone it misleads.</li><li><b>Gross margin:</b> 40% against 24% already reverses the ranking in profit: $1.60 million against $1.44 million.</li><li><b>Cost to serve:</b> widens the gap: B needs more than twice the service effort.</li><li><b>Days sales outstanding (DSO):</b> 30 against 90 days determines how much of each customer's sales sits unpaid.</li><li><b>Days inventory outstanding (DIO):</b> B's consignment stock adds $0.8 million of inventory that A does not need.</li><li><b>Cost of capital:</b> turns the capital tied up into a yearly cost: $0.03 million for A, $0.21 million for B.</li><li><b>Customer profitability:</b> is the result of all of the above: 34% against 13% of sales.</li></ul></div>
 
   <div class="calc" id="calcSales">
     <b>Try it: renegotiate customer B</b> <span class="tag ill">illustrative</span>
@@ -908,6 +921,7 @@ table.wide tr.tot td:last-child{font-weight:400}
   <div class="tblwrap"><table id="prjTable"></table></div>
   <p>Before launch the project spends $<span data-v="ex.prj.invest"></span> million: development $<span data-v="ex.prj.dev"></span> million (an expense, reducing EBITDA in that year), tooling $<span data-v="ex.prj.tool"></span> million (capital expenditure) and launch stock $<span data-v="ex.prj.stock"></span> million (working capital, recovered at the end). The table shows cash flows after tax, so year 0 is lower than the gross spend by the tax relief on the development expense. Three different places in the accounts, one cash outflow.</p>
   <p><b>Why discount?</b> A dollar received in year 4 is worth less than a dollar today because today's dollar could repay debt or earn a return in the meantime. At <span data-v="ex.wacc" data-f="p0"></span>, $1.00 in four years is worth about $0.71 today.</p>
+  <div class="kwork"><h4>Which KPI shows what in this case</h4><ul><li><b>R&D intensity and EBITDA margin:</b> the $1.2 million of development is an expense in the year it is spent and lowers the margin before any sale.</li><li><b>Capex ratio and free cash flow:</b> the $0.8 million of tooling is capital expenditure and leaves as cash before launch.</li><li><b>Days inventory outstanding (DIO):</b> the $0.3 million of launch stock is working capital until the end of the product's life.</li><li><b>Payback period:</b> shows how long that money is at risk.</li><li><b>Net present value and internal rate of return:</b> show whether the later income is worth more than the early spending, after charging for time.</li><li><b>Time to market and target cost gap:</b> are the two figures to watch during the project, because they move the result most.</li><li><b>Vitality index:</b> records the outcome later: the product's sales count as new-product sales for five years.</li></ul></div>
 
   <div class="calc" id="calcRd">
     <b>Try it: what hurts the business case most?</b> <span class="tag ill">illustrative</span>
@@ -969,6 +983,7 @@ table.wide tr.tot td:last-child{font-weight:400}
   <h3>Worked case 1: reading a budget variance</h3>
   <p>Sales are $<span data-v="ex.varSales"></span> million above budget and EBIT is $<span data-v="ex.varEbit"></span> million above budget. Is that good cost control?</p>
   <p>A flexible budget answers it. At a contribution margin of <span data-v="ex.cmPct" data-f="p"></span>, $<span data-v="ex.varSales"></span> million of extra sales should bring about $<span data-v="ex.flexEbit" data-f="n2"></span> million of extra EBIT if the extra sales came from volume and costs behaved as planned. (Had they come from price alone, nearly the full amount should have reached EBIT, which is why the variance must first be split into volume and price.) The actual gain is $<span data-v="ex.varEbit"></span> million, so costs ran almost exactly on plan. Had EBIT been only $0.3 million above budget, the unit would have been "over budget" on profit while hiding a cost overrun of more than half a million.</p>
+  <div class="kwork"><h4>Which KPI shows what in this case</h4><ul><li><b>Budget variance (sales):</b> +$2.0 million is the starting point, not a verdict.</li><li><b>Contribution margin:</b> translates the extra sales into the profit they should bring: 43%, about $0.86 million.</li><li><b>Budget variance (EBIT):</b> +$0.9 million is then compared with that expectation, not with zero.</li><li><b>Price, volume and mix effect:</b> decides which expectation is right: extra volume should bring 43 cents per dollar, extra price nearly the whole dollar.</li></ul></div>
 
   <h3>Worked case 2: profit up, return down</h3>
   <p>A new machine costs $1.5 million, saves $0.35 million of labour a year and is depreciated over ten years.</p>
@@ -985,6 +1000,7 @@ table.wide tr.tot td:last-child{font-weight:400}
   </table></div>
   <p>EBITDA and EBIT both rise, and ROCE falls. In its first year the machine adds $0.20 million of EBIT on $1.5 million of new capital, about 13%, while the plant as a whole earns 34%, so the average is pulled down.</p>
   <p>The ratio is the wrong test. The right one is the investment's own cash flows against the cost of capital: tax is 25% of the extra profit of $0.20 million, so the machine returns $0.30 million of cash a year. Over ten years that is worth $1.93 million today at 9%, against a price of $1.5 million. The net present value is positive and the internal rate of return is about 15%, so the investment creates value. Lesson: a ratio can fall while value increases. Judge investments on NPV against the cost of capital, not against the unit's current average.</p>
+  <div class="kwork"><h4>Which KPI shows what in this case</h4><ul><li><b>EBITDA margin:</b> rises by the full saving, because wages disappear and depreciation is not counted.</li><li><b>Operating margin (EBIT):</b> rises by less: the saving minus the machine's depreciation.</li><li><b>Capex ratio and free cash flow:</b> show the price: $1.5 million leaves in the first year.</li><li><b>Return on capital employed (ROCE):</b> falls, because it is an average and the machine earns less than the plant's 34%.</li><li><b>Net present value and internal rate of return:</b> judge the machine itself: +$0.43 million and about 15%.</li><li><b>Economic value added (EVA):</b> rises, which confirms the verdict of the NPV at plant level.</li><li><b>Break-even sales:</b> moves up a little: a wage cost that could be adjusted has become a fixed depreciation charge.</li></ul></div>
 
   <div class="calc" id="calcMgr">
     <b>Try it: stress-test the example plant</b> <span class="tag ill">illustrative</span>
@@ -1030,7 +1046,7 @@ table.wide tr.tot td:last-child{font-weight:400}
 <section class="mod" id="signals" data-title="14 · Reading the signals">
   <div class="kicker">Module 14</div>
   <h2>Reading the signals: what is really going on?</h2>
-  <p class="lead">A single KPI rarely means anything by itself. Interpretation starts when you read several together. Each case shows a pattern; decide what it means before you open the answer.</p>
+  <p class="lead">A single KPI rarely means anything by itself. Interpretation starts when you read several together. Each case shows a pattern; decide what it means before you open the answer. The answer then shows, figure by figure, what each KPI would suggest if you saw it alone and what it contributes to the conclusion, and marks the one that decides the interpretation. Tap a KPI name to open it in the catalogue.</p>
   <div id="sigList"></div>
   <div class="box key"><h4>A routine for interpreting any figure</h4>
   <ol>
@@ -2062,51 +2078,98 @@ $("labMatrix").innerHTML="<tr><th>Decision</th>"+LABK.map(k=>`<th title="${k[1]}
   `<tr><td colspan="${LABK.length+1}" class="meta">${LABK.map(k=>k[0]+" = "+k[1]).join(" · ")}</td></tr>`;
 
 /* ===================== reading the signals ===================== */
+// each signal: k = KPI (catalogue name where one exists), v = observation, a = what it suggests seen alone,
+// p = what it contributes to the pattern, key = the clue that decides the interpretation
 const SIGNALS=[
- {h:"Growth with a falling margin",s:["Sales +8%","Gross margin −2 points","Average discount up","Receivables days +6"],
+ {h:"Growth with a falling margin",s:[
+   {k:"Sales growth",v:"+8%",a:"The business is winning.",p:"Shows only that more was invoiced. It says nothing about what the extra sales cost to win."},
+   {k:"Gross margin",v:"−2 points",a:"Something got more expensive: material, mix or price.",p:"Shows that each dollar of sales now earns less, so the growth did not come with its normal profit. Narrows the cause to price, input cost or mix."},
+   {k:"Price realisation (discount rate)",v:"average discount up",a:"Sales is conceding price.",p:"Identifies price as the cause of the margin fall and rules out material cost and mix.",key:1},
+   {k:"Days sales outstanding (DSO)",v:"+6 days",a:"Customers are paying later.",p:"Shows that payment terms were conceded as well: the growth costs cash on top of margin."}],
   m:"The growth was bought. Price concessions and longer terms won the volume, so more sales produced little or no additional profit and tied up more cash.",
   c:"Split the sales change into price, volume and mix. Compare gross profit in dollars, not sales, with last year.",
   d:"Discount approvals, payment terms, which customers and products were pushed."},
- {h:"Profit on plan, stock rising",s:["EBIT on budget","Production above sales for three months","Inventory +20%","Operating cash flow below plan"],
+ {h:"Profit on plan, stock rising",s:[
+   {k:"Budget variance",v:"EBIT on budget",a:"Everything is going to plan.",p:"Gives only the result. It cannot show how the profit was produced."},
+   {k:"Capacity utilisation",v:"production above sales for three months",a:"The plant is running efficiently.",p:"Shows that part of the output was not sold. Its share of fixed overhead went into inventory instead of the income statement, which lifted profit.",key:1},
+   {k:"Days inventory outstanding (DIO)",v:"inventory +20%",a:"Stock is being built, perhaps for a reason.",p:"Confirms where the unsold production went and how much profit is parked there."},
+   {k:"Operating cash flow",v:"below plan",a:"A timing issue with payments.",p:"Proves that the reported profit has not arrived as cash: the money is in the warehouse."}],
   m:"Part of the profit comes from fixed overhead absorbed into stock. It has been moved from future periods and will reverse when stock is reduced or written down.",
   c:"Compare production volume with sales volume. Look at the age of the finished goods and at open orders covering them.",
   d:"Production planning, batch sizes, the wish to keep utilisation and monthly profit up."},
- {h:"Excellent margin, ageing plant",s:["EBITDA margin up three years running","Capital expenditure below depreciation each year","OEE and on-time delivery slipping","Scrap rate rising"],
+ {h:"Excellent margin, ageing plant",s:[
+   {k:"EBITDA margin (adjusted)",v:"up three years running",a:"The business is steadily improving.",p:"Cannot see what was not spent: it excludes depreciation and rewards every dollar of maintenance saved."},
+   {k:"Capex ratio",v:"below depreciation every year",a:"Capital discipline.",p:"Shows that equipment is wearing out faster than it is replaced. This is where the margin gain comes from.",key:1},
+   {k:"Overall equipment effectiveness (OEE)",v:"slipping, with on-time delivery",a:"An operational problem on the shop floor.",p:"The physical consequence is appearing: more stoppages and late orders from ageing machines."},
+   {k:"Scrap and rework rate",v:"rising",a:"A quality problem.",p:"Shows process capability eroding. The cost will soon reach the margin that looked so good."}],
   m:"The margin is being supported by under-investment. EBITDA cannot show it because it excludes depreciation and ignores what was not spent.",
   c:"Capital expenditure against depreciation over five years; maintenance spending; age of key machines.",
   d:"Postponed maintenance and replacement; return targets that reward not investing."},
- {h:"Sales on plan, order book shrinking",s:["Sales +2%","Order intake −9%","Book-to-bill 0.9 for two quarters","Backlog down from 3.2 to 2.5 months"],
+ {h:"Sales on plan, order book shrinking",s:[
+   {k:"Sales growth",v:"+2%",a:"Stable business.",p:"Describes the past: these shipments were ordered months ago."},
+   {k:"Order intake",v:"−9%",a:"A weak quarter for orders.",p:"Shows the work arriving for the coming months is shrinking. This is the figure about the future.",key:1},
+   {k:"Book-to-bill ratio",v:"0.9 for two quarters",a:"Slightly below one.",p:"Quantifies the gap: the plant ships a tenth more than it books. Two quarters in a row rule out a one-off."},
+   {k:"Backlog coverage",v:"down from 3.2 to 2.5 months",a:"Still a comfortable order book.",p:"Shows the reserve being used up and how long it lasts before sales follow intake down."}],
   m:"Current sales are being delivered from the backlog. Unless intake recovers, sales will fall in the coming quarters, and fixed costs will then weigh on the margin.",
   c:"Order intake by market and customer; quotation activity and win rate; whether prices or lead times lost the orders.",
   d:"Capacity, hiring and stock should already follow intake, not sales."},
- {h:"Adjusted profit up, reported profit down",s:["Adjusted EBITDA +10%","Net income −15%","Restructuring charges for the fourth year running","Acquisition costs every year"],
+ {h:"Adjusted profit up, reported profit down",s:[
+   {k:"EBITDA margin (adjusted)",v:"adjusted EBITDA +10%",a:"Operations are improving.",p:"Is the figure after management has removed what it considers unusual, so it depends on that judgement."},
+   {k:"Net margin (return on sales)",v:"net income −15%",a:"A bad year for shareholders.",p:"Shows what was actually left. The widening gap to the adjusted figure is the thing to explain."},
+   {k:"Adjustments: restructuring",v:"charged for the fourth year running",a:"One more reorganisation.",p:"Shows the 'one-off' is a regular cost. Removing it every year overstates what the business earns.",key:1},
+   {k:"Adjustments: acquisition costs",v:"every year",a:"The price of a deal.",p:"Same point: for a company that acquires continuously, deal costs are part of the strategy's running cost."}],
   m:"The adjustments are not exceptional any more; they are a regular cost of how the company operates. The adjusted figure overstates sustainable earnings.",
   c:"List the adjustments for five years. Add back only those that truly do not recur. Compare cumulative free cash flow with cumulative adjusted net income.",
   d:"The frequency of restructuring and acquisitions is itself a management decision."},
- {h:"Return falls after an investment",s:["Plant ROCE down from 34% to 33%","EBIT up","Economic value added up","New machine installed"],
+ {h:"Return falls after an investment",s:[
+   {k:"Return on capital employed (ROCE)",v:"down from 34% to 33%",a:"The plant has got worse.",p:"Says only that capital grew faster than profit. As an average it cannot judge a single investment."},
+   {k:"Operating margin (EBIT margin)",v:"EBIT up",a:"The plant has got better.",p:"Shows the new machine is earning: profit rose even after its depreciation."},
+   {k:"Capex ratio",v:"new machine installed",a:"Money was spent.",p:"Explains why capital employed rose and therefore why the ratio fell."},
+   {k:"Economic value added (EVA)",v:"up",a:"A technical finance figure.",p:"Settles the question: the extra profit is larger than the cost of the extra capital, so value was created.",key:1}],
   m:"Nothing is wrong. The investment earns more than the cost of capital but less than the plant's very high average, so the ratio falls while value rises.",
   c:"The investment's own return against the cost of capital, and whether the planned savings are arriving.",
   d:"Approving it was right. Rejecting it to protect the ratio would have destroyed value."},
- {h:"Group margin down, every segment up",s:["Segment A margin +0.4 points","Segment B margin +4 points","Group margin lower than expected","Segment B growing much faster"],
+ {h:"Group margin down, every segment up",s:[
+   {k:"Adjusted segment EBITDA margin",v:"Segment A +0.4 points, Segment B +4 points",a:"Both businesses improved.",p:"Shows that performance inside each segment is better, so the group figure cannot be a performance problem."},
+   {k:"EBITDA margin (adjusted)",v:"group margin lower than expected",a:"The company is doing worse.",p:"Is a weighted average of the segments and reacts to their weights as well as to their margins."},
+   {k:"Sales growth",v:"Segment B growing much faster",a:"Good news for Segment B.",p:"Explains the puzzle: the lower-margin segment now weighs more in the average and pulls it down.",key:1}],
   m:"A mix effect. The faster-growing segment has the lower margin, so it pulls the weighted average down even though both segments improved.",
   c:"Recalculate the group margin at last year's sales mix. The difference from the actual figure is the mix effect.",
   d:"None is needed to 'fix' it. Judge each segment on its own margin and return."},
- {h:"Strong cash flow that will not repeat",s:["Free cash flow well above net income","Payables days +15","Supplier complaints about late payment","Inventory and receivables unchanged"],
+ {h:"Strong cash flow that will not repeat",s:[
+   {k:"Cash conversion",v:"free cash flow well above net income",a:"Excellent cash generation.",p:"Shows more cash than profit arrived, which means it came from the balance sheet. The question is from where."},
+   {k:"Days payables outstanding (DPO)",v:"+15 days",a:"Better supplier terms were negotiated.",p:"Locates the source: the cash is money owed to suppliers and not yet paid.",key:1},
+   {k:"Days inventory outstanding (DIO)",v:"unchanged, as are receivables days",a:"Nothing to report.",p:"Rules out the sustainable explanation: stock and collection did not improve."},
+   {k:"Supplier feedback",v:"complaints about late payment",a:"A purchasing matter.",p:"Shows the longer days were taken, not agreed. It cannot be repeated and puts supply at risk."}],
   m:"The cash came from paying suppliers later, which can be done once. It is a loan from suppliers, not a result of operations.",
   c:"Cash flow before working-capital changes; overdue payables; lost early-payment discounts; year-end against average balances.",
   d:"Payment runs held back before the balance sheet date; agreed terms versus actual behaviour."},
- {h:"Leverage down at the top of the cycle",s:["Net leverage down from 2.4× to 1.6×","Net debt almost unchanged","EBITDA +45% in a boom year","Order intake starting to fall"],
+ {h:"Leverage down at the top of the cycle",s:[
+   {k:"Net leverage",v:"down from 2.4× to 1.6×",a:"The debt has been brought under control.",p:"Is a ratio of debt to earnings. It falls when either part moves, so the two must be looked at separately."},
+   {k:"Net debt",v:"almost unchanged",a:"Nothing happened.",p:"Shows that nothing was repaid. The improvement cannot have come from this side.",key:1},
+   {k:"EBITDA margin (adjusted)",v:"EBITDA +45% in a boom year",a:"A record year.",p:"Shows the whole improvement came from earnings, and from a peak level."},
+   {k:"Order intake",v:"starting to fall",a:"A first soft patch.",p:"Signals that the peak is passing. As earnings normalise, leverage returns towards its old level."}],
   m:"The ratio improved because earnings peaked, not because debt was repaid. When earnings return to normal the leverage returns with them.",
   c:"Net debt in dollars; leverage on average earnings over a full cycle.",
   d:"How the boom-year cash was used: debt repayment would have made the improvement last."},
- {h:"Spending steady, renewal fading",s:["R&D intensity constant at 3%","Vitality index down from 25% to 12%","Time to market up from 18 to 30 months","Price pressure on older lines"],
+ {h:"Spending steady, renewal fading",s:[
+   {k:"R&D intensity",v:"constant at 3%",a:"Development is funded as before.",p:"Measures money going in. It shows that the budget is not the cause of what follows."},
+   {k:"Vitality index",v:"down from 25% to 12%",a:"Fewer new products in the mix.",p:"Measures what comes out: the same spending now yields half the share of new-product sales.",key:1},
+   {k:"Time to market",v:"up from 18 to 30 months",a:"Projects are running late.",p:"Shows where the output is being lost: projects take two-thirds longer, so fewer finish each year."},
+   {k:"Price realisation (discount rate)",v:"price pressure on older lines",a:"A tough market.",p:"Shows the commercial consequence of an ageing portfolio: older products have to be defended with price."}],
   m:"The same money produces fewer successful launches. The problem is development effectiveness or project selection, not the budget.",
   c:"Number of projects per engineer, share of projects stopped early, causes of launch delays, margins of new against old products.",
   d:"Too many parallel projects, late target-cost checks, weak business cases at approval."}
 ];
+const kpiLink=k=>KPIS.some(x=>x.n===k)?`<a href="#catalogue" class="kl" data-kpi="${k}">${k}</a>`:k;
 $("sigList").innerHTML=SIGNALS.map((x,i)=>`<div class="kpi"><h4><span>Case ${i+1}: ${x.h}</span></h4>
-  <ul>${x.s.map(v=>`<li>${v}</li>`).join("")}</ul>
-  <details><summary>What does it mean?</summary><p><b>Most likely meaning.</b> ${x.m}</p><p><b>Check next.</b> ${x.c}</p><p><b>Decisions behind it.</b> ${x.d}</p></details></div>`).join("");
+  <ul class="sigs">${x.s.map(v=>`<li><b>${kpiLink(v.k)}</b>: ${v.v}</li>`).join("")}</ul>
+  <details><summary>What does it mean, and which figure tells you what?</summary>
+  <div class="tblwrap"><table class="contrib"><tr><th>KPI and observation</th><th>Seen alone, it suggests</th><th>What it contributes here</th></tr>
+  ${x.s.map(v=>`<tr${v.key?' class="keyrow"':""}><td><b>${v.k}</b><br>${v.v}${v.key?'<br><span class="tag keytag">key clue</span>':""}</td><td>${v.a}</td><td>${v.p}</td></tr>`).join("")}</table></div>
+  <p><b>Taken together.</b> ${x.m}</p><p><b>Check next.</b> ${x.c}</p><p><b>Decisions behind it.</b> ${x.d}</p></details></div>`).join("");
+document.addEventListener("click",ev=>{const a=ev.target.closest("a.kl"); if(!a)return;
+  $("catQ").value=a.dataset.kpi; $("catCat").value=""; $("catMine").checked=false; renderCat();});
 
 /* ===================== role, navigation, progress ===================== */
 const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v);}catch(e){return d;}},
