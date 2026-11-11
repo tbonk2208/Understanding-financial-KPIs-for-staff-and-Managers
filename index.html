@@ -115,6 +115,19 @@ nav.toc a[data-role]{display:none}
 body[data-active=ops] nav.toc a[data-role=ops],body[data-active=sales] nav.toc a[data-role=sales],body[data-active=rd] nav.toc a[data-role=rd],body[data-active=mgr] nav.toc a[data-role=mgr]{display:flex}
 .rolehow{font-size:.92rem;margin-top:.35rem}.rolehow ul{margin:.2rem 0 0}.rolehow li.me{background:var(--accent-soft);border-radius:6px;padding:.1rem .35rem;margin-left:-.35rem}
 table.wide td:last-child,table.wide th:last-child{min-width:15rem}
+table.wide tr.tot td:last-child{font-weight:400}
+@media (max-width:820px){
+  table.wide,table.wide tbody{display:block}
+  table.wide tr{display:flex;flex-wrap:wrap;gap:.1rem .9rem;border-bottom:1px solid var(--line);padding:.5rem 0}
+  table.wide tr:first-child{display:none}
+  table.wide td{border:0;padding:0;text-align:left;white-space:normal}
+  table.wide td:first-child{flex:1 1 100%;font-weight:700}
+  table.wide td[data-label]{flex:0 1 auto;font-size:.88rem}
+  table.wide td[data-label]:empty{display:none}
+  table.wide td[data-label]::before{content:attr(data-label) ": ";color:var(--muted);font-size:.78rem}
+  table.wide td:last-child{flex:1 1 100%;min-width:0;margin-top:.15rem}
+  table.wide tr.tot td{border-top:0}table.wide tr.tot{border-top:2px solid var(--ink)}
+}
 </style>
 </head>
 <body data-active="mgr">
@@ -1942,6 +1955,9 @@ KPIS.forEach(k=>{k.h=ROLEHOW[k.n]||{}; k.r=ALL.filter(r=>k.h[r]);});
   put("t-mgr",0,"Sales versus budget",`The plant shipped $${n1(E.varSales)} million more than it committed to in the plan. Material, capacity and people for that had to be found during the year.`);
   put("t-mgr",0,"EBIT versus budget",`$${n1(E.varEbit)} million more profit than promised. Whether that is good depends on what $${n1(E.varSales)} million of extra sales should have brought (worked case 1).`);
   put("t-mgr",0,"Capex ratio",`$${n1(E.capex)} million a year goes into machines and tooling, slightly more than the $${n1(E.depr)} million by which existing equipment wears out. The plant is being kept up, with little expansion.`);
+  // phone layout: label each middle cell with its column heading so rows can stack
+  document.querySelectorAll("table.wide").forEach(t=>{const h=[...t.rows[0].cells].map(c=>c.textContent.trim());
+    [...t.rows].slice(1).forEach(tr=>[...tr.cells].forEach((c,i)=>{if(i>0&&i<tr.cells.length-1&&h[i])c.dataset.label=h[i];}));});
 })();
 
 /* ===================== decision lab ===================== */
