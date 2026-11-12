@@ -279,7 +279,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
 
   <h3>How the three statements feed each other</h3>
 <div class="vz" id="g3s"></div>
-<p class="vzcap">Follow one sale: it is profit when shipped, a receivable until paid, and cash only then. The same holds for a purchase (stock first, cost of sales later) and for a machine (cash out today, depreciation for years).</p>
+<p class="vzcap">Follow one sale: it is profit when shipped, a receivable until paid, and cash only then. The same holds for a purchase (inventory first, cost of sales later) and for a machine (cash out today, depreciation for years). The cash flow statement starts from net income and undoes these timing differences.</p>
 
   <div class="box key"><h4>How the three connect</h4>
   <p>Net income flows into equity. Sales that are not yet paid sit in receivables. Purchases not yet sold sit in inventories. The cash flow statement reconciles profit with the change in cash by undoing these timing differences.</p></div>
@@ -355,7 +355,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
 
   <h3>Where $100 of sales goes</h3>
 <div class="vz" id="g100"></div>
-<p class="vzcap">Third quarter 2026, example group. The operating profit is the small part at the end: a change of one dollar in either cost block changes it by a dollar.</p>
+<p class="vzcap">Third quarter 2026, example group. Operating income is the small part at the end: a change of one dollar in either cost block changes it by a dollar.</p>
 
   <h3>Operating leverage: why margins rise when sales rise</h3>
   <p>Sales grew <span data-v="q.growth" data-f="p"></span>, but SG&amp;A grew only <span data-v="q.sgaGrowth" data-f="p"></span>. Costs that do not rise in step with sales (buildings, management, systems, part of the workforce) are spread over more dollars of sales. As a result, SG&amp;A fell from <span data-v="q.sgaPctPrior" data-f="p"></span> to <span data-v="q.sgaPct" data-f="p"></span> of sales and the operating margin rose by about <span data-v="q.opMarginDelta" data-f="pp"></span>.</p>
@@ -1118,22 +1118,22 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
   <p class="vzcap">The map shows direction, not size. Where two routes pull a figure in opposite directions, it shows the usually stronger one and names the other as a partial offset; ◆ marks cases that depend on the amounts. Use Lab 1 for the amounts.</p>
 
   <h3>Lab 1 · The return tree, live</h3>
-  <p>The example plant's return on capital, taken apart into its drivers. Move a lever and see which boxes change, and by how much. Try to raise ROCE by two points using only the capital side. Then add new equipment and compare what happens to ROCE and to CFROI.</p>
+  <p>The example plant's return on capital, taken apart into its drivers. Move a lever and see which boxes change, and by how much. Try to raise ROCE by two points using only the capital side. Then add capital expenditure and compare what happens to ROCE and to CFROI.</p>
   <div class="calc">
     <div class="grid2">
       <label>Price <output id="tPo"></output><input type="range" id="tP" min="-5" max="5" step="0.5" value="0"></label>
       <label>Volume <output id="tVo"></output><input type="range" id="tV" min="-20" max="20" step="1" value="0"></label>
       <label>Variable cost per unit <output id="tCo"></output><input type="range" id="tC" min="-5" max="5" step="0.5" value="0"></label>
       <label>Fixed cost <output id="tFo"></output><input type="range" id="tF" min="-10" max="10" step="1" value="0"></label>
-      <label>Customer payment days <output id="tDso"></output><input type="range" id="tDs" min="-20" max="20" step="1" value="0"></label>
-      <label>Inventory days <output id="tDio"></output><input type="range" id="tDi" min="-30" max="30" step="1" value="0"></label>
-      <label>Supplier payment days <output id="tDpo"></output><input type="range" id="tDp" min="-15" max="15" step="1" value="0"></label>
-      <label>New equipment <output id="tKo"></output><input type="range" id="tK" min="0" max="5" step="0.5" value="0"></label>
+      <label>Customer payment days (DSO) <output id="tDso"></output><input type="range" id="tDs" min="-20" max="20" step="1" value="0"></label>
+      <label>Inventory days (DIO) <output id="tDio"></output><input type="range" id="tDi" min="-30" max="30" step="1" value="0"></label>
+      <label>Supplier payment days (DPO) <output id="tDpo"></output><input type="range" id="tDp" min="-15" max="15" step="1" value="0"></label>
+      <label>Capital expenditure <output id="tKo"></output><input type="range" id="tK" min="0" max="5" step="0.5" value="0"></label>
     </div>
     <button type="button" class="markdone" id="tReset" style="margin-top:.4rem">Reset</button>
     <div class="vz" id="tree"></div>
     <div class="res" id="treeRes"></div>
-    <p class="vzcap">Illustrative, example plant, $ million. ▲▼ show the change against today; filled symbols are favourable, hollow ones unfavourable. New equipment is depreciated over ten years.</p>
+    <p class="vzcap">Illustrative, example plant, $ million. ▲▼ show the change against today; coloured filled symbols are favourable, hollow ones unfavourable, plain ones neutral. Fixed cost includes depreciation, so contribution minus fixed cost is EBIT. Capital expenditure is depreciated over ten years and is shown with its cost only: combine it with a lower variable cost or more volume to model what it is bought for.</p>
   </div>
 
   <h3>Lab 2 · The cash cycle on a timeline</h3>
@@ -1149,16 +1149,16 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
     <p class="vzcap">Starting values: the example group in the third quarter of 2026.</p>
   </div>
 
-  <h3>Lab 3 · Profit and cash when the plant builds stock</h3>
+  <h3>Lab 3 · Profit and cash when the plant builds inventory</h3>
   <p>Set how much the plant produces compared with what it sells, for six months. Profit and cash start together and then part company.</p>
   <div class="calc">
     <label>Production compared with sales <output id="pOutp"></output><input type="range" id="pP" min="80" max="130" step="1" value="115"></label>
-    <div class="vzlegend"><span><i class="sw s1"></i> cumulative reported profit</span><span><i class="sw s2"></i> cumulative cash</span></div>
+    <div class="vzlegend"><span><i class="sw s1"></i> cumulative operating profit (EBIT)</span><span><i class="sw s2"></i> cumulative operating cash flow</span></div>
     <div class="vz" id="pvc"></div>
     <div class="vzread" id="pvcRead"></div>
     <div class="res" id="pvcRes"></div>
     <details><summary>Show the figures as a table</summary><div class="tblwrap"><table id="pvcTable"></table></div></details>
-    <p class="vzcap">Illustrative, example plant, before tax. Fixed production overhead is charged to each unit produced, so units that go into stock take their share of overhead with them.</p>
+    <p class="vzcap">Illustrative, example plant, before tax and interest. Fixed production overhead is charged to each unit produced, so units that go into inventory take their share of overhead with them.</p>
   </div>
 
   <h3>Lab 4 · The break-even chart</h3>
@@ -1169,14 +1169,14 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
       <label>Variable cost per unit <output id="bCo"></output><input type="range" id="bC" min="-10" max="10" step="0.5" value="0"></label>
       <label>Fixed cost <output id="bFo"></output><input type="range" id="bF" min="-20" max="20" step="1" value="0"></label>
     </div>
-    <div class="vzlegend"><span><i class="sw s1"></i> sales</span><span><i class="sw s2"></i> total cost</span><span><i class="sw s3"></i> profit zone</span></div>
+    <div class="vzlegend"><span><i class="sw s1"></i> sales</span><span><i class="sw s2"></i> total cost (fixed + variable)</span><span><i class="sw s3"></i> profit (EBIT)</span></div>
     <div class="vz" id="bep"></div>
     <div class="res" id="bepRes"></div>
-    <p class="vzcap">Illustrative, example plant. Horizontal axis: volume as a percentage of today's volume.</p>
+    <p class="vzcap">Illustrative, example plant. Horizontal axis: volume as a percentage of today's volume. Fixed cost includes depreciation, so the gap between the lines is EBIT.</p>
   </div>
 
   <h3>Lab 5 · The mix effect</h3>
-  <p>Both segments keep their margins exactly. Only their growth differs. Watch the group margin.</p>
+  <p>Both segments keep their margins exactly. Only their growth differs. Watch the combined margin of the two segments.</p>
   <div class="calc">
     <div class="grid2">
       <label>Growth of Segment A <output id="mAo"></output><input type="range" id="mA" min="-20" max="40" step="1" value="0"></label>
@@ -1185,7 +1185,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
     <div class="vzlegend"><span><i class="sw s1"></i> Segment A</span><span><i class="sw s2"></i> Segment B</span></div>
     <div class="vz" id="mix"></div>
     <div class="res" id="mixRes"></div>
-    <p class="vzcap">Example group, segment margins of the third quarter of 2026 held constant.</p>
+    <p class="vzcap">Example group, segment EBITDA margins of the third quarter of 2026 held constant. The combined margin is before corporate cost, which is why it is higher than the group's EBITDA margin in Module 5.</p>
   </div>
 
   <h3>Lab 6 · ROCE and CFROI as a machine ages</h3>
@@ -1235,6 +1235,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
     <tr><td>Contribution margin</td><td>Sales minus variable costs: what each additional sale adds to profit while capacity is free.</td></tr>
     <tr><td>Cost of capital (WACC)</td><td>The weighted average return required by lenders and shareholders, after tax; the hurdle for investments.</td></tr>
     <tr><td>Depreciation</td><td>Spreading the cost of a physical asset over its useful life.</td></tr>
+    <tr><td>EBIT</td><td>Earnings before interest and taxes. In this tutorial the same figure as operating income and operating profit.</td></tr>
     <tr><td>EBITDA</td><td>Earnings before interest, taxes, depreciation and amortisation; here calculated as operating income plus depreciation and amortisation.</td></tr>
     <tr><td>EPS</td><td>Earnings per share: net income divided by the number of shares.</td></tr>
     <tr><td>Free cash flow</td><td>Cash from operations minus capital expenditure.</td></tr>
@@ -2316,23 +2317,23 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
 
 /* ---------- Module 1: three statements ---------- */
 (function(){
-  const s=mk("g3s",360,330,"How income statement, balance sheet and cash flow statement connect");
+  const s=mk("g3s",360,340,"How income statement, balance sheet and cash flow statement connect");
   const box=(y,h,title,lines)=>{s.appendChild(S("rect",{x:8,y,width:150,height:h,rx:8,class:"vbox"}));T(s,18,y+18,title,"b");lines.forEach((l,i)=>T(s,18,y+36+i*15,l,"mut"));};
-  box(8,96,"Income statement",["Sales","− costs, depreciation","= net income"]);
-  box(122,96,"Balance sheet",["Receivables, stock,","machines, cash","= debt + equity"]);
-  box(236,86,"Cash flow statement",["Profit ± timing","= change in cash"]);
+  box(8,96,"Income statement",["Sales","− costs incl. depreciation","= net income"]);
+  box(122,96,"Balance sheet",["Cash, receivables,","inventory, fixed assets","= liabilities + equity"]);
+  box(236,96,"Cash flow statement",["Net income","± non-cash items, timing","= change in cash"]);
   let ln=0;const link=(y1,y2,txt)=>{const x=158;ln++;txt=ln+" · "+txt;T(s,x+5,y1-4,ln,"b");s.appendChild(S("path",{d:`M${x} ${y1} C ${x+34} ${y1}, ${x+34} ${y2}, ${x+4} ${y2}`,class:"vlink",fill:"none","marker-end":"url(#ah)"}));wrap(txt,30).forEach((l,i)=>T(s,x+40,(y1+y2)/2-2+i*13,l,"sm"));};
   const d=S("defs",{});const m=S("marker",{id:"ah",viewBox:"0 0 8 8",refX:7,refY:4,markerWidth:7,markerHeight:7,orient:"auto"});m.appendChild(S("path",{d:"M0 0 L8 4 L0 8 z",class:"vhead"}));d.appendChild(m);s.appendChild(d);
   link(40,150,"Sold but unpaid becomes a receivable");
   link(72,186,"Net income is added to equity");
-  link(160,262,"Stock and receivables up = cash down");
+  link(160,262,"Inventory and receivables up = cash down");
   link(286,200,"Change in cash lands in the cash balance");
 })();
 
 /* ---------- Module 3: where $100 of sales goes ---------- */
 (function(){
   const s=mk("g100",360,100,"Where 100 dollars of sales goes");
-  const parts=[["Cost of sales",100-Q.gm,"s1"],["SG&A and other",Q.gm-Q.opMargin,"s2"],["Operating profit",Q.opMargin,"s3"]];
+  const parts=[["Cost of sales",100-Q.gm,"s1"],["SG&A and other",Q.gm-Q.opMargin,"s2"],["Operating income",Q.opMargin,"s3"]];
   let x=8;const W=344;
   parts.forEach(([n,v,c],i)=>{const w=v/100*W-(i<parts.length-1?2:0);const r=S("rect",{x,y:34,width:Math.max(w,1),height:22,class:"f"+c,rx:i===parts.length-1?4:0});r.appendChild(S("title",{},`${n}: $${nf(v,1)} of every $100`));s.appendChild(r);
     const last=i===parts.length-1;T(s,last?352:x+2,26,"$"+nf(v,0),"b",last?"end":"start");T(s,last?352:x+2,last?88:74,n,"sm",last?"end":"start");x+=v/100*W;});
@@ -2346,21 +2347,21 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
   const N=[["price","Price",0,"The net price actually invoiced, after discounts.",["rises","falls"],0],
    ["vol","Volume",0,"Units shipped.",["rises","falls"],0],
    ["mix","Product mix",0,"The share of higher-margin products and customers in sales.",["gets richer","gets poorer"],0],
-   ["varc","Material, scrap, labour",0,"Cost per unit made: material, scrap and direct labour.",["per unit rise","per unit fall"],0],
-   ["fix","Fixed cost",0,"Salaries, rent, systems: paid whatever the volume.",["rises","falls"],0],
-   ["inv","Investment",0,"Money spent on machines, tooling and buildings.",["rises","falls"],0],
+   ["varc","Variable cost per unit",0,"What each unit costs to make: material, scrap, direct labour, energy, freight.",["rises","falls"],0],
+   ["fix","Fixed cost",0,"Salaries, rent, systems: paid whatever the volume. Depreciation is kept apart here; it enters between EBITDA and EBIT.",["rises","falls"],0],
+   ["inv","Capital expenditure",0,"Money spent on machines, tooling and buildings.",["rises","falls"],0],
    ["terms","Customer payment terms",0,"How long customers are allowed, or take, to pay.",["get longer","get shorter"],0],
-   ["stock","Stock policy",0,"Batch sizes, safety stock, bulk purchases.",["holds more stock","holds less stock"],0],
+   ["stock","Safety stock and batch sizes",0,"How much material and finished goods the plant chooses to hold, including bulk purchases.",["increase","decrease"],0],
    ["supp","Supplier payment terms",0,"How long the company takes to pay its suppliers.",["get longer","get shorter"],0],
    ["sales","Sales",1,"Everything shipped and invoiced: price times volume.",["rise","fall"],1],
    ["cm","Contribution",2,"Sales minus variable cost: what is left to cover fixed cost and profit.",["rises","falls"],1],
    ["fa","Fixed assets",2,"Machines, buildings and tooling at book value.",["rise","fall"],0],
-   ["ar","Receivables (DSO)",2,"Invoices not yet paid.",["rise","fall"],-1],
-   ["invt","Inventory (DIO)",2,"Material and goods paid for but not yet sold.",["rises","falls"],-1],
-   ["ap","Payables (DPO)",2,"Supplier invoices not yet paid.",["rise","fall"],0],
+   ["ar","Receivables",2,"Invoices not yet paid, in dollars. Expressed in days of sales this is DSO; note that more sales raise the amount but not the days.",["rise","fall"],-1],
+   ["invt","Inventory",2,"Material and goods paid for but not yet sold, in dollars. Expressed in days of cost of sales this is DIO.",["rises","falls"],-1],
+   ["ap","Payables",2,"Supplier invoices not yet paid, in dollars. Expressed in days of cost of sales this is DPO.",["rise","fall"],0],
    ["ebitda","EBITDA",3,"Operating income plus depreciation and amortisation.",["rises","falls"],1],
-   ["ebit","EBIT",3,"Operating profit after depreciation.",["rises","falls"],1],
-   ["wc","Working capital (CCC)",3,"Receivables plus inventory minus payables.",["rises","falls"],-1],
+   ["ebit","EBIT",3,"Operating income: EBITDA minus depreciation and amortisation.",["rises","falls"],1],
+   ["wc","Working capital",3,"Receivables plus inventory minus payables, in dollars. Expressed in days this is the cash conversion cycle (CCC).",["rises","falls"],-1],
    ["ocf","Operating cash flow",4,"Cash produced by day-to-day business.",["rises","falls"],1],
    ["ce","Capital employed",4,"Fixed assets plus working capital: the money tied up in the unit.",["rises","falls"],-1],
    ["fcf","Free cash flow",5,"Cash left after investment.",["rises","falls"],1],
@@ -2373,15 +2374,15 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
   const Ed=[["price","sales",1,1,"Sales are price times volume."],["vol","sales",1,1,"Sales are price times volume."],
    ["sales","cm",1,1,"Every dollar of sales carries its contribution: price minus variable cost."],
    ["mix","cm",1,1,"A larger share of high-margin products raises contribution at the same sales."],
-   ["varc","cm",-1,1,"Material, scrap and labour per unit are deducted from contribution."],
+   ["varc","cm",-1,1,"Contribution is sales minus variable cost, so a higher cost per unit lowers it dollar for dollar."],
    ["sales","ar",1,0.5,"At unchanged payment terms, receivables rise and fall with sales."],
    ["vol","invt",1,0.5,"More volume needs more material and finished goods on hand; less volume needs less."],
-   ["cm","ebitda",1,1,"EBITDA is contribution minus fixed cost."],["fix","ebitda",-1,1,"Fixed cost is deducted in full, whatever the volume."],
+   ["cm","ebitda",1,1,"EBITDA is contribution minus fixed cost (before depreciation)."],["fix","ebitda",-1,1,"Fixed cost is deducted in full, whatever the volume."],
    ["ebitda","ebit",1,1,"EBIT is EBITDA minus depreciation and amortisation."],
    ["inv","fa",1,1,"Investment adds machines and tooling to fixed assets."],["fa","ebit",-1,0.5,"Fixed assets are depreciated; a larger asset base means more depreciation."],
    ["inv","fcf",-1,1,"The purchase price leaves as cash in the year of investment."],
    ["terms","ar",1,1,"Longer terms keep invoices open for longer; shorter terms bring the money in sooner."],
-   ["stock","invt",1,1,"Batch sizes and safety stock set how much inventory is held."],
+   ["stock","invt",1,1,"Larger batches and more safety stock mean more inventory; smaller ones mean less."],
    ["supp","ap",1,1,"Supplier terms set how much is owed to suppliers at any time."],
    ["ar","wc",1,1,"Open invoices are money earned but not yet usable."],["invt","wc",1,1,"Stock is money already spent and not yet earned back."],
    ["ap","wc",-1,1,"Supplier credit finances part of stock and receivables."],
@@ -2444,7 +2445,7 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
       (effects?`<p style="margin:.6rem 0 .2rem"><b>If ${m.name.toLowerCase()} ${m.words[d>0?0:1]}, this follows:</b></p><ul class="efflist">${effects}</ul>`:`<p style="margin:.6rem 0 .2rem">Nothing on the map follows from this figure; it is an end result.</p>`)+
       (drivers.length?`<p style="margin:.6rem 0 .2rem"><b>What makes ${m.name.toLowerCase()} ${d>0?"go up":"go down"}:</b> ${drivers.join(", ")}.</p>`:"")+
       (roots.length?`<p class="meta">Decisions that reach it: ${roots.join(", ")}.</p>`:"")+
-      (id==="inv"?`<p class="meta">The map shows only the mechanical effects of spending the money. What an investment is meant to achieve (lower unit cost, more volume) enters through those boxes.</p>`:"");
+      (id==="inv"?`<p class="meta">The map shows only the mechanical effects of spending the money. What an investment is meant to achieve (lower variable cost per unit, more volume) enters through those boxes.</p>`:"");
     $("kmapInfo").querySelectorAll(".dirbtn button").forEach(b=>b.addEventListener("click",()=>pick(cur,+b.dataset.d)));
   }
   pick(cur,dir);
@@ -2462,7 +2463,7 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
   // boxes: key, label, row, col (0..cols-1), cols in row, good direction, format
   const B=[["roce","ROCE",0,0,2,1,"p"],["cfroi","CFROI",0,1,2,1,"p"],["margin","EBIT margin",1,0,2,1,"p"],["turn","Capital turnover",1,1,2,1,"x"],
     ["ebit","EBIT",2,0,3,1,"m"],["sales","Sales",2,1,3,1,"m"],["ce","Capital employed",2,2,3,-1,"m"],
-    ["cm","Contribution",3,0,4,1,"m"],["fixed","Fixed cost",3,1,4,-1,"m"],["fa","Fixed assets",3,2,4,-1,"m"],["wc","Working capital",3,3,4,-1,"m"],
+    ["cm","Contribution",3,0,4,1,"m"],["fixed","Fixed cost",3,1,4,-1,"m"],["fa","Fixed assets",3,2,4,0,"m"],["wc","Working capital",3,3,4,-1,"m"],
     ["ar","Receivables",4,1,4,-1,"m"],["inv","Inventory",4,2,4,-1,"m"],["ap","Payables",4,3,4,1,"m"]];
   const L=[["roce","margin"],["roce","turn"],["margin","ebit"],["margin","sales"],["turn","sales"],["turn","ce"],["ebit","cm"],["ebit","fixed"],["ce","fa"],["ce","wc"],["wc","ar"],["wc","inv"],["wc","ap"]];
   const W=360,BH=46,RH=66; const fmt={p:x=>nf(x,1)+"%",x:x=>nf(x,2)+"×",m:x=>nf(x,1)};
@@ -2473,14 +2474,14 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
     $("tDso").textContent=sg(o.ds,0)+" days";$("tDio").textContent=sg(o.di,0)+" days";$("tDpo").textContent=sg(o.dp,0)+" days";$("tKo").textContent="$"+nf(o.k,1)+"M";
     const n=calc(o), s=mk("tree",W,6+5*RH-12,"Return on capital employed broken down into its drivers");
     L.forEach(([a,b])=>{const p=P[a],q=P[b];s.appendChild(S("path",{d:`M${p.x+p.w/2} ${p.y+BH} L ${q.x+q.w/2} ${q.y}`,class:"tl",fill:"none"}));});
-    B.forEach(([k,label,,,,dir,f])=>{const p=P[k],d=n[k]-base[k],chg=Math.abs(d)>(f==="x"?0.004:0.04),good=d*dir>0;
+    B.forEach(([k,label,,,,dir,f])=>{const p=P[k],d=n[k]-base[k],chg=Math.abs(d)>(f==="x"?0.004:0.04),good=d*dir>0,neu=dir===0;
       const r=S("rect",{x:p.x,y:p.y,width:p.w,height:BH,rx:7,class:"tb"+(chg?" chg":"")});r.appendChild(S("title",{},`${label}: ${fmt[f](base[k])} → ${fmt[f](n[k])}`));s.appendChild(r);
       T(s,p.x+p.w/2,p.y+13,label,"sm","middle");T(s,p.x+p.w/2,p.y+28,fmt[f](n[k]),"b","middle");
-      if(chg){const t=S("text",{x:p.x+p.w/2,y:p.y+41,"text-anchor":"middle",class:"sm"});const a=S("tspan",{class:good?"good":"bad"},(d>0?(good?"▲":"△"):(good?"▼":"▽"))+" ");t.appendChild(a);t.appendChild(S("tspan",{},sg(d,f==="x"?2:1)+(f==="p"?" pts":"")));s.appendChild(t);}});
+      if(chg){const t=S("text",{x:p.x+p.w/2,y:p.y+41,"text-anchor":"middle",class:"sm"});const a=S("tspan",{class:neu?"":(good?"good":"bad")},(d>0?(good||neu?"▲":"△"):(good||neu?"▼":"▽"))+" ");t.appendChild(a);t.appendChild(S("tspan",{},sg(d,f==="x"?2:1)+(f==="p"?" pts":"")));s.appendChild(t);}});
     const cash=-(n.wc-base.wc)-o.k;
     $("treeRes").innerHTML=`ROCE ${nf(base.roce,1)}% → <b>${nf(n.roce,1)}%</b> = margin ${nf(n.margin,1)}% × turnover ${nf(n.turn,2)}<br>`+
       `CFROI ${nf(base.cfroi,1)}% → <b>${nf(n.cfroi,1)}%</b> (cash earned on the original cost of all assets; not part of the tree, shown for comparison)<br>EVA $${nf(base.eva,1)}M → <b>$${nf(n.eva,1)}M</b> · break-even sales $${nf(base.be,1)}M → <b>$${nf(n.be,1)}M</b><br>`+
-      `One-time cash effect from working capital and equipment: <b>${sg(cash,1)} $M</b>`;
+      `One-time cash effect from working capital and capital expenditure: <b>${sg(cash,1)} $M</b>`;
   }
   ids.forEach(i=>$(i).addEventListener("input",draw));
   $("tReset").addEventListener("click",()=>{ids.forEach(i=>$(i).value=0);draw();});
@@ -2499,14 +2500,14 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
     for(let d=0;d<=max;d+=30){s.appendChild(S("line",{x1:x(d),y1:30,x2:x(d),y2:196,class:"grid"}));T(s,x(d),212,d,"mut","middle");}
     T(s,X1,228,"days after the material arrives","mut","end");
     const bar=(y,a,b,cls,label,val)=>{const w=Math.max(x(b)-x(a),1);const r=S("rect",{x:x(a),y,width:w,height:18,rx:4,class:cls});r.appendChild(S("title",{},`${label}: ${val}`));s.appendChild(r);const txt=`${label} · ${val}`,over=x(a)+txt.length*5.2>X1;T(s,over?Math.max(x(b),txt.length*5.2+X0):x(a),y-5,txt,"sm",over?"end":"start");};
-    bar(46,0,di,"fs1","In stock",di+" days");
-    bar(88,di,end,"fs2","Waiting for the customer to pay",ds+" days");
-    bar(130,0,dp,"fs3","Financed by the supplier",dp+" days");
-    if(gap>0)bar(172,dp,end,"fink","Cash gap the company finances",gap+" days");
-    else bar(172,end,dp,"fs3","Supplier pays for the whole cycle",(-gap)+" days to spare");
+    bar(46,0,di,"fs1","In inventory (DIO)",di+" days");
+    bar(88,di,end,"fs2","Waiting for the customer's payment (DSO)",ds+" days");
+    bar(130,0,dp,"fs3","Financed by supplier credit (DPO)",dp+" days");
+    if(gap>0)bar(172,dp,end,"fink","Cash gap the company finances (CCC)",gap+" days");
+    else bar(172,end,dp,"fs3","Supplier credit outlasts the cycle (negative CCC)",(-gap)+" days");
     const ar=ds*W.dayAr,inv=di*W.dayInv,ap=dp*W.dayInv,wc=ar+inv-ap,wc0=b0.s*W.dayAr+b0.i*W.dayInv-b0.p*W.dayInv;
     $("cccRes").innerHTML=`Cash conversion cycle: ${di} + ${ds} − ${dp} = <b>${gap} days</b> (start: ${b0.i+b0.s-b0.p})<br>`+
-      `Tied up: receivables $${nf(ar,0)}M + stock $${nf(inv,0)}M − supplier credit $${nf(ap,0)}M = <b>$${nf(wc,0)}M</b><br>`+
+      `Working capital tied up: receivables $${nf(ar,0)}M + inventory $${nf(inv,0)}M − payables $${nf(ap,0)}M = <b>$${nf(wc,0)}M</b><br>`+
       `Against the start: <b>${sg(wc0-wc,0)} $M</b> of cash ${wc0-wc>=0?"released":"absorbed"}; at 6% interest about ${sg((wc0-wc)*0.06,1)} $M a year.`;
   }
   ["cI","cS","cP"].forEach(i=>$(i).addEventListener("input",draw));draw();
@@ -2523,7 +2524,7 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
     const x=m=>X0+m/M*(X1-X0),y=v=>Y0-(v-lo)/(hi-lo)*(Y0-Y1);
     const s=mk("pvc",Wd,H,"Cumulative profit and cumulative cash over six months");
     const step=hi-lo>12?4:2;for(let v=Math.ceil(lo/step)*step;v<=hi;v+=step){s.appendChild(S("line",{x1:X0,y1:y(v),x2:X1,y2:y(v),class:"grid"}));T(s,X0-5,y(v)+4,nf(v,0),"mut","end");}
-    for(let m=0;m<=M;m++)T(s,x(m),Y0+16,m,"mut","middle");T(s,X1,H-4,"months · $ million, cumulative","mut","end");
+    for(let m=0;m<=M;m++)T(s,x(m),Y0+16,m,"mut","middle");T(s,X1,H-4,"months","mut","end");T(s,X0,10,"$ million, cumulative","mut");
     const line=(arr,cls)=>s.appendChild(S("path",{d:arr.map((v,m)=>(m?"L":"M")+x(m)+" "+y(v)).join(" "),class:"ln2 "+cls,fill:"none"}));
     line(cur.pr,"ss1");line(cur.ca,"ss2");
     const hx=S("line",{x1:x(hover),y1:Y1,x2:x(hover),y2:Y0,class:"cross"});s.appendChild(hx);
@@ -2533,13 +2534,13 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
     const hit=S("rect",{x:X0-10,y:0,width:X1-X0+20,height:Y0+4,fill:"transparent"});s.appendChild(hit);
     const move=ev=>{const r=s.getBoundingClientRect(),px=(ev.clientX-r.left)/r.width*Wd;const m=Math.max(0,Math.min(M,Math.round((px-X0)/(X1-X0)*M)));if(m!==hover){hover=m;draw();}};
     hit.addEventListener("pointermove",move);hit.addEventListener("pointerdown",move);
-    $("pvcRead").innerHTML=`After month ${hover}: profit <b>$${nf(cur.pr[hover],2)}M</b> · cash <b>$${nf(cur.ca[hover],2)}M</b> · stock change <b>${sg(cur.st[hover],2)} $M</b>`;
+    $("pvcRead").innerHTML=`After month ${hover}: EBIT <b>$${nf(cur.pr[hover],2)}M</b> · operating cash flow <b>$${nf(cur.ca[hover],2)}M</b> · inventory change <b>${sg(cur.st[hover],2)} $M</b>`;
     const dp=cur.pr[M]-b.pr[M],dc=cur.ca[M]-b.ca[M];
-    $("pvcRes").innerHTML=p===100?"Production equals sales: profit and cash move together, and stock does not change.":
-      `After six months, compared with producing exactly what is sold: reported profit <b>${sg(dp,2)} $M</b>, cash <b>${sg(dc,2)} $M</b>, stock <b>${sg(cur.st[M],2)} $M</b>.<br>`+
-      (p>100?`The plant looks more profitable and has less money. The extra profit of $${nf(dp,2)}M is fixed overhead stored in the warehouse; it comes back as cost when the stock is sold or written off.`
-            :`The plant looks less profitable and has more money. Stock is being turned into cash, and overhead that was stored in it now reaches the income statement.`);
-    $("pvcTable").innerHTML="<tr><th>Month</th><th class='n'>Profit</th><th class='n'>Cash</th><th class='n'>Stock change</th></tr>"+cur.pr.map((v,m)=>`<tr><td>${m}</td><td class="n">${nf(v,2)}</td><td class="n">${nf(cur.ca[m],2)}</td><td class="n">${sg(cur.st[m],2)}</td></tr>`).join("");
+    $("pvcRes").innerHTML=p===100?"Production equals sales: profit and cash move together, and inventory does not change.":
+      `After six months, compared with producing exactly what is sold: EBIT <b>${sg(dp,2)} $M</b>, operating cash flow <b>${sg(dc,2)} $M</b>, inventory <b>${sg(cur.st[M],2)} $M</b>. The three always add up: the profit difference minus the cash difference equals the inventory built.<br>`+
+      (p>100?`The plant looks more profitable and has less money. The extra profit of $${nf(dp,2)}M is fixed overhead stored in the warehouse; it comes back as cost when the inventory is sold or written off.`
+            :`The plant looks less profitable and has more money. Inventory is being turned into cash, and overhead that was stored in it now reaches the income statement.`);
+    $("pvcTable").innerHTML="<tr><th>Month</th><th class='n'>EBIT</th><th class='n'>Operating cash flow</th><th class='n'>Inventory change</th></tr>"+cur.pr.map((v,m)=>`<tr><td>${m}</td><td class="n">${nf(v,2)}</td><td class="n">${nf(cur.ca[m],2)}</td><td class="n">${sg(cur.st[m],2)}</td></tr>`).join("");
   }
   $("pP").addEventListener("input",()=>{hover=M;draw();});draw();
 })();
@@ -2553,7 +2554,7 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
     const Wd=360,H=230,X0=34,X1=346,Y0=190,Y1=12,xm=1.4,ym=Math.max(E.sales*1.5,S1*xm*1.02),x=v=>X0+v/xm*(X1-X0),y=v=>Y0-v/ym*(Y0-Y1);
     const s=mk("bep",Wd,H,"Break-even chart");
     for(let v=0;v<=ym;v+=20){s.appendChild(S("line",{x1:X0,y1:y(v),x2:X1,y2:y(v),class:"grid"}));T(s,X0-5,y(v)+4,nf(v,0),"mut","end");}
-    [0,0.5,1].forEach(v=>T(s,x(v),Y0+15,nf(v*100,0)+"%","mut","middle"));T(s,X1,H-4,"volume · $ million","mut","end");
+    [0,0.5,1].forEach(v=>T(s,x(v),Y0+15,nf(v*100,0)+"%","mut","middle"));T(s,X1,H-4,"volume, % of today","mut","end");T(s,X0,9,"$ million","mut");
     if(be<xm)s.appendChild(S("path",{d:`M${x(be)} ${y(S1*be)} L ${x(xm)} ${y(S1*xm)} L ${x(xm)} ${y(F1+V1*xm)} Z`,class:"wash3"}));
     s.appendChild(S("path",{d:`M${x(0)} ${y(0)} L ${x(xm)} ${y(S1*xm)}`,class:"ln2 ss1",fill:"none"}));
     s.appendChild(S("path",{d:`M${x(0)} ${y(F1)} L ${x(xm)} ${y(F1+V1*xm)}`,class:"ln2 ss2",fill:"none"}));
@@ -2605,10 +2606,10 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
     const row=(y0,label,a,b,m)=>{const tot=a+b,wa=a/tot*(X1-X0);T(s,X0,y0-6,label,"sm");
       const r1=S("rect",{x:X0,y:y0,width:wa-1,height:22,class:"fs1"});r1.appendChild(S("title",{},`Segment A: ${nf(a/tot*100,0)}% of sales, margin ${nf(A.margin,1)}%`));s.appendChild(r1);
       const r2=S("rect",{x:X0+wa+1,y:y0,width:X1-X0-wa-1,height:22,rx:4,class:"fs2"});r2.appendChild(S("title",{},`Segment B: ${nf(b/tot*100,0)}% of sales, margin ${nf(Bs.margin,1)}%`));s.appendChild(r2);
-      T(s,X0,y0+38,`A ${nf(a/tot*100,0)}% of sales`,"mut");T(s,X1,y0+38,`B ${nf(b/tot*100,0)}% of sales`,"mut","end");T(s,(X0+X1)/2,y0+38,`group margin ${nf(m,1)}%`,"b","middle");};
+      T(s,X0,y0+38,`A ${nf(a/tot*100,0)}% of sales`,"mut");T(s,X1,y0+38,`B ${nf(b/tot*100,0)}% of sales`,"mut","end");T(s,(X0+X1)/2,y0+38,`combined margin ${nf(m,1)}%`,"b","middle");};
     row(18,"Today",A.sales,Bs.sales,m0);row(92,"After the growth you set",a1,b1,m1);
     const d=m1-m0;
-    $("mixRes").innerHTML=`Segment A stays at ${nf(A.margin,1)}%, Segment B at ${nf(Bs.margin,1)}%. Group margin: ${nf(m0,1)}% → <b>${nf(m1,1)}%</b> (${sg(d,2)} points).<br>`+
+    $("mixRes").innerHTML=`Segment A stays at ${nf(A.margin,1)}%, Segment B at ${nf(Bs.margin,1)}%. Combined segment EBITDA margin: ${nf(m0,1)}% → <b>${nf(m1,1)}%</b> (${sg(d,2)} points).<br>`+
       (Math.abs(d)<0.005?"Both segments grow at the same rate, so the weights and the group margin do not move.":
        d<0?`Nothing got worse inside either segment. The lower-margin segment simply weighs more. In dollars, segment earnings still rose by <b>${sg(a1*A.margin/100+b1*Bs.margin/100-(A.sales*A.margin+Bs.sales*Bs.margin)/100,1)} $M</b>.`
           :`Nothing improved inside either segment. The higher-margin segment simply weighs more.`);
