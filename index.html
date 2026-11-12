@@ -162,6 +162,16 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
 .vzcap{font-size:.82rem;color:var(--muted);margin:.3rem 0 0}.vzread{font-size:.88rem;margin:.2rem 0 .4rem}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:.1rem 1rem}.grid2 label{margin:.35rem 0 0}.grid2 output{float:right}
 #kmapInfo ul{margin:.1rem 0}#kmapInfo li{font-size:.9rem}
+.vz .kb{display:none}.vz .kb.on{display:block}.vz .kb circle{fill:var(--card);stroke:var(--muted);stroke-width:1.5}
+.vz .kn .kb text,.vz .kn.sel .kb text{font-size:10px;font-weight:700;fill:var(--ink)}
+.vz .kb.good circle{stroke:var(--good)}.vz .kn .kb.good text{fill:var(--good)}.vz .kb.bad circle{stroke:var(--bad)}.vz .kn .kb.bad text{fill:var(--bad)}
+.vz .kb.mix circle{stroke:var(--warn)}.vz .kn .kb.mix text{fill:var(--warn)}
+.dirbtn{display:flex;flex-wrap:wrap;gap:.4rem;margin:.6rem 0 .2rem}
+.dirbtn button{border:1px solid var(--line);background:var(--bg);color:var(--ink);border-radius:8px;padding:.4rem .7rem;font:inherit;font-size:.88rem;cursor:pointer}
+.dirbtn button[aria-pressed=true]{background:var(--accent);border-color:var(--accent);color:#fff}
+@media (prefers-color-scheme:dark){.dirbtn button[aria-pressed=true]{color:#0b1416}}
+.efflist{list-style:none;padding:0;margin:.2rem 0}.efflist li{margin:.4rem 0}
+.eg{font-weight:700}.eg.good{color:var(--good)}.eg.bad{color:var(--bad)}.eg.mix{color:var(--warn)}
 </style>
 </head>
 <body data-active="mgr">
@@ -1101,10 +1111,11 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
   <p class="lead">No KPI stands alone. A decision enters at one point and travels through the others. The map shows the routes; the six labs let you move one figure and watch the rest follow.</p>
 
   <h3>The KPI map</h3>
-  <p>Tap any box. Orange lines show everything that drives it, blue lines everything it drives in turn. Each arrow points from the cause to the effect. A dashed line means the two move in opposite directions.</p>
+  <p>Tap any box, then choose below the map whether it goes up or down. Every figure that follows is marked ▲ or ▼, and the list explains each step. Orange lines show what drives the selected box, blue lines what it drives in turn. Arrows point from cause to effect; a dashed line means the two move in opposite directions.</p>
   <div class="vz" id="kmap"></div>
-  <div class="vzlegend"><span><i class="ln s2"></i> drives the selected figure</span><span><i class="ln s1"></i> is driven by it</span><span><i class="ln dash"></i> moves the opposite way</span></div>
+  <div class="vzlegend"><span><i class="ln s2"></i> drives the selected figure</span><span><i class="ln s1"></i> is driven by it</span><span><i class="ln dash"></i> moves the opposite way</span><span>▲ goes up · ▼ goes down · ◆ depends</span></div>
   <div class="calc" id="kmapInfo" aria-live="polite"></div>
+  <p class="vzcap">The map shows direction, not size. Where two routes pull a figure in opposite directions, it shows the usually stronger one and names the other as a partial offset; ◆ marks cases that depend on the amounts. Use Lab 1 for the amounts.</p>
 
   <h3>Lab 1 · The return tree, live</h3>
   <p>The example plant's return on capital, taken apart into its drivers. Move a lever and see which boxes change, and by how much. Try to raise ROCE by two points using only the capital side. Then add new equipment and compare what happens to ROCE and to CFROI.</p>
@@ -2330,58 +2341,114 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
 
 /* ---------- KPI map ---------- */
 (function(){
-  const LAYERS=["Decisions","What they change first","Operating result","Cash and capital","Return and free cash","Group level"];
-  const N=[["price","Price",0,"The net price actually invoiced, after discounts."],["vol","Volume",0,"Units shipped."],["mix","Product mix",0,"The share of higher-margin products and customers in sales."],
-   ["varc","Material, scrap, labour",0,"Costs that rise and fall with every unit made."],["fix","Fixed cost",0,"Salaries, rent, systems: paid whatever the volume."],["inv","Investment",0,"Money spent on machines, tooling and buildings."],
-   ["terms","Customer payment terms",0,"How long customers are allowed, or take, to pay."],["stock","Stock policy",0,"Batch sizes, safety stock, bulk purchases."],["supp","Supplier payment terms",0,"How long the company takes to pay its suppliers."],
-   ["sales","Sales",1,"Everything shipped and invoiced."],["cm","Contribution",1,"Sales minus variable cost: what is left to cover fixed cost and profit."],["fa","Fixed assets",1,"Machines, buildings and tooling at book value."],
-   ["ar","Receivables (DSO)",1,"Invoices not yet paid."],["invt","Inventory (DIO)",1,"Material and goods paid for but not yet sold."],["ap","Payables (DPO)",1,"Supplier invoices not yet paid."],
-   ["ebitda","EBITDA",2,"Operating result before depreciation and amortisation."],["ebit","EBIT",2,"Operating profit after depreciation."],["wc","Working capital (CCC)",2,"Receivables plus inventory minus payables."],
-   ["ocf","Operating cash flow",3,"Cash produced by day-to-day business."],["ce","Capital employed",3,"Fixed assets plus working capital: the money tied up in the unit."],
-   ["fcf","Free cash flow",4,"Cash left after investment."],["roce","ROCE",4,"Operating profit per dollar of capital employed."],["eva","EVA",4,"Profit left after charging for the capital used."],["cfroi","CFROI",4,"Cash earned by operations per dollar originally invested, before any depreciation is deducted."],
-   ["lev","Net leverage",5,"Net debt in years of EBITDA."],["eps","Earnings per share",5,"Net income per share."]];
-  const Ed=[["price","sales",1,"A higher price raises sales at once, as long as volume holds."],["price","cm",1,"Price has no cost attached, so nearly all of it becomes contribution."],
-   ["vol","sales",1,"More units shipped means more invoiced."],["vol","cm",1,"Each extra unit adds its price minus its variable cost."],["vol","ar",1,"More sales leave more invoices open at the same payment terms."],["vol","invt",1,"More volume needs more material and finished goods."],
-   ["mix","cm",1,"More of the high-margin products raises contribution without any extra volume."],["varc","cm",-1,"Every dollar of material, scrap or labour comes straight off contribution."],
-   ["cm","ebitda",1,"Contribution minus fixed cost is the operating result."],["fix","ebitda",-1,"Fixed cost is deducted in full whatever the volume."],["ebitda","ebit",1,"EBIT is EBITDA after depreciation and amortisation."],
-   ["inv","fa",1,"New machines and tooling are added to fixed assets."],["fa","ebit",-1,"Fixed assets are depreciated, which lowers EBIT year after year."],["inv","fcf",-1,"The purchase price leaves as cash in the year of investment."],
-   ["terms","ar",1,"Longer terms keep invoices open for longer."],["stock","invt",1,"Larger batches and more safety stock raise inventory."],["supp","ap",1,"Longer supplier terms raise what is owed to suppliers."],
-   ["ar","wc",1,"Open invoices are money the company has earned but cannot yet use."],["invt","wc",1,"Stock is money already spent and not yet earned back."],["ap","wc",-1,"Supplier credit finances part of stock and receivables."],
-   ["wc","ce",1,"Working capital is part of the capital the unit uses."],["fa","ce",1,"Fixed assets are the other part of capital employed."],
-   ["ebitda","ocf",1,"EBITDA is the starting point of operating cash flow."],["wc","ocf",-1,"A rise in working capital absorbs cash; a fall releases it."],["ocf","fcf",1,"Free cash flow is operating cash flow less investment."],
-   ["ebit","roce",1,"More profit on the same capital raises the return."],["ce","roce",-1,"More capital for the same profit lowers the return."],["ebit","eva",1,"Profit after tax is the positive side of value added."],["ce","eva",-1,"Every dollar of capital carries a yearly charge at the cost of capital."],
-   ["ebitda","cfroi",1,"The cash earned by operations is the numerator: operating profit after tax plus depreciation."],["inv","cfroi",-1,"Every dollar invested enters the base at its full cost and stays there; depreciation does not shrink it."],["wc","cfroi",-1,"Working capital is part of the gross investment the cash is measured against."],["fcf","lev",-1,"Free cash flow can repay debt."],["ebitda","lev",-1,"Higher earnings make the same debt lighter."],["ebit","eps",1,"Operating profit is the main source of net income."],["lev","eps",-1,"More debt means more interest, deducted before net income."]];
+  const LAYERS=["Decisions","Sales","What changes next","Operating result","Cash and capital","Return and free cash","Debt","Per share"];
+  // id, label, layer, description, [word for "up", word for "down"], judgement: 1 = up is favourable, -1 = up ties up cash / adds risk, 0 = neutral
+  const N=[["price","Price",0,"The net price actually invoiced, after discounts.",["rises","falls"],0],
+   ["vol","Volume",0,"Units shipped.",["rises","falls"],0],
+   ["mix","Product mix",0,"The share of higher-margin products and customers in sales.",["gets richer","gets poorer"],0],
+   ["varc","Material, scrap, labour",0,"Cost per unit made: material, scrap and direct labour.",["per unit rise","per unit fall"],0],
+   ["fix","Fixed cost",0,"Salaries, rent, systems: paid whatever the volume.",["rises","falls"],0],
+   ["inv","Investment",0,"Money spent on machines, tooling and buildings.",["rises","falls"],0],
+   ["terms","Customer payment terms",0,"How long customers are allowed, or take, to pay.",["get longer","get shorter"],0],
+   ["stock","Stock policy",0,"Batch sizes, safety stock, bulk purchases.",["holds more stock","holds less stock"],0],
+   ["supp","Supplier payment terms",0,"How long the company takes to pay its suppliers.",["get longer","get shorter"],0],
+   ["sales","Sales",1,"Everything shipped and invoiced: price times volume.",["rise","fall"],1],
+   ["cm","Contribution",2,"Sales minus variable cost: what is left to cover fixed cost and profit.",["rises","falls"],1],
+   ["fa","Fixed assets",2,"Machines, buildings and tooling at book value.",["rise","fall"],0],
+   ["ar","Receivables (DSO)",2,"Invoices not yet paid.",["rise","fall"],-1],
+   ["invt","Inventory (DIO)",2,"Material and goods paid for but not yet sold.",["rises","falls"],-1],
+   ["ap","Payables (DPO)",2,"Supplier invoices not yet paid.",["rise","fall"],0],
+   ["ebitda","EBITDA",3,"Operating income plus depreciation and amortisation.",["rises","falls"],1],
+   ["ebit","EBIT",3,"Operating profit after depreciation.",["rises","falls"],1],
+   ["wc","Working capital (CCC)",3,"Receivables plus inventory minus payables.",["rises","falls"],-1],
+   ["ocf","Operating cash flow",4,"Cash produced by day-to-day business.",["rises","falls"],1],
+   ["ce","Capital employed",4,"Fixed assets plus working capital: the money tied up in the unit.",["rises","falls"],-1],
+   ["fcf","Free cash flow",5,"Cash left after investment.",["rises","falls"],1],
+   ["roce","ROCE",5,"Operating profit per dollar of capital employed.",["rises","falls"],1],
+   ["eva","EVA",5,"Profit left after charging for the capital used.",["rises","falls"],1],
+   ["cfroi","CFROI",5,"Cash earned by operations per dollar originally invested.",["rises","falls"],1],
+   ["lev","Net leverage",6,"Net debt in years of EBITDA.",["rises","falls"],-1],
+   ["eps","Earnings per share",7,"Net income per share.",["rise","fall"],1]];
+  // from, to, sign (+1 same direction, -1 opposite), strength (1 main route, 0.5 side effect), why
+  const Ed=[["price","sales",1,1,"Sales are price times volume."],["vol","sales",1,1,"Sales are price times volume."],
+   ["sales","cm",1,1,"Every dollar of sales carries its contribution: price minus variable cost."],
+   ["mix","cm",1,1,"A larger share of high-margin products raises contribution at the same sales."],
+   ["varc","cm",-1,1,"Material, scrap and labour per unit are deducted from contribution."],
+   ["sales","ar",1,0.5,"At unchanged payment terms, receivables rise and fall with sales."],
+   ["vol","invt",1,0.5,"More volume needs more material and finished goods on hand; less volume needs less."],
+   ["cm","ebitda",1,1,"EBITDA is contribution minus fixed cost."],["fix","ebitda",-1,1,"Fixed cost is deducted in full, whatever the volume."],
+   ["ebitda","ebit",1,1,"EBIT is EBITDA minus depreciation and amortisation."],
+   ["inv","fa",1,1,"Investment adds machines and tooling to fixed assets."],["fa","ebit",-1,0.5,"Fixed assets are depreciated; a larger asset base means more depreciation."],
+   ["inv","fcf",-1,1,"The purchase price leaves as cash in the year of investment."],
+   ["terms","ar",1,1,"Longer terms keep invoices open for longer; shorter terms bring the money in sooner."],
+   ["stock","invt",1,1,"Batch sizes and safety stock set how much inventory is held."],
+   ["supp","ap",1,1,"Supplier terms set how much is owed to suppliers at any time."],
+   ["ar","wc",1,1,"Open invoices are money earned but not yet usable."],["invt","wc",1,1,"Stock is money already spent and not yet earned back."],
+   ["ap","wc",-1,1,"Supplier credit finances part of stock and receivables."],
+   ["wc","ce",1,1,"Working capital is part of the capital the unit uses."],["fa","ce",1,1,"Fixed assets are the other part of capital employed."],
+   ["ebitda","ocf",1,1,"EBITDA is the starting point of operating cash flow."],["wc","ocf",-1,1,"A rise in working capital absorbs cash; a fall releases it."],
+   ["ocf","fcf",1,1,"Free cash flow is operating cash flow less investment."],
+   ["ebit","roce",1,1,"ROCE is EBIT divided by capital employed."],["ce","roce",-1,1,"ROCE is EBIT divided by capital employed: more capital for the same profit lowers it."],
+   ["ebit","eva",1,1,"Profit after tax is the positive side of value added."],["ce","eva",-1,1,"Every dollar of capital carries a yearly charge at the cost of capital."],
+   ["ebitda","cfroi",1,1,"The cash earned by operations is the numerator of CFROI."],["inv","cfroi",-1,1,"Every dollar invested enters the base at full cost and stays there."],
+   ["wc","cfroi",-1,0.5,"Working capital is part of the investment the cash is measured against."],
+   ["fcf","lev",-1,1,"Free cash flow can repay debt."],["ebitda","lev",-1,1,"Leverage is net debt divided by EBITDA."],
+   ["ebit","eps",1,1,"Operating profit is the main source of net income."],["lev","eps",-1,0.5,"More debt means more interest, deducted before net income."]];
   const W=360,BW=108,BH=34,GX=12,RH=44,LH=22; const pos={}; let y=4; const rows=[];
   LAYERS.forEach((ln,L)=>{const ns=N.filter(n=>n[2]===L);rows.push({y,label:ln});y+=LH;for(let i=0;i<ns.length;i+=3){const r=ns.slice(i,i+3);const tw=r.length*BW+(r.length-1)*GX;let x=(W-tw)/2;r.forEach(n=>{pos[n[0]]={x,y};x+=BW+GX;});y+=RH;}y+=6;});
-  const H=y; const name=Object.fromEntries(N.map(n=>[n[0],n[1]])), desc=Object.fromEntries(N.map(n=>[n[0],n[3]]));
+  const H=y, meta=Object.fromEntries(N.map(n=>[n[0],{name:n[1],layer:n[2],desc:n[3],words:n[4],judge:n[5]}]));
   const s=mk("kmap",W,H,"Map of how decisions and KPIs connect");
   const eEls=Ed.map(([a,b,sign])=>{const p=pos[a],q=pos[b];const x1=p.x+BW/2,y1=p.y+BH,x2=q.x+BW/2,y2=q.y;const my=(y1+y2)/2;
-    const e=S("path",{d:`M${x1} ${y1} C ${x1} ${my}, ${x2} ${my}, ${x2} ${y2}`,fill:"none",class:"ke"+(sign<0?" neg":"")});s.appendChild(e);const dn=y2>=my?1:-1;const h=S("path",{d:`M${x2} ${y2} L ${x2-4.5} ${y2-8*dn} L ${x2+4.5} ${y2-8*dn} Z`,class:"ka"});s.appendChild(h);e._head=h;return e;});
+    const e=S("path",{d:`M${x1} ${y1} C ${x1} ${my}, ${x2} ${my}, ${x2} ${y2}`,fill:"none",class:"ke"+(sign<0?" neg":"")});s.appendChild(e);
+    const dn=y2>=my?1:-1;const h=S("path",{d:`M${x2} ${y2} L ${x2-4.5} ${y2-8*dn} L ${x2+4.5} ${y2-8*dn} Z`,class:"ka"});s.appendChild(h);e._head=h;return e;});
   rows.forEach(r=>T(s,W/2,r.y+14,r.label.toUpperCase(),"lay","middle"));
-  const nEls={};let firstNode=null;
+  const nEls={},bEls={};let firstNode=null;
   N.forEach(([id,label])=>{const p=pos[id];const g=S("g",{class:"kn",tabindex:0,role:"button","aria-label":label});
     g.appendChild(S("rect",{x:p.x,y:p.y,width:BW,height:BH,rx:7}));const ls=wrap(label,17);
     ls.forEach((l,i)=>g.appendChild(S("text",{x:p.x+BW/2,y:p.y+(ls.length===1?21:14)+i*13,"text-anchor":"middle"},l)));
-    g.addEventListener("click",()=>pick(id));g.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();pick(id);}});
+    const b=S("g",{class:"kb"});b.appendChild(S("circle",{cx:p.x+BW-3,cy:p.y+3,r:8.5}));b.appendChild(S("text",{x:p.x+BW-3,y:p.y+7,"text-anchor":"middle"},""));g.appendChild(b);bEls[id]=b;
+    g.addEventListener("click",()=>pick(id,dir));g.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();pick(id,dir);}});
     s.appendChild(g);nEls[id]=g;if(!firstNode)firstNode=g;});
-  function reach(start,dir){const seen=new Set([start]),edges=new Set();const q=[start];while(q.length){const c=q.shift();Ed.forEach((e,i)=>{const from=dir>0?e[0]:e[1],to=dir>0?e[1]:e[0];if(from===c){edges.add(i);if(!seen.has(to)){seen.add(to);q.push(to);}}});}return{seen,edges};}
-  function pick(id){
-    const up=reach(id,-1),down=reach(id,1);
+  function reach(start,d){const seen=new Set([start]),edges=new Set();const q=[start];while(q.length){const c=q.shift();Ed.forEach((e,i)=>{const from=d>0?e[0]:e[1],to=d>0?e[1]:e[0];if(from===c){edges.add(i);if(!seen.has(to)){seen.add(to);q.push(to);}}});}return{seen,edges};}
+  // follow every route downstream and collect, per figure, the strongest upward and downward push and which neighbour delivers it
+  function impact(start,d){const st={};
+    (function walk(node,sign,str){Ed.forEach(e=>{if(e[0]!==node)return;const sg2=sign*e[2],st2=str*e[3],t=e[1];const r=st[t]||(st[t]={up:0,down:0,via:{}});
+      if(sg2>0)r.up=Math.max(r.up,st2);else r.down=Math.max(r.down,st2);
+      const k=e[0];if(!r.via[k]||r.via[k].str<st2)r.via[k]={sign:sg2,str:st2,why:e[4]};
+      walk(t,sg2,st2);});})(start,d,1);
+    Object.values(st).forEach(r=>{r.net=r.up>r.down?1:r.down>r.up?-1:0;r.offset=r.up>0&&r.down>0;});return st;}
+  let cur="invt",dir=1;
+  const glyph=v=>v>0?"▲":v<0?"▼":"◆";
+  function verdict(id,v){const m=meta[id];if(v===0)return["mix","depends on the size of the two effects"];
+    if(m.judge===0)return["neu",""];const good=v*m.judge>0;
+    if(m.judge<0&&id!=="lev")return[good?"good":"bad",good?"cash is released":"more cash is tied up"];
+    if(id==="lev")return[good?"good":"bad",good?"less debt relative to earnings":"more debt relative to earnings"];
+    return[good?"good":"bad",good?"favourable":"unfavourable"];}
+  function pick(id,d){
+    cur=id;dir=d;const up=reach(id,-1),down=reach(id,1),st=impact(id,d);
     eEls.forEach((e,i)=>{[e,e._head].forEach(el=>{el.classList.toggle("up",up.edges.has(i));el.classList.toggle("down",down.edges.has(i));});});
     eEls.forEach((e,i)=>{if(up.edges.has(i)||down.edges.has(i)){s.insertBefore(e,firstNode);s.insertBefore(e._head,firstNode);}});
-    N.forEach(([n])=>{const g=nEls[n];g.classList.toggle("sel",n===id);g.classList.toggle("dim",!(up.seen.has(n)||down.seen.has(n)));g.classList.toggle("isup",n!==id&&up.seen.has(n));g.classList.toggle("isdown",n!==id&&down.seen.has(n));});
-    const arr=x=>x>0?"▲":"▼";
-    const ins=Ed.filter(e=>e[1]===id).map(e=>`<li><b>${name[e[0]]} ▲ → ${name[id]} ${arr(e[2])}</b> ${e[3]}</li>`).join("");
-    const outs=Ed.filter(e=>e[0]===id).map(e=>`<li><b>${name[id]} ▲ → ${name[e[1]]} ${arr(e[2])}</b> ${e[3]}</li>`).join("");
-    const ends=[...down.seen].filter(n=>n!==id&&!Ed.some(e=>e[0]===n)).map(n=>name[n]);
-    const roots=[...up.seen].filter(n=>n!==id&&!Ed.some(e=>e[1]===n)).map(n=>name[n]);
-    $("kmapInfo").innerHTML=`<b>${name[id]}</b><br>${desc[id]}`+
-      (ins?`<p style="margin:.5rem 0 .1rem"><b>Directly driven by</b></p><ul>${ins}</ul>`:"")+
-      (outs?`<p style="margin:.5rem 0 .1rem"><b>Directly drives</b></p><ul>${outs}</ul>`:"")+
-      (roots.length?`<p><b>Decisions that reach it:</b> ${roots.join(", ")}.</p>`:"")+
-      (ends.length?`<p><b>Where the effect ends up:</b> ${ends.join(", ")}.</p>`:"");
+    N.forEach(([n])=>{const g=nEls[n];g.classList.toggle("sel",n===id);g.classList.toggle("dim",!(up.seen.has(n)||down.seen.has(n)));g.classList.toggle("isup",n!==id&&up.seen.has(n));g.classList.toggle("isdown",n!==id&&down.seen.has(n));
+      const b=bEls[n],v=n===id?d:(st[n]?st[n].net:null);b.setAttribute("class","kb"+(v===null?"":" on "+(n===id?"neu":verdict(n,v)[0])));b.lastChild.textContent=v===null?"":glyph(v);});
+    const m=meta[id], nm=x=>meta[x].name;
+    const effects=N.filter(n=>st[n[0]]).map(([n])=>{const r=st[n],[cls,word]=verdict(n,r.net);const vias=Object.entries(r.via);
+      const same=vias.filter(([,x])=>x.sign===r.net),opp=vias.filter(([,x])=>x.sign!==r.net);
+      let why;
+      if(r.net===0)why=`pushed up through ${vias.filter(([,x])=>x.sign>0).map(([k])=>nm(k)).join(" and ")}, pushed down through ${vias.filter(([,x])=>x.sign<0).map(([k])=>nm(k)).join(" and ")}.`;
+      else why=`Through ${same.map(([k])=>nm(k)).join(" and ")}: ${same[0][1].why}`+(opp.length?` Partly offset through ${opp.map(([k])=>nm(k)).join(" and ")}.`:"");
+      return `<li><span class="eg ${cls}">${glyph(r.net)}</span> <b>${nm(n)}</b>${word?" · "+word:""}${r.offset&&r.net!==0?" on balance":""}<br><span class="meta">${why}</span></li>`;}).join("");
+    const drivers=Ed.filter(e=>e[1]===id).map(e=>`<b>${nm(e[0])}</b> ${glyph(d*e[2])}`);
+    const roots=[...up.seen].filter(n=>n!==id&&!Ed.some(e=>e[1]===n)).map(nm);
+    $("kmapInfo").innerHTML=`<b>${m.name}</b><br>${m.desc}
+      <div class="dirbtn" role="group" aria-label="Direction"><button type="button" data-d="1" aria-pressed="${d>0}">▲ ${m.name} ${m.words[0]}</button><button type="button" data-d="-1" aria-pressed="${d<0}">▼ ${m.name} ${m.words[1]}</button></div>`+
+      (effects?`<p style="margin:.6rem 0 .2rem"><b>If ${m.name.toLowerCase()} ${m.words[d>0?0:1]}, this follows:</b></p><ul class="efflist">${effects}</ul>`:`<p style="margin:.6rem 0 .2rem">Nothing on the map follows from this figure; it is an end result.</p>`)+
+      (drivers.length?`<p style="margin:.6rem 0 .2rem"><b>What makes ${m.name.toLowerCase()} ${d>0?"go up":"go down"}:</b> ${drivers.join(", ")}.</p>`:"")+
+      (roots.length?`<p class="meta">Decisions that reach it: ${roots.join(", ")}.</p>`:"")+
+      (id==="inv"?`<p class="meta">The map shows only the mechanical effects of spending the money. What an investment is meant to achieve (lower unit cost, more volume) enters through those boxes.</p>`:"");
+    $("kmapInfo").querySelectorAll(".dirbtn button").forEach(b=>b.addEventListener("click",()=>pick(cur,+b.dataset.d)));
   }
-  pick("invt");
+  pick(cur,dir);
+  window.KMAP={N,Ed,impact,meta};
 })();
 
 /* ---------- Lab 1: live return tree ---------- */
