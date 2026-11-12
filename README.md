@@ -22,9 +22,9 @@ Open `index.html` in any browser (download the file, or clone the repository and
 | 11 | The example plant: a consistent invented data set for plant-level KPIs | Example plant |
 | 12 | Role track, written separately for each of the four roles: line of sight to the group result, role KPIs, worked cases, calculator, exercises with solutions, self-test | Example plant |
 | 13 | Decision lab: pick one of 23 everyday decisions and see which indicators move, in which direction, why, and what the trade-off is | Qualitative |
-| 14 | Reading the signals: ten cases of several figures read together; each answer shows per KPI what it suggests alone and what it contributes to the conclusion, marks the key clue, and lists what to check next and the decisions behind it | Illustrative |
+| 14 | Reading the signals: nine cases of several figures read together; each answer shows per KPI what it suggests alone and what it contributes to the conclusion, marks the key clue, and lists what to check next and the decisions behind it | Illustrative |
 | 15 | How the KPIs connect: an interactive map of drivers and effects, and six labs (live return tree with CFROI, cash-cycle timeline, profit versus cash when stock is built, break-even chart, mix effect, ROCE versus CFROI as a machine ages) | Both, labelled |
-| 16 | KPI catalogue: 77 indicators with formula, worked value, what the value means in practice (computed from the data), how to read it, which decisions move it and how each role influences it; searchable, filterable by topic and by role | Both, labelled |
+| 16 | KPI catalogue: 76 indicators with formula, worked value, what the value means in practice (computed from the data), how to read it, which decisions move it and how each role influences it; searchable, filterable by topic and by role | Both, labelled |
 
 Modules 2 to 9 each contain a "How to read it" part and a table of the decisions that move the figure. Module 12, the decision lab and the catalogue highlights change with the selected role.
 
@@ -32,6 +32,7 @@ Modules 2 to 9 each contain a "How to read it" part and a table of the decisions
 
 - The **example group** is invented: a fictional listed industrial company with two segments. Its figures are internally consistent and of a realistic order of magnitude, but describe no real company.
 - The **example plant**, its customers and its development project are invented. Values are labelled "illustrative".
+- All profit figures are reported figures. EBITDA is operating income plus depreciation and amortisation; the tutorial uses no adjusted (non-GAAP) measures.
 - Values labelled "own calculation", "own estimate" or "illustration" use simplified textbook formulas; company-specific definitions often differ.
 - Internal KPI definitions, targets and incentive systems of any company are not covered.
 

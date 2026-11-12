@@ -149,6 +149,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
 .vz .ss1{stroke:var(--s1)}.vz .ss2{stroke:var(--s2)}.vz .ln2{stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
 .vz .grid{stroke:var(--line);stroke-width:1}.vz .cross{stroke:var(--muted);stroke-width:1}.vz .ring{stroke:var(--card);stroke-width:2}.vz .wash3{fill:var(--s3);opacity:.14}
 .vz .ke{stroke:var(--line);stroke-width:1.2}.vz .ke.neg{stroke-dasharray:4 3}.vz .ke.up{stroke:var(--s2);stroke-width:2}.vz .ke.down{stroke:var(--s1);stroke-width:2}
+.vz .ka{fill:var(--line)}.vz .ka.up{fill:var(--s2)}.vz .ka.down{fill:var(--s1)}
 .vz .kn{cursor:pointer;outline:none}.vz .kn rect{fill:var(--card);stroke:var(--line)}.vz .kn text{font-size:10px}
 .vz .kn.dim{opacity:.32}.vz .kn.isup rect{stroke:var(--s2);stroke-width:2}.vz .kn.isdown rect{stroke:var(--s1);stroke-width:2}
 .vz .kn.sel rect{fill:var(--ink);stroke:var(--ink)}.vz .kn.sel text{fill:var(--card);font-weight:700}.vz .kn:focus-visible rect{stroke:var(--accent);stroke-width:2.5}
@@ -211,10 +212,10 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
     <tr><th>Indicator</th><th class="n">Q3 2026</th><th class="n">Q3 2025</th><th>Plain meaning</th></tr>
     <tr><td>Sales</td><td class="n" data-v="q.sales" data-f="m"></td><td class="n" data-v="q.salesPrior" data-f="m"></td><td>What customers were invoiced</td></tr>
     <tr><td>Operating margin</td><td class="n" data-v="q.opMargin" data-f="p"></td><td class="n" data-v="q.opMarginPrior" data-f="p"></td><td>Cents of operating profit per dollar of sales</td></tr>
-    <tr><td>Adjusted EBITDA margin</td><td class="n" data-v="q.adjEbitdaMargin" data-f="p"></td><td class="n" data-v="q.adjEbitdaMarginPrior" data-f="p"></td><td>Operating earning power before depreciation and one-offs</td></tr>
+    <tr><td>EBITDA margin</td><td class="n" data-v="q.ebitdaMargin" data-f="p"></td><td class="n" data-v="q.ebitdaMarginPrior" data-f="p"></td><td>Operating earning power before depreciation</td></tr>
     <tr><td>Diluted earnings per share</td><td class="n" data-v="q.eps" data-f="d2"></td><td class="n" data-v="q.epsPrior" data-f="d2"></td><td>Net profit attributable to one share</td></tr>
     <tr><td>Free cash flow (nine months)</td><td class="n" data-v="ytd.fcf" data-f="m"></td><td class="n" data-v="ytd.fcfPrior" data-f="m"></td><td>Cash left after running and investing in the business</td></tr>
-    <tr><td>Net leverage</td><td class="n" data-v="q.netLeverage" data-f="x"></td><td class="n" data-v="q.netLeveragePrior" data-f="x"></td><td>Net debt in years of adjusted EBITDA</td></tr>
+    <tr><td>Net leverage</td><td class="n" data-v="q.netLeverage" data-f="x"></td><td class="n" data-v="q.netLeveragePrior" data-f="x"></td><td>Net debt in years of EBITDA</td></tr>
   </table></div>
   <p>By the end you should be able to explain every line of this table, say what moved it, and name two things in your own job that influence it.</p>
   <button class="markdone" data-done="m0">Mark as read</button>
@@ -239,7 +240,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
     <tr><td>Income tax</td><td class="n" data-v="fy.tax" data-f="neg"></td><td class="n"></td><td></td></tr>
     <tr class="tot"><td>Net income</td><td class="n" data-v="fy.ni" data-f="n"></td><td class="n" data-v="fy.niMargin" data-f="p"></td><td>What belongs to shareholders</td></tr>
   </table></div>
-  <p>Notice the jump from an operating margin of <span data-v="fy.opMargin" data-f="p"></span> to a net margin of only <span data-v="fy.niMargin" data-f="p"></span>. The main cause in 2025 was a one-time, non-cash loss of $<span data-v="fy.oneOff" data-f="n"></span> million on the sale of a small business. Module 4 shows why such items are stripped out in "adjusted" figures.</p>
+  <p>Notice the jump from an operating margin of <span data-v="fy.opMargin" data-f="p"></span> to a net margin of only <span data-v="fy.niMargin" data-f="p"></span>. The main cause in 2025 was a one-time, non-cash loss of $<span data-v="fy.oneOff" data-f="n"></span> million on the sale of a small business. It sits below operating income, so operating figures such as EBITDA (Module 4) are not affected by it.</p>
 
   <h3>Balance sheet: what do we own and owe on one day?</h3>
   <div class="tblwrap"><table>
@@ -389,23 +390,23 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
   <button class="markdone" data-done="m3">Mark module complete</button>
 </section>
 
-<section class="mod" id="m4" data-title="4 · EBITDA and adjusted EBITDA">
+<section class="mod" id="m4" data-title="4 · EBITDA">
   <div class="kicker">Module 4</div>
-  <h2>EBITDA and "adjusted" EBITDA</h2>
-  <p class="lead">The headline profit number in the example group's reports, as in those of many listed companies. Understand what is added back, and why you should still look at what was removed.</p>
+  <h2>EBITDA: operating profit before depreciation</h2>
+  <p class="lead">The headline profit number in the example group's reports, as in those of many listed companies. Understand what is added back, and what the figure therefore cannot show.</p>
 
   <p><b>EBITDA</b> is earnings before interest, taxes, depreciation and amortisation. It approximates the cash earning power of operations, independent of how the company is financed, where it is taxed and how much it paid for past investments and acquisitions.</p>
-  <p><b>Adjusted EBITDA</b> also removes items management considers unrelated to ongoing operations. It is a non-GAAP measure: there is no accounting standard that defines it, so each company sets its own rules and must publish a reconciliation.</p>
+  <p>In this tutorial it is calculated as <b>operating income plus depreciation and amortisation</b>. Everything below operating income (interest, tax, and non-operating items such as the loss on the sale of a business) is outside it. Some companies start from net income and add back only interest, tax, depreciation and amortisation; the two routes give the same figure only when there are no non-operating items.</p>
 
-  <h3>From net income to adjusted EBITDA, full-year 2025</h3>
+  <h3>From net income to EBITDA, full-year 2025</h3>
   <div class="bars" id="bridgeBars"></div>
-  <p>Net income of $<span data-v="fy.ni" data-f="n"></span> million becomes adjusted EBITDA of $<span data-v="fy.adjEbitda" data-f="n"></span> million. The two largest steps are depreciation and amortisation and the one-time loss on the sale of a business.</p>
+  <p>Net income of $<span data-v="fy.ni" data-f="n"></span> million becomes EBITDA of $<span data-v="fy.ebitda" data-f="n"></span> million. Tax, interest and the non-operating items lead back to operating income; adding depreciation and amortisation, the largest single step, gives EBITDA.</p>
 
   <h3>How to read it critically</h3>
   <ul>
     <li><b>Depreciation is a real cost.</b> Machines wear out and must be replaced. EBITDA ignores this, so always look at capital expenditure and free cash flow as well (Module 6).</li>
     <li><b>Amortisation of acquired intangibles is large here</b> because the company grew by acquisition. It is non-cash today, but the cash was spent when the business was bought (Module 9).</li>
-    <li><b>"One-off" items that recur every year</b> (restructuring, acquisition costs) are partly a normal cost of the strategy. Check whether the same adjustments appear year after year.</li>
+    <li><b>One-time items inside operating cost stay in.</b> A restructuring or a large warranty case lowers EBITDA in the period it is booked. When comparing periods, check whether such an item explains the change.</li>
     <li><b>Its strength:</b> it lets you compare periods and businesses without distortion from the sale of a business or a refinancing.</li>
   </ul>
 
@@ -413,8 +414,8 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
 <h3>How to read it</h3>
 <ul>
   <li><b>EBITDA is not cash.</b> It ignores capital expenditure, working capital, interest and tax. A business can report strong EBITDA and still consume cash. Read it together with free cash flow.</li>
-  <li><b>Look at the size of the gap to net income.</b> Here adjusted EBITDA is several times net income. A large gap means much of the picture sits in the items removed: depreciation, amortisation, interest, one-offs.</li>
-  <li><b>Test the adjustments.</b> Ask of each one: is it truly non-recurring, and was any cash spent? Restructuring every year is a cost of doing business.</li>
+  <li><b>Look at the size of the gap to net income.</b> Here EBITDA is several times net income. A large gap means much of the picture sits in what EBITDA leaves out: depreciation, amortisation, interest, tax and non-operating results.</li>
+  <li><b>Check for unusual items inside it.</b> A restructuring charge, a legal settlement or a gain on selling a building sits in operating income and moves EBITDA for one period. Ask whether the change you see will repeat.</li>
   <li><b>Capital-heavy and capital-light businesses are not comparable on EBITDA.</b> The same EBITDA margin is worth less where machines must be replaced constantly.</li>
   <li><b>Use it for what it is good at:</b> comparing the operating performance of one business over time, without distortion from financing and one-off events.</li>
 </ul>
@@ -423,7 +424,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
   <tr><td>Buy a machine instead of using labour</td><td>Up: wages leave, depreciation is excluded</td><td>Cash out for the machine; EBIT rises less; capital employed up</td></tr>
   <tr><td>Postpone maintenance</td><td>Up this year</td><td>Lower reliability and a larger bill later</td></tr>
   <tr><td>Cut development or training</td><td>Up this year</td><td>Weaker products and skills in later years</td></tr>
-  <tr><td>Restructure a site</td><td>Adjusted: unchanged now, up later. Reported profit: down now</td><td>Real cash leaves for severance and closure</td></tr>
+  <tr><td>Restructure a site</td><td>Down now, because severance and closure costs are operating costs; up later through the savings</td><td>The cash leaves in the first year; the payback has to be tracked</td></tr>
   <tr><td>Build stock to keep the plant busy</td><td>Up, because fixed overhead moves into inventory</td><td>Cash down; risk of later write-down</td></tr>
 </table></div>
 </div>
@@ -431,7 +432,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
   <div class="box role" data-role="ops"><h4>In your role: operations &amp; supply chain</h4><p>Everything you do to cost of sales shows up in EBITDA directly. Depreciation of your machines does not, so EBITDA does not reward running equipment longer or penalise a new line. Watch that this does not hide the true cost of capital-heavy solutions.</p></div>
   <div class="box role" data-role="sales"><h4>In your role: sales &amp; marketing</h4><p>EBITDA margin is the reason "profitable growth" is not the same as growth. An order at a margin far below the segment's average raises sales and lowers the margin percentage at the same time.</p></div>
   <div class="box role" data-role="rd"><h4>In your role: R&amp;D &amp; engineering</h4><p>Development spending reduces EBITDA today for sales in later years. The releases repeatedly mention "growth investments" holding margins back; your project is one of these, so be ready to say when and how it pays back.</p></div>
-  <div class="box role" data-role="mgr"><h4>In your role: managers</h4><p>If you propose treating a cost as "one-off", ask whether it would be reasonable to exclude it three years in a row. And never judge an investment on EBITDA alone: it ignores the capital it consumes.</p></div>
+  <div class="box role" data-role="mgr"><h4>In your role: managers</h4><p>When you explain a change in EBITDA, separate what will repeat from what will not. And never judge an investment on EBITDA alone: it ignores the capital it consumes.</p></div>
 
   <div class="quiz" data-quiz="m4"></div>
   <button class="markdone" data-done="m4">Mark module complete</button>
@@ -440,20 +441,20 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
 <section class="mod" id="m5" data-title="5 · Segment EBITDA">
   <div class="kicker">Module 5</div>
   <h2>Segment EBITDA: the number the businesses are steered by</h2>
-  <p class="lead">The example group, like many companies, uses adjusted segment EBITDA to allocate resources and to assess segment performance.</p>
+  <p class="lead">The example group, like many companies, uses segment EBITDA to allocate resources and to assess segment performance.</p>
 
   <div class="tblwrap"><table>
-    <tr><th>Q3 2026, $ million</th><th class="n">Sales</th><th class="n">Adj. segment EBITDA</th><th class="n">Margin</th><th class="n">Margin Q3 2025</th></tr>
+    <tr><th>Q3 2026, $ million</th><th class="n">Sales</th><th class="n">Segment EBITDA</th><th class="n">Margin</th><th class="n">Margin Q3 2025</th></tr>
     <tr><td>Segment A</td><td class="n" data-v="segA.sales" data-f="n"></td><td class="n" data-v="segA.ebitda" data-f="n"></td><td class="n" data-v="segA.margin" data-f="p"></td><td class="n" data-v="segA.marginPrior" data-f="p"></td></tr>
     <tr><td>Segment B</td><td class="n" data-v="segB.sales" data-f="n"></td><td class="n" data-v="segB.ebitda" data-f="n"></td><td class="n" data-v="segB.margin" data-f="p"></td><td class="n" data-v="segB.marginPrior" data-f="p"></td></tr>
     <tr class="tot"><td>Total segments</td><td class="n" data-v="q.sales" data-f="n"></td><td class="n" data-v="q.segEbitda" data-f="n"></td><td class="n" data-v="q.segMargin" data-f="p"></td><td class="n" data-v="q.segMarginPrior" data-f="p"></td></tr>
     <tr><td>Corporate expense</td><td class="n"></td><td class="n" data-v="q.corp" data-f="neg"></td><td class="n"></td><td class="n"></td></tr>
-    <tr class="tot"><td>Company adjusted EBITDA</td><td class="n"></td><td class="n" data-v="q.adjEbitda" data-f="n"></td><td class="n" data-v="q.adjEbitdaMargin" data-f="p"></td><td class="n" data-v="q.adjEbitdaMarginPrior" data-f="p"></td></tr>
+    <tr class="tot"><td>Company EBITDA</td><td class="n"></td><td class="n" data-v="q.ebitda" data-f="n"></td><td class="n" data-v="q.ebitdaMargin" data-f="p"></td><td class="n" data-v="q.ebitdaMarginPrior" data-f="p"></td></tr>
   </table></div>
 
   <h3>The puzzle: why is the company margin lower than the segment total?</h3>
-  <p>The segments together earned <span data-v="q.segMargin" data-f="p"></span>, the company <span data-v="q.adjEbitdaMargin" data-f="p"></span>. The gap is the cost of the corporate centre (headquarters, group functions, incentive compensation), which is not charged to the segments. It was $<span data-v="q.corp" data-f="n"></span> million in the quarter, about <span data-v="q.corpPct" data-f="p"></span> of sales. <span class="tag own">own calculation</span></p>
-  <p>Segment total minus corporate expense gives $<span data-v="q.segLessCorp" data-f="n"></span> million, slightly different from the reported $<span data-v="q.adjEbitda" data-f="n"></span> million. The small remainder comes from adjustments within corporate items, which are not itemised in the figures used here.</p>
+  <p>The segments together earned <span data-v="q.segMargin" data-f="p"></span>, the company <span data-v="q.ebitdaMargin" data-f="p"></span>. The gap is the cost of the corporate centre (headquarters, group functions, incentive compensation), which is not charged to the segments. It was $<span data-v="q.corp" data-f="n"></span> million in the quarter, about <span data-v="q.corpPct" data-f="p"></span> of sales. <span class="tag own">own calculation</span></p>
+  <p>Segment total minus corporate expense gives $<span data-v="q.segLessCorp" data-f="n"></span> million, the EBITDA of the group.</p>
 
   <h3>Mix: the average can move when nothing inside changes</h3>
   <p>Segment A earns a higher margin than Segment B. If Segment B grows faster, the company's average margin is pulled toward Segment B's level even if each segment holds its own margin. The same happens inside every business between product lines, customers and regions. Always ask whether a margin change is a real change in performance or a change in mix.</p>
@@ -493,7 +494,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
 
   <h3>Free cash flow</h3>
   <div class="formula">Free cash flow = cash from operations − capital expenditure</div>
-  <p>In the first nine months of 2026: $<span data-v="ytd.cfo" data-f="n"></span> million − $<span data-v="ytd.capex" data-f="n"></span> million = $<span data-v="ytd.fcf" data-f="n"></span> million, up from $<span data-v="ytd.fcfPrior" data-f="n"></span> million. That is about <span data-v="ytd.fcfConv" data-f="p0"></span> of adjusted net income <span class="tag own">own calculation</span>, a rough measure of how much of the reported earnings turned into cash.</p>
+  <p>In the first nine months of 2026: $<span data-v="ytd.cfo" data-f="n"></span> million − $<span data-v="ytd.capex" data-f="n"></span> million = $<span data-v="ytd.fcf" data-f="n"></span> million, up from $<span data-v="ytd.fcfPrior" data-f="n"></span> million. Operating cash flow was about <span data-v="ytd.fcfConv" data-f="p0"></span> of EBITDA <span class="tag own">own calculation</span>, a rough measure of how much of the operating earnings arrived as cash. The rest went to tax, interest and the growth in working capital.</p>
 
   <h3>Working capital: cash parked in daily operations</h3>
   <div class="tblwrap"><table>
@@ -563,7 +564,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
   <p class="lead">How much debt the company carries, and what it does with the cash it generates.</p>
 
   <h3>Net leverage</h3>
-  <div class="formula">Net leverage = (total debt − cash) ÷ adjusted EBITDA of the last twelve months</div>
+  <div class="formula">Net leverage = (total debt − cash) ÷ EBITDA of the last twelve months</div>
   <p>At 30 September 2026: ($<span data-v="bs.debt" data-f="n"></span> − $<span data-v="bs.cash" data-f="n"></span>) ÷ $<span data-v="lev.ttm" data-f="n"></span> million = <span data-v="lev.calc" data-f="x2"></span>, which matches the reported <span data-v="q.netLeverage" data-f="x"></span>. The trailing-twelve-month EBITDA is <span class="tag own">own calculation</span> (nine months 2026 plus fourth quarter 2025).</p>
   <p>Read it as: with all operating earnings and no other use of cash, net debt could be repaid in about <span data-v="q.netLeverage" data-f="n1"></span> years. At the end of 2025, after the acquisitions of that year, it stood at <span data-v="lev.ye" data-f="x"></span>. Since then $<span data-v="q.revolverYtd" data-f="n0"></span> million of revolving debt has been repaid.</p>
   <p><b>Why it matters to everyone:</b> low leverage means lower interest cost, resilience in a downturn, and capacity to invest or acquire. High leverage means lenders' conditions start to limit decisions.</p>
@@ -602,22 +603,23 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
 
 <section class="mod" id="m8" data-title="8 · Earnings per share">
   <div class="kicker">Module 8</div>
-  <h2>Earnings per share, reported and adjusted</h2>
+  <h2>Earnings per share</h2>
   <p class="lead">The number investors watch most closely, and one of the three figures in the example group's guidance.</p>
 
   <div class="formula">Diluted EPS = net income attributable to shareholders ÷ weighted average diluted shares</div>
   <p>"Diluted" means the share count includes shares that would arise from options and similar rights. The average over the period is used, not the count on the last day.</p>
   <div class="tblwrap"><table>
-    <tr><th>Q3 2026</th><th class="n">Reported (GAAP)</th><th class="n">Adjusted</th></tr>
-    <tr><td>Net income, $ million</td><td class="n" data-v="q.ni" data-f="n"></td><td class="n" data-v="q.adjNi" data-f="n"></td></tr>
-    <tr><td>Diluted EPS</td><td class="n" data-v="q.eps" data-f="d2"></td><td class="n" data-v="q.adjEps" data-f="d2"></td></tr>
-    <tr><td>Implied diluted shares, million</td><td class="n" data-v="q.shares" data-f="n1"></td><td class="n" data-v="q.sharesAdj" data-f="n1"></td></tr>
+    <tr><th></th><th class="n">Q3 2026</th><th class="n">Q3 2025</th></tr>
+    <tr><td>Net income, $ million</td><td class="n" data-v="q.ni" data-f="n"></td><td class="n" data-v="q.niPrior" data-f="n"></td></tr>
+    <tr><td>Diluted EPS</td><td class="n" data-v="q.eps" data-f="d2"></td><td class="n" data-v="q.epsPrior" data-f="d2"></td></tr>
+    <tr><td>Implied diluted shares, million</td><td class="n" data-v="q.shares" data-f="n1"></td><td class="n" data-v="q.sharesPrior" data-f="n1"></td></tr>
   </table></div>
   <p>The share count is <span class="tag own">own calculation</span> (net income ÷ EPS), roughly 25 million shares. This is a small number of shares, so each dollar of EPS corresponds to only about $25 million of profit.</p>
 
-  <h3>Why adjusted EPS is higher</h3>
-  <p>Adjusted net income removes the same kind of items as adjusted EBITDA and, in addition, the amortisation of intangible assets recorded in acquisitions. Other intangible assets fell from $<span data-v="bs0.intang" data-f="n"></span> million to $<span data-v="bs.intang" data-f="n"></span> million in nine months, which suggests amortisation of roughly $20 million per quarter. <span class="tag own">own estimate</span></p>
-  <div class="box caveat"><h4>In a real report</h4><p>Companies publish a table that reconciles net income to adjusted net income line by line. Read it before quoting adjusted EPS: it shows exactly which items were removed and how large each one is.</p></div>
+  <h3>From EBITDA to EPS</h3>
+  <p>EBITDA of $<span data-v="q.ebitda" data-f="n"></span> million is <span data-v="q.ebitdaPerShare" data-f="d2"></span> per share; EPS is <span data-v="q.eps" data-f="d2"></span>. In between lie depreciation and amortisation ($<span data-v="q.da" data-f="n"></span> million), interest ($<span data-v="q.interest" data-f="n"></span> million) and tax ($<span data-v="q.tax" data-f="n"></span> million).</p>
+  <p>For a company that has grown by acquisition, amortisation is a large part of this. Other intangible assets fell from $<span data-v="bs0.intang" data-f="n"></span> million to $<span data-v="bs.intang" data-f="n"></span> million in nine months, which suggests amortisation of roughly $20 million per quarter <span class="tag own">own estimate</span>. It lowers EPS every quarter although no cash leaves, which is why EPS understates the cash the business generates.</p>
+  <p>These costs change little from quarter to quarter. A rise in operating profit therefore arrives in net income almost in full: EBITDA rose by about 25% against the prior-year quarter, EPS by about 65%.</p>
 
   <h3>How EPS grows</h3>
   <ul>
@@ -631,7 +633,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
   <div class="read">
 <h3>How to read it</h3>
 <ul>
-  <li><b>Look at the gap between reported and adjusted.</b> A persistent, large gap means the adjusted figure rests on judgement about what counts as normal. Here most of it is amortisation from acquisitions, which is consistent but recurring.</li>
+  <li><b>Know what is inside it.</b> Unlike EBITDA, EPS carries everything: depreciation, amortisation from acquisitions, interest, tax and one-time gains or losses. A single disposal can cut it sharply for a year, as the 2025 figure shows.</li>
   <li><b>Ask where EPS growth came from.</b> Growth from operating profit is repeatable. Growth from fewer shares, a lower tax rate or lower interest is one-time or financial.</li>
   <li><b>EPS ignores the capital used.</b> A company can raise EPS through acquisitions that earn less than they cost. Read EPS with return on capital.</li>
   <li><b>Quarterly EPS against "expectations" is noise for operating purposes.</b> The direction over several years is what matters.</li>
@@ -639,9 +641,9 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
 <div class="tblwrap"><table class="dec">
   <tr><th>Decision</th><th>Effect on EPS</th><th>What else it does</th></tr>
   <tr><td>Sustained cost saving or price gain of $1 million</td><td>About +3 cents a year</td><td>Repeats every year</td></tr>
-  <tr><td>Debt-financed acquisition</td><td>Adjusted EPS up; reported EPS up less, or down at first (amortisation, interest, deal costs)</td><td>Leverage up, return on capital down at first</td></tr>
+  <tr><td>Debt-financed acquisition</td><td>Up only if the acquired profit exceeds the new amortisation, interest and deal costs; often down at first</td><td>Leverage up, return on capital down at first</td></tr>
   <tr><td>Share buyback</td><td>Up through fewer shares</td><td>Cash leaves; profit unchanged</td></tr>
-  <tr><td>Restructuring charge</td><td>Reported EPS down now; adjusted unchanged</td><td>Savings should lift both later</td></tr>
+  <tr><td>Restructuring charge</td><td>Down in the period of the charge</td><td>Savings should lift it later</td></tr>
 </table></div>
 </div>
 
@@ -665,7 +667,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
     <tr><td>Return before tax: operating income ÷ invested capital</td><td class="n" data-v="roic.pre" data-f="p"></td></tr>
     <tr><td>Operating profit after tax (NOPAT), at an assumed 25% tax rate</td><td class="n" data-v="roic.nopat" data-f="n"></td></tr>
     <tr class="tot"><td>ROIC after tax: NOPAT ÷ invested capital</td><td class="n" data-v="roic.post" data-f="p"></td></tr>
-    <tr><td>Cash-based view before tax: (adjusted EBITDA − capital expenditure) ÷ invested capital</td><td class="n" data-v="roic.cash" data-f="p"></td></tr>
+    <tr><td>Cash-based view before tax: (EBITDA − capital expenditure) ÷ invested capital</td><td class="n" data-v="roic.cash" data-f="p"></td></tr>
     <tr><td>Cash flow return on invested capital (CFROIC): free cash flow ÷ invested capital</td><td class="n" data-v="roic.cfroic" data-f="p"></td></tr>
   </table></div>
   <div class="box caveat"><h4>Uncertainty</h4><p><span class="tag own">own calculation</span> Both lines are rough illustrations with year-end capital, which includes acquisitions completed late in 2025 that contributed profit for only part of the year. They are not reported figures and say nothing about how any company measures returns internally. They show the mechanism, not a verdict.</p></div>
@@ -716,17 +718,17 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
   <div class="tblwrap"><table>
     <tr><th>Full-year 2026</th><th class="n">At the start of the year</th><th class="n">After the third quarter</th></tr>
     <tr><td>Sales growth</td><td class="n">9% to 12%</td><td class="n">15% to 16%</td></tr>
-    <tr><td>Adjusted EBITDA, $ million</td><td class="n">325 to 340</td><td class="n">352 to 358</td></tr>
-    <tr><td>Adjusted diluted EPS</td><td class="n">$7.80 to $8.40</td><td class="n">$8.70 to $8.85</td></tr>
+    <tr><td>EBITDA, $ million</td><td class="n">320 to 335</td><td class="n">350 to 354</td></tr>
+    <tr><td>Diluted EPS</td><td class="n">$5.00 to $5.50</td><td class="n">$5.75 to $5.90</td></tr>
   </table></div>
   <p>Guidance is given as a range and narrows as the year progresses. Raised guidance means the year is running better than management expected. It also resets expectations: next year's comparison starts from the higher level.</p>
 
   <h3>The routine</h3>
   <ol>
     <li><b>Growth:</b> how much, and how much of it organic? (Module 2)</li>
-    <li><b>Margins:</b> did adjusted EBITDA margin rise or fall, and is the reason volume, price, mix or cost? (Modules 3 to 5)</li>
+    <li><b>Margins:</b> did EBITDA margin rise or fall, and is the reason volume, price, mix or cost? (Modules 3 to 5)</li>
     <li><b>Segments:</b> which segment drove the change? What does management say about my end markets?</li>
-    <li><b>Adjustments:</b> what was excluded from adjusted figures, and is any of it recurring? (Module 4)</li>
+    <li><b>One-time items:</b> does the result contain anything that will not repeat, such as a disposal or a restructuring? (Module 4)</li>
     <li><b>Cash:</b> free cash flow against last year; receivables and inventories against sales growth (Module 6)</li>
     <li><b>Balance sheet:</b> net leverage, and what the cash was used for (Module 7)</li>
     <li><b>Guidance:</b> raised, held or lowered, and why?</li>
@@ -736,9 +738,9 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
   <details><summary>Worked example: the routine applied to Q3 2026</summary>
     <ol>
       <li>Sales +<span data-v="q.growth" data-f="p"></span>; Segment A <span data-v="segA.organic" data-f="p"></span> organic, Segment B <span data-v="segB.growth" data-f="p"></span> organic.</li>
-      <li>Adjusted EBITDA margin <span data-v="q.adjEbitdaMargin" data-f="p"></span>, up from <span data-v="q.adjEbitdaMarginPrior" data-f="p"></span>: operating leverage on higher volume, partly offset by growth spending.</li>
+      <li>EBITDA margin <span data-v="q.ebitdaMargin" data-f="p"></span>, up from <span data-v="q.ebitdaMarginPrior" data-f="p"></span>: operating leverage on higher volume, partly offset by growth spending.</li>
       <li>Segment B margin up four points as its main end market recovered; Segment A stable near 28%.</li>
-      <li>Small in the quarter (acquisition expenses of $0.2 million at segment level).</li>
+      <li>None of note in the quarter. In the full year 2025, the loss on the sale of a business reduced net income but not EBITDA.</li>
       <li>Nine-month free cash flow $<span data-v="ytd.fcf" data-f="n"></span> million against $<span data-v="ytd.fcfPrior" data-f="n"></span> million; receivables and inventories grew faster than sales since year-end, partly seasonal and acquisition-related.</li>
       <li>Net leverage down to <span data-v="q.netLeverage" data-f="x"></span>; cash used to repay revolving debt.</li>
       <li>Guidance raised above the range given at the start of the year.</li>
@@ -1099,7 +1101,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
   <p class="lead">No KPI stands alone. A decision enters at one point and travels through the others. The map shows the routes; the six labs let you move one figure and watch the rest follow.</p>
 
   <h3>The KPI map</h3>
-  <p>Tap any box. Orange lines show everything that drives it, blue lines everything it drives in turn. A dashed line means the two move in opposite directions.</p>
+  <p>Tap any box. Orange lines show everything that drives it, blue lines everything it drives in turn. Each arrow points from the cause to the effect. A dashed line means the two move in opposite directions.</p>
   <div class="vz" id="kmap"></div>
   <div class="vzlegend"><span><i class="ln s2"></i> drives the selected figure</span><span><i class="ln s1"></i> is driven by it</span><span><i class="ln dash"></i> moves the opposite way</span></div>
   <div class="calc" id="kmapInfo" aria-live="polite"></div>
@@ -1213,7 +1215,6 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
   <h2>Glossary</h2>
   <div class="tblwrap"><table>
     <tr><th>Term</th><th>Meaning</th></tr>
-    <tr><td>Adjusted (non-GAAP)</td><td>A figure from which management has removed items it considers non-recurring or non-operating. Must be reconciled to the reported figure.</td></tr>
     <tr><td>Amortisation</td><td>Spreading the cost of an intangible asset (customer relationships, technology) over its useful life.</td></tr>
     <tr><td>Basis point (bp)</td><td>One hundredth of a percentage point. 500 bps = 5.0 percentage points.</td></tr>
     <tr><td>Capital expenditure (capex)</td><td>Spending on long-lived assets such as machinery and buildings.</td></tr>
@@ -1223,7 +1224,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
     <tr><td>Contribution margin</td><td>Sales minus variable costs: what each additional sale adds to profit while capacity is free.</td></tr>
     <tr><td>Cost of capital (WACC)</td><td>The weighted average return required by lenders and shareholders, after tax; the hurdle for investments.</td></tr>
     <tr><td>Depreciation</td><td>Spreading the cost of a physical asset over its useful life.</td></tr>
-    <tr><td>EBITDA</td><td>Earnings before interest, taxes, depreciation and amortisation.</td></tr>
+    <tr><td>EBITDA</td><td>Earnings before interest, taxes, depreciation and amortisation; here calculated as operating income plus depreciation and amortisation.</td></tr>
     <tr><td>EPS</td><td>Earnings per share: net income divided by the number of shares.</td></tr>
     <tr><td>Free cash flow</td><td>Cash from operations minus capital expenditure.</td></tr>
     <tr><td>GAAP</td><td>US Generally Accepted Accounting Principles, the rules for reported figures.</td></tr>
@@ -1233,7 +1234,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
     <tr><td>Net present value (NPV)</td><td>Today's value of all future cash flows of an investment minus its cost, discounted at the cost of capital.</td></tr>
     <tr><td>NOPAT</td><td>Net operating profit after tax: operating profit less the tax that would be due on it, before interest.</td></tr>
     <tr><td>Absorption costing</td><td>Valuing inventory including a share of fixed production overhead. The reason building stock lifts reported profit.</td></tr>
-    <tr><td>Net leverage</td><td>Net debt divided by twelve months of adjusted EBITDA.</td></tr>
+    <tr><td>Net leverage</td><td>Net debt divided by twelve months of EBITDA.</td></tr>
     <tr><td>Operating leverage</td><td>The effect of fixed costs: profit changes faster than sales.</td></tr>
     <tr><td>Organic growth</td><td>Growth excluding acquisitions, divestitures and currency translation.</td></tr>
     <tr><td>ROIC</td><td>Return on invested capital: operating profit relative to the capital employed.</td></tr>
@@ -1246,12 +1247,12 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
   <div class="kicker">Reference</div>
   <h2>Sources and method</h2>
   <ul>
-    <li><b>Example group (Modules 1 to 10).</b> Invented: a fictional listed industrial company with two segments. The figures are internally consistent (for example, the reconciliation in Module 4 sums to the adjusted EBITDA shown, and the leverage calculation in Module 7 reproduces the stated ratio) and of a realistic order of magnitude, but they describe no real company.</li>
+    <li><b>Example group (Modules 1 to 10).</b> Invented: a fictional listed industrial company with two segments. The figures are internally consistent (for example, the bridge in Module 4 sums to the EBITDA shown, and the leverage calculation in Module 7 reproduces the stated ratio) and of a realistic order of magnitude, but they describe no real company.</li>
     <li><b>Example plant (Modules 11 to 13).</b> Invented. The plant, its customers and its development project do not exist. The values were chosen to be internally consistent and plausible, not to represent any real site.</li>
     <li><b>Own calculations.</b> Ratios marked "own calculation", "own estimate" or "illustration" use simplified textbook formulas. Company-specific definitions often differ in detail.</li>
     <li><b>Scope.</b> The tutorial does not describe any company's internal KPI definitions, targets or incentive systems. It is not investment advice.</li>
     <li><b>Didactic design</b> (worked examples that fade into independent problem solving): Sweller, J. &amp; Cooper, G. A. (1985). The use of worked examples as a substitute for problem solving in learning algebra. <i>Cognition and Instruction</i>, 2(1), 59–89.</li>
-    <li><b>Further reading</b> (standard references for the concepts used; cited from memory, check the current edition): Brealey, Myers &amp; Allen, <i>Principles of Corporate Finance</i> (NPV, IRR, cost of capital); Koller, Goedhart &amp; Wessels, <i>Valuation</i> (ROIC, NOPAT, value creation); Horngren, Datar &amp; Rajan, <i>Cost Accounting: A Managerial Emphasis</i> (contribution margin, break-even, absorption costing, flexible budgets, variances); US SEC Regulation G (reconciliation of non-GAAP measures such as adjusted EBITDA).</li>
+    <li><b>Further reading</b> (standard references for the concepts used; cited from memory, check the current edition): Brealey, Myers &amp; Allen, <i>Principles of Corporate Finance</i> (NPV, IRR, cost of capital); Koller, Goedhart &amp; Wessels, <i>Valuation</i> (ROIC, NOPAT, value creation); Horngren, Datar &amp; Rajan, <i>Cost Accounting: A Managerial Emphasis</i> (contribution margin, break-even, absorption costing, flexible budgets, variances).</li>
     <li><b>Updating.</b> To use other figures, change the <code>DATA</code> block (example group) or the <code>EX</code> block (example plant) at the top of the script in <code>index.html</code>; tables, charts and calculators recompute automatically. Explanatory sentences that describe causes need a manual review.</li>
   </ul>
 </section>
@@ -1267,26 +1268,26 @@ const DATA = {
   q: { // third quarter 2026 vs third quarter 2025
     sales:420.0, salesPrior:365.0, cogs:252.0, cogsPrior:224.5, gp:168.0, gpPrior:140.5,
     sga:105.0, sgaPrior:97.5, opInc:62.5, opIncPrior:42.5, opMargin:14.9, opMarginPrior:11.6,
-    ni:39.4, eps:1.58, epsPrior:0.96, adjNi:57.5, adjEps:2.30,
-    adjEbitda:93.0, adjEbitdaMargin:22.1, adjEbitdaMarginPrior:20.5,
-    segEbitda:107.4, segMargin:25.6, segMarginPrior:23.8, corp:15.0,
+    ni:39.4, niPrior:24.0, eps:1.58, epsPrior:0.96, da:30.0,
+    ebitda:92.5, ebitdaMargin:22.0, ebitdaMarginPrior:20.3, // EBITDA = operating income + depreciation and amortisation
+    segEbitda:107.4, segMargin:25.6, segMarginPrior:23.8, corp:14.9,
     netLeverage:1.5, netLeveragePrior:1.3, revolverYtd:140.0, divPerShare:0.30, buyback:60,
     tax:13.1, pbt:52.5, interest:10.0
   },
   segA:{ sales:250.0, ebitda:70.0, margin:28.0, marginPrior:27.6, growth:13.6, organic:7.5, acq:5.5, fx:0.6 },
   segB:{ sales:170.0, ebitda:37.4, margin:22.0, marginPrior:18.0, growth:17.2 },
-  ytd:{ sales:1190.0, cfo:185.0, capex:50.0, fcf:135.0, fcfPrior:112.0, adjNi:160.0, adjEbitda:259.0, div:22.5 },
-  q4prior:{ adjEbitda:76.0 }, // fourth quarter 2025, for trailing twelve months
+  ytd:{ sales:1190.0, cfo:185.0, capex:50.0, fcf:135.0, fcfPrior:112.0, ebitda:257.0, div:22.5 },
+  q4prior:{ ebitda:73.0 }, // fourth quarter 2025, for trailing twelve months
   bs:{ cash:95.0, ar:210.0, inv:215.0, ap:105.0, goodwill:1150.0, intang:800.0, ta:2900.0, debt:600.0, equity:1700.0 },
   bs0:{ cash:120.0, ar:175.0, inv:185.0, ap:90.0, goodwill:1148.0, intang:860.0, ta:2880.0, debt:740.0, equity:1610.0 },
   fy:{ // full-year 2025
     sales:1400.0, cogs:854.0, gp:546.0, sga:384.0, otherOp:4.0, opInc:158.0,
-    pbt:60.0, tax:16.0, ni:44.0, oneOff:55.0, adjEbitda:294.0,
-    netInterest:36.0, da:120.0, otherAdj:23.0,
+    pbt:60.0, tax:16.0, ni:44.0, oneOff:55.0, ebitda:278.0,
+    netInterest:36.0, da:120.0, otherNonOp:7.0,
     cfo:215.0, capex:55.0, fcf:160.0, acq:290.0, div:30.0,
-    adjNi:172.0, interest:40.0, salesPrior:1290.0
+    interest:40.0, salesPrior:1290.0
   },
-  mkt:{ price:165.00, guideEpsLow:8.70, guideEpsHigh:8.85, guideEbitdaLow:352, guideEbitdaHigh:358 },
+  mkt:{ price:165.00, guideEpsLow:5.75, guideEpsHigh:5.90, guideEbitdaLow:350, guideEbitdaHigh:354 },
   guide:{ revLow:1615, revHigh:1625 }
 };
 /* ===================== derived values (do not edit) ===================== */
@@ -1300,12 +1301,12 @@ const D = JSON.parse(JSON.stringify(DATA));
   q.opMarginDelta=q.opMargin-q.opMarginPrior;
   q.cogs1pct=q.cogs*0.01;
   q.corpPct=q.corp/q.sales*100; q.segLessCorp=q.segEbitda-q.corp;
-  q.shares=q.ni/q.eps; q.sharesAdj=q.adjNi/q.adjEps;
+  q.shares=q.ni/q.eps; q.sharesPrior=q.niPrior/q.epsPrior; q.ebitdaPerShare=q.ebitda/q.shares;
   fy.cogsPct=fy.cogs/fy.sales*100; fy.gm=fy.gp/fy.sales*100; fy.sgaPct=fy.sga/fy.sales*100;
   fy.opMargin=fy.opInc/fy.sales*100; fy.niMargin=fy.ni/fy.sales*100;
   fy.belowOp=fy.opInc-fy.pbt; fy.capexPct=fy.capex/fy.sales*100;
   bs.gwInt=bs.goodwill+bs.intang; bs0.gwInt=bs0.goodwill+bs0.intang; bs.gwIntPct=bs.gwInt/bs.ta*100;
-  D.ytd.fcfConv=D.ytd.fcf/D.ytd.adjNi*100;
+  D.ytd.fcfConv=D.ytd.cfo/D.ytd.ebitda*100; // cash conversion: operating cash flow ÷ EBITDA
   const wc=D.wc={};
   wc.now=bs.ar+bs.inv-bs.ap; wc.then=bs0.ar+bs0.inv-bs0.ap; wc.delta=wc.now-wc.then;
   wc.dAr=bs.ar-bs0.ar; wc.dInv=bs.inv-bs0.inv; wc.dApNeg=-(bs.ap-bs0.ap);
@@ -1313,10 +1314,10 @@ const D = JSON.parse(JSON.stringify(DATA));
   wc.dso=bs.ar/q.sales*days; wc.dio=bs.inv/q.cogs*days; wc.dpo=bs.ap/q.cogs*days; wc.ccc=wc.dso+wc.dio-wc.dpo;
   wc.dayAr=q.sales/days; wc.dayInv=q.cogs/days;
   const lev=D.lev={};
-  lev.ttm=D.ytd.adjEbitda+D.q4prior.adjEbitda; lev.calc=(bs.debt-bs.cash)/lev.ttm;
-  lev.ye=(bs0.debt-bs0.cash)/fy.adjEbitda;
+  lev.ttm=D.ytd.ebitda+D.q4prior.ebitda; lev.calc=(bs.debt-bs.cash)/lev.ttm;
+  lev.ye=(bs0.debt-bs0.cash)/fy.ebitda;
   const r=D.roic={};
-  r.ic=bs0.debt+bs0.equity-bs0.cash; r.pre=fy.opInc/r.ic*100; r.cash=(fy.adjEbitda-fy.capex)/r.ic*100; r.nopat=fy.opInc*0.75; r.post=r.nopat/r.ic*100; r.cfroic=fy.fcf/r.ic*100; r.cfroicOcf=fy.cfo/r.ic*100;
+  r.ic=bs0.debt+bs0.equity-bs0.cash; r.pre=fy.opInc/r.ic*100; r.cash=(fy.ebitda-fy.capex)/r.ic*100; r.nopat=fy.opInc*0.75; r.post=r.nopat/r.ic*100; r.cfroic=fy.fcf/r.ic*100; r.cfroicOcf=fy.cfo/r.ic*100;
   D.guide.revMid=(D.guide.revLow+D.guide.revHigh)/2;
 })();
 
@@ -1383,13 +1384,13 @@ function project(o){ // o: delay (months), devOver, costOver, price, vol (all in
   c.netMargin=q.ni/q.sales*100; c.taxRate=q.tax/q.pbt*100;
   c.fcfMargin=D.ytd.fcf/D.ytd.sales*100; c.capexPct=D.ytd.capex/D.ytd.sales*100;
   c.invTurns=q.cogs*4/bs.inv; c.wcPct=D.wc.now/(q.sales*4)*100;
-  c.netDebt=bs.debt-bs.cash; c.intCov=q.adjEbitda/q.interest; c.ebitCov=q.opInc/q.interest;
+  c.netDebt=bs.debt-bs.cash; c.intCov=q.ebitda/q.interest; c.ebitCov=q.opInc/q.interest;
   c.equityRatio=bs.equity/bs.ta*100; c.gearing=c.netDebt/bs.equity*100;
-  c.roe=fy.ni/bs0.equity*100; c.roeAdj=fy.adjNi/bs0.equity*100; c.roa=fy.ni/bs0.ta*100; c.assetTurn=fy.sales/bs0.ta;
+  c.roe=fy.ni/bs0.equity*100; c.roa=fy.ni/bs0.ta*100; c.assetTurn=fy.sales/bs0.ta;
   c.epsMid=(m.guideEpsLow+m.guideEpsHigh)/2; c.pe=m.price/c.epsMid;
   c.mcap=m.price*q.shares; c.ev=c.mcap+c.netDebt; c.evEbitda=c.ev/((m.guideEbitdaLow+m.guideEbitdaHigh)/2);
-  c.divAnnual=q.divPerShare*4; c.divYield=c.divAnnual/m.price*100; c.payout=fy.div/fy.adjNi*100; c.payoutRep=fy.div/fy.ni*100;
-  c.cashConvFy=fy.fcf/fy.adjNi*100;
+  c.divAnnual=q.divPerShare*4; c.divYield=c.divAnnual/m.price*100; c.payoutFcf=fy.div/fy.fcf*100; c.payoutRep=fy.div/fy.ni*100;
+  c.cashConvFy=fy.cfo/fy.ebitda*100;
 })();
 
 /* ===================== formatting ===================== */
@@ -1426,10 +1427,11 @@ bars("growthBars",[
     step("Net income",f.ni,false),
     step("+ Income tax",f.tax,true),
     step("+ Net interest",f.netInterest,true),
-    step("+ Depreciation & amortisation",f.da,true),
     step("+ Loss on sale of a business",f.oneOff,true),
-    step("+ Other adjustments (net)",f.otherAdj,true),
-    {label:"Adjusted EBITDA",v:f.adjEbitda,start:0,end:f.adjEbitda}
+    step("+ Other non-operating expense",f.otherNonOp,true),
+    {label:"= Operating income",v:f.opInc,start:0,end:f.opInc},
+    step("+ Depreciation & amortisation",f.da,true),
+    {label:"= EBITDA",v:f.ebitda,start:0,end:f.ebitda}
   ]);
 })();
 bars("allocBars",[
@@ -1452,7 +1454,7 @@ bars("allocBars",[
     const base=(D.mkt.guideEbitdaLow+D.mkt.guideEbitdaHigh)/2;
     const be = pc<0 ? (-pc/100)/((gm)+(pc/100))*100 : null;
     document.getElementById("pRes").innerHTML=
-      `Profit effect: <b>${eff>=0?"+":"−"}$${nf(Math.abs(eff),1)} million</b> per year, about ${nf(Math.abs(eff)/base*100,1)}% of guided adjusted EBITDA.`+
+      `Profit effect: <b>${eff>=0?"+":"−"}$${nf(Math.abs(eff),1)} million</b> per year, about ${nf(Math.abs(eff)/base*100,1)}% of guided EBITDA.`+
       (be!=null?`<br>To make up for a ${-pc}% price cut you would need about <b>${nf(be,1)}% more volume</b>.`:"");
   }
   p.addEventListener("input",upd); v.addEventListener("input",upd); upd();
@@ -1499,9 +1501,9 @@ const QUIZ={
    o:["It includes taxes","It ignores the cost of replacing and adding assets","It cannot be compared between years","It is defined by accounting law"],c:1,
    e:"Depreciation stands for real spending on equipment. Look at capital expenditure and free cash flow alongside EBITDA."}],
  m5:[
-  {q:"Segment EBITDA margin was 25.6% in total, company adjusted EBITDA margin 22.1%. The main reason for the gap:",
+  {q:"Segment EBITDA margin was 25.6% in total, company EBITDA margin 22.0%. The main reason for the gap:",
    o:["Taxes","Corporate expenses not charged to the segments","Depreciation","Currency effects"],c:1,
-   e:"Corporate costs of $15.0 million sit between the segment total and the company figure."},
+   e:"Corporate costs of $14.9 million sit between the segment total and the company figure."},
   {q:"Both segments keep their margins exactly constant, but the lower-margin segment grows faster. The company margin:",
    o:["Rises","Stays the same","Falls","Cannot change"],c:2,
    e:"This is a pure mix effect: the weighted average moves toward the faster-growing, lower-margin part."}],
@@ -1513,16 +1515,16 @@ const QUIZ={
    o:["Lower taxes","Working capital and capital expenditure grew to support the growth","Higher depreciation","A stronger dollar"],c:1,
    e:"Growth needs more receivables, more stock and often more capacity before the cash comes back."}],
  m7:[
-  {q:"Net leverage falls from 2.1× to 1.5×. Which combination explains it?",
+  {q:"Net leverage falls from 2.2× to 1.5×. Which combination explains it?",
    o:["Higher debt, lower EBITDA","Debt repaid and EBITDA higher","More dividends","More acquisitions"],c:1,
    e:"The ratio is net debt divided by EBITDA; both moved in the favourable direction during 2026."},
   {q:"Which is NOT one of the uses of free cash flow?",
    o:["Repaying debt","Buying businesses","Paying dividends","Recording depreciation"],c:3,
    e:"Depreciation is an accounting entry, not a use of cash."}],
  m8:[
-  {q:"Why is adjusted EPS ($2.30) higher than reported EPS ($1.58)?",
-   o:["More shares are counted","Items such as acquisition-related amortisation are added back","Taxes are ignored","Sales are counted differently"],c:1,
-   e:"Adjusted net income excludes items management regards as non-operating, the largest recurring one typically being amortisation of acquired intangibles. Verify the components in the release's reconciliation table."},
+  {q:"EBITDA rose by about 25% against the prior-year quarter, EPS by about 65%. What best explains the difference?",
+   o:["Share buybacks","Depreciation, amortisation and interest stayed almost flat, so the extra operating profit went nearly straight to net income","A lower tax rate","Higher selling prices"],c:1,
+   e:"The costs between EBITDA and net income are largely fixed in the short term. A change in operating profit is therefore magnified in net income and EPS, in both directions."},
   {q:"Which lever for EPS growth is created in daily operations?",
    o:["Share buybacks","Lower tax rate","Higher operating profit","Refinancing debt"],c:2,
    e:"The others are financial decisions taken centrally."}],
@@ -1677,8 +1679,8 @@ const KPIS=[
  {n:"Gross margin",c:"Profitability",f:"(Sales − cost of sales) ÷ sales",v:pc(Q.gm)+" (Q3 2026)",s:"own",t:"Shows how well products are made and priced. Pays for selling, development and administration; a falling gross margin cannot be repaired further down.",r:["ops","sales","rd","mgr"]},
  {n:"SG&A ratio",c:"Profitability",f:"Selling, general and administrative expenses ÷ sales",v:pc(Q.sgaPct)+" (Q3 2026)",s:"own",t:"Cost of the organisation around the product. Should fall as sales grow (operating leverage).",r:["mgr","sales","rd"]},
  {n:"Operating margin (EBIT margin)",c:"Profitability",f:"Operating income ÷ sales",v:pc(Q.opMargin)+" (Q3 2026)",s:"rep",t:"Profit from running the business per dollar of sales, after depreciation and amortisation.",r:["mgr"]},
- {n:"EBITDA margin (adjusted)",c:"Profitability",f:"Adjusted EBITDA ÷ sales",v:pc(Q.adjEbitdaMargin)+" (Q3 2026)",s:"rep",t:"Operating earning power before depreciation, amortisation and one-off items. The example group's headline profitability measure and part of its guidance.",r:ALL},
- {n:"Adjusted segment EBITDA margin",c:"Profitability",f:"Adjusted segment EBITDA ÷ segment sales",v:pc(D.segA.margin)+" Segment A, "+pc(D.segB.margin)+" Segment B (Q3 2026)",s:"rep",t:"The measure the example group uses to allocate resources between segments. Requests for people and capital are judged by their effect on it.",r:ALL},
+ {n:"EBITDA margin",c:"Profitability",f:"EBITDA ÷ sales, with EBITDA = operating income + depreciation and amortisation",v:pc(Q.ebitdaMargin)+" (Q3 2026)",s:"rep",t:"Operating earning power before depreciation, amortisation and one-off items. The example group's headline profitability measure and part of its guidance.",r:ALL},
+ {n:"Segment EBITDA margin",c:"Profitability",f:"Segment EBITDA ÷ segment sales",v:pc(D.segA.margin)+" Segment A, "+pc(D.segB.margin)+" Segment B (Q3 2026)",s:"rep",t:"The measure the example group uses to allocate resources between segments. Requests for people and capital are judged by their effect on it.",r:ALL},
  {n:"Net margin (return on sales)",c:"Profitability",f:"Net income ÷ sales",v:pc(C.netMargin)+" (Q3 2026)",s:"own",t:"What is left for shareholders after all costs, interest and tax. Distorted by one-off items such as the 2025 loss on the sale of a business.",r:["mgr"]},
  {n:"Effective tax rate",c:"Profitability",f:"Income tax expense ÷ income before tax",v:pc(C.taxRate)+" (Q3 2026)",s:"own",t:"Share of pre-tax profit paid in tax. Decided by where profits arise; outside the influence of operating units.",r:[]},
  // ---- Cost structure
@@ -1693,7 +1695,7 @@ const KPIS=[
  {n:"Operating cash flow",c:"Cash and working capital",f:"Net income + non-cash charges − increase in working capital",v:usd(D.ytd.cfo)+" (nine months 2026)",s:"rep",t:"Cash produced by day-to-day business. The source of all investment, debt repayment and dividends.",r:ALL},
  {n:"Free cash flow",c:"Cash and working capital",f:"Operating cash flow − capital expenditure",v:usd(D.ytd.fcf)+" (nine months 2026)",s:"rep",t:"Cash available for acquisitions, debt repayment and shareholders. A company can report profit and still run short of cash if this is weak.",r:ALL},
  {n:"Free cash flow margin",c:"Cash and working capital",f:"Free cash flow ÷ sales",v:pc(C.fcfMargin)+" (nine months 2026)",s:"own",t:"Cents of free cash per dollar of sales.",r:["mgr"]},
- {n:"Cash conversion",c:"Cash and working capital",f:"Free cash flow ÷ adjusted net income",v:pc(D.ytd.fcfConv,0)+" (nine months 2026); "+pc(C.cashConvFy,0)+" (2025)",s:"own",t:"How much of reported earnings became cash. Persistently low values point to growing stock or receivables, or heavy investment.",r:["mgr","ops","sales"]},
+ {n:"Cash conversion",c:"Cash and working capital",f:"Operating cash flow ÷ EBITDA",v:pc(D.ytd.fcfConv,0)+" (nine months 2026); "+pc(C.cashConvFy,0)+" (2025)",s:"own",t:"How much of reported earnings became cash. Persistently low values point to growing stock or receivables, or heavy investment.",r:["mgr","ops","sales"]},
  {n:"Capex ratio",c:"Cash and working capital",f:"Capital expenditure ÷ sales",v:pc(C.capexPct)+" (nine months 2026)",s:"own",t:"Investment intensity. Low for the example group: its businesses need little physical capital.",r:["ops","rd","mgr"]},
  {n:"Days sales outstanding (DSO)",c:"Cash and working capital",f:"Receivables ÷ sales × days in period",v:nf(W.dso,0)+" days (Q3 2026)",s:"own",t:"Average time customers take to pay. Each day is worth about "+usd(W.dayAr)+" of cash at group level.",r:["sales","mgr"]},
  {n:"Days inventory outstanding (DIO)",c:"Cash and working capital",f:"Inventories ÷ cost of sales × days in period",v:nf(W.dio,0)+" days (Q3 2026)",s:"own",t:"Average time goods sit in stock. Each day is worth about "+usd(W.dayInv)+" of cash at group level. Stock also carries obsolescence risk.",r:["ops","rd","sales","mgr"]},
@@ -1703,8 +1705,8 @@ const KPIS=[
  {n:"Working capital ratio",c:"Cash and working capital",f:"(Receivables + inventories − payables) ÷ annualised sales",v:pc(C.wcPct)+" (Q3 2026)",s:"own",t:"Cash needed in operations per dollar of sales. Tells you how much cash a dollar of growth absorbs.",r:["ops","sales","mgr"]},
  // ---- Financing & liquidity
  {n:"Net debt",c:"Financing and liquidity",f:"Total debt − cash",v:usd(C.netDebt)+" (30 Sep 2026)",s:"own",t:"What the company owes lenders after using its cash.",r:[]},
- {n:"Net leverage",c:"Financing and liquidity",f:"Net debt ÷ adjusted EBITDA of the last twelve months",v:tm(Q.netLeverage)+" (30 Sep 2026)",s:"rep",t:"Years of operating earnings needed to repay net debt. Low leverage gives resilience and room for investment and acquisitions.",r:["mgr"]},
- {n:"Interest coverage",c:"Financing and liquidity",f:"Adjusted EBITDA ÷ interest expense (or operating income ÷ interest expense)",v:tm(C.intCov)+" on EBITDA, "+tm(C.ebitCov)+" on operating income (Q3 2026)",s:"own",t:"How comfortably earnings cover interest. Lenders usually set minimum levels.",r:[]},
+ {n:"Net leverage",c:"Financing and liquidity",f:"Net debt ÷ EBITDA of the last twelve months",v:tm(Q.netLeverage)+" (30 Sep 2026)",s:"rep",t:"Years of operating earnings needed to repay net debt. Low leverage gives resilience and room for investment and acquisitions.",r:["mgr"]},
+ {n:"Interest coverage",c:"Financing and liquidity",f:"EBITDA ÷ interest expense (or operating income ÷ interest expense)",v:tm(C.intCov)+" on EBITDA, "+tm(C.ebitCov)+" on operating income (Q3 2026)",s:"own",t:"How comfortably earnings cover interest. Lenders usually set minimum levels.",r:[]},
  {n:"Equity ratio",c:"Financing and liquidity",f:"Shareholders' equity ÷ total assets",v:pc(C.equityRatio)+" (30 Sep 2026)",s:"own",t:"Share of assets financed by owners. A high ratio means a solid balance sheet.",r:[]},
  {n:"Gearing",c:"Financing and liquidity",f:"Net debt ÷ shareholders' equity",v:pc(C.gearing)+" (30 Sep 2026)",s:"own",t:"Debt relative to owners' capital; another view of financial risk.",r:[]},
  {n:"Current ratio",c:"Financing and liquidity",f:"Current assets ÷ current liabilities",v:tm(E.curRatio),s:"ill",t:"Can short-term obligations be met from short-term assets? Below 1 signals a liquidity risk; a very high value can mean idle stock or receivables.",r:["mgr"]},
@@ -1714,7 +1716,7 @@ const KPIS=[
  {n:"Return on capital employed (ROCE)",c:"Returns",f:"EBIT ÷ (fixed assets + working capital)",v:pc(E.roce),s:"ill",t:"The plant-level version. High because a plant carries no goodwill. Improves through margin or through less capital.",r:["ops","mgr"]},
  {n:"Cash flow return on invested capital (CFROIC)",c:"Returns",f:"Free cash flow ÷ invested capital (debt + equity − cash)",v:pc(D.roic.cfroic)+" on free cash flow, "+pc(D.roic.cfroicOcf)+" on operating cash flow (2025)",s:"own",t:"The cash actually generated per dollar of capital that lenders and owners have put into the business. It is the cash counterpart of ROIC: it shows whether the accounting return is backed by money that can repay debt, fund growth or be distributed.",r:[]},
  {n:"Cash flow return on investment (CFROI)",c:"Returns",f:"Gross cash flow ÷ gross investment = (operating profit after tax + depreciation and amortisation) ÷ (capital employed + accumulated depreciation)",v:pc(E.cfroi)+" (example plant: "+nf(E.grossCf,1)+" ÷ "+nf(E.grossInv,1)+")",s:"ill",t:"The cash the operations earn on everything originally invested in them, whatever has already been depreciated. Removes the distortion that makes old, written-down plants look better than new ones. This is the simplified one-year form; the full method calculates an internal rate of return over the life of the assets.",r:[]},
- {n:"Return on equity (ROE)",c:"Returns",f:"Net income ÷ shareholders' equity",v:pc(C.roe)+" reported, "+pc(C.roeAdj)+" on adjusted net income (2025)",s:"own",t:"Return on the owners' capital. The reported 2025 value is depressed by the one-time loss on the sale of a business.",r:[]},
+ {n:"Return on equity (ROE)",c:"Returns",f:"Net income ÷ shareholders' equity",v:pc(C.roe)+" (2025)",s:"own",t:"Return on the owners' capital. The reported 2025 value is depressed by the one-time loss on the sale of a business.",r:[]},
  {n:"Return on assets (ROA)",c:"Returns",f:"Net income ÷ total assets",v:pc(C.roa)+" (2025)",s:"own",t:"Profit per dollar of everything the company owns, regardless of financing.",r:[]},
  {n:"Asset turnover",c:"Returns",f:"Sales ÷ total assets",v:tm(C.assetTurn,2)+" (2025)",s:"own",t:"Sales generated per dollar of assets. Low for an acquirer with large goodwill.",r:["ops","mgr"]},
  {n:"DuPont return tree",c:"Returns",f:"Return = margin × capital turnover (× financial leverage for ROE)",v:pc(E.ebitMargin)+" × "+tm(E.capTurn,2)+" = "+pc(E.roce)+" (example plant)",s:"ill",t:"Splits a return into its levers so you can see whether to work on margin or on capital.",r:["mgr","ops"]},
@@ -1722,14 +1724,13 @@ const KPIS=[
  {n:"Economic value added (EVA)",c:"Returns",f:"Operating profit after tax − capital employed × cost of capital",v:usd(E.eva),s:"ill",t:"Profit left after charging for the capital used. A unit can be profitable and still destroy value if this is negative.",r:["mgr"]},
  // ---- Capital market
  {n:"Earnings per share (EPS)",c:"Capital market",f:"Net income ÷ diluted number of shares",v:"$"+nf(Q.eps,2)+" (Q3 2026)",s:"rep",t:"Profit attributable to one share; the basis of most share valuations.",r:[]},
- {n:"Adjusted EPS",c:"Capital market",f:"Adjusted net income ÷ diluted number of shares",v:"$"+nf(Q.adjEps,2)+" (Q3 2026)",s:"rep",t:"EPS without one-offs and acquisition-related amortisation. One of the example group's three guidance figures.",r:["mgr"]},
- {n:"Price/earnings ratio (P/E)",c:"Capital market",f:"Share price ÷ earnings per share",v:tm(C.pe)+" (price after Q3 release ÷ 2026 adjusted EPS guidance midpoint)",s:"own",t:"What investors pay per dollar of annual earnings. A high multiple expresses expectations of growth, which the business must then deliver.",r:[]},
+ {n:"Price/earnings ratio (P/E)",c:"Capital market",f:"Share price ÷ earnings per share",v:tm(C.pe)+" (price after Q3 release ÷ 2026 EPS guidance midpoint)",s:"own",t:"What investors pay per dollar of annual earnings. A high multiple expresses expectations of growth, which the business must then deliver.",r:[]},
  {n:"Market capitalisation",c:"Capital market",f:"Share price × number of shares",v:"about $"+nf(C.mcap/1000,1)+" billion (after the Q3 release)",s:"own",t:"Market value of the equity. Changes daily.",r:[]},
  {n:"Enterprise value (EV)",c:"Capital market",f:"Market capitalisation + net debt",v:"about $"+nf(C.ev/1000,1)+" billion (after the Q3 release)",s:"own",t:"Value of the whole business to owners and lenders together.",r:[]},
- {n:"EV/EBITDA",c:"Capital market",f:"Enterprise value ÷ adjusted EBITDA",v:tm(C.evEbitda)+" (on 2026 guidance midpoint)",s:"own",t:"Valuation multiple independent of financing. Also the yardstick for acquisition prices.",r:[]},
+ {n:"EV/EBITDA",c:"Capital market",f:"Enterprise value ÷ EBITDA",v:tm(C.evEbitda)+" (on 2026 guidance midpoint)",s:"own",t:"Valuation multiple independent of financing. Also the yardstick for acquisition prices.",r:[]},
  {n:"Dividend per share",c:"Capital market",f:"Cash paid to shareholders per share",v:"$"+nf(C.divAnnual,2)+" a year ($"+nf(Q.divPerShare,2)+" per quarter)",s:"rep",t:"The direct cash return to owners.",r:[]},
  {n:"Dividend yield",c:"Capital market",f:"Annual dividend per share ÷ share price",v:pc(C.divYield,2),s:"own",t:"Low here: most cash is reinvested in growth and acquisitions.",r:[]},
- {n:"Payout ratio",c:"Capital market",f:"Dividends ÷ net income",v:pc(C.payoutRep,0)+" of reported net income, "+pc(C.payout,0)+" of adjusted net income (2025)",s:"own",t:"Share of earnings distributed. A low ratio leaves room for investment and makes the dividend safe.",r:[]},
+ {n:"Payout ratio",c:"Capital market",f:"Dividends ÷ net income",v:pc(C.payoutRep,0)+" of net income, "+pc(C.payoutFcf,0)+" of free cash flow (2025)",s:"own",t:"Share of earnings distributed. A low ratio leaves room for investment and makes the dividend safe.",r:[]},
  // ---- Investment appraisal
  {n:"Payback period",c:"Investment appraisal",f:"Time until cumulative cash flow turns positive",v:nf(E.prj.payback,1)+" years (example project)",s:"ill",t:"How long the money is at risk. Simple, but ignores everything after payback and the time value of money.",r:["rd","ops","mgr"]},
  {n:"Net present value (NPV)",c:"Investment appraisal",f:"Sum of all cash flows discounted at the cost of capital",v:usd(E.prj.npv,2)+" (example project)",s:"ill",t:"Value created above the required return. The most reliable single criterion: positive means do it, if the assumptions hold.",r:["rd","ops","mgr"]},
@@ -1788,8 +1789,8 @@ const INTERP={
 "Gross margin":["Stable over time is normal; a change of a point or more needs an explanation from price, material cost, mix, utilisation or waste. Compare only with the same business, never across industries.","Price and discount levels, purchase prices, scrap and yield, labour efficiency, plant utilisation, product design, product and customer mix."],
 "SG&A ratio":["Should fall as sales grow. A rising ratio at growing sales means the organisation is growing faster than the business. A very low ratio can mean under-investment in sales and development.","Hiring, travel, marketing, systems, site footprint, development spending; acquisitions add amortisation here."],
 "Operating margin (EBIT margin)":["Includes depreciation and amortisation, so it reflects the cost of assets and acquisitions. A large gap to EBITDA margin signals a capital-heavy or acquisition-heavy company.","Everything that moves gross margin and SG&A, plus investment (depreciation) and acquisitions (amortisation)."],
-"EBITDA margin (adjusted)":["Good for comparing the same business over time. Not comparable between capital-light and capital-heavy businesses. Always look at what was adjusted out and at free cash flow alongside.","Price, volume, mix, cost of sales, SG&A. Not moved by depreciation, so replacing labour with machines raises it."],
-"Adjusted segment EBITDA margin":["Read level and change separately: a high stable margin signals pricing power, a volatile one signals fixed cost or a cyclical market. Excludes corporate cost, so it overstates the final contribution.","Segment pricing, mix, plant cost, growth spending. Moving costs to corporate improves it without any real gain."],
+"EBITDA margin":["Good for comparing the same business over time. Not comparable between capital-light and capital-heavy businesses. Unusual items inside operating cost move it for a single period, so check for them, and always look at free cash flow alongside.","Price, volume, mix, cost of sales, SG&A. Not moved by depreciation, so replacing labour with machines raises it."],
+"Segment EBITDA margin":["Read level and change separately: a high stable margin signals pricing power, a volatile one signals fixed cost or a cyclical market. Excludes corporate cost, so it overstates the final contribution.","Segment pricing, mix, plant cost, growth spending. Moving costs to corporate improves it without any real gain."],
 "Net margin (return on sales)":["The most distorted margin: one-offs, interest and tax all sit in it. Use it for the long-term picture; use operating margins to judge the business.","Operating performance plus financing (debt level), tax structure and one-off events such as disposals."],
 "Effective tax rate":["A rate far below the statutory level deserves a look at why and whether it lasts. Swings between quarters are common and usually technical.","Where profits are earned, legal structure, use of tax losses and credits. Outside operating influence."],
 "Contribution margin":["High means each extra sale is very profitable and each lost sale hurts; low means volume matters less than cost. Valid only while capacity is free: at full capacity extra sales need new fixed cost.","Price, variable cost (material, direct labour, freight), product mix. Outsourcing lowers it while cutting fixed cost."],
@@ -1802,7 +1803,7 @@ const INTERP={
 "Operating cash flow":["Over several years it should track net income plus depreciation. Persistently lower means working capital is absorbing the profit. A single period is strongly affected by payment timing.","Profit, and above all stock levels, customer terms, collection and supplier payments."],
 "Free cash flow":["Lumpy: judge several years. Negative in a year of heavy, sensible investment is fine. Persistently below net income needs an explanation.","All operating decisions plus the timing of capital spending. Postponing investment raises it now and costs later."],
 "Free cash flow margin":["Shows how cash-generative the business model is. Compare with the EBITDA margin: a large gap means capital spending, tax, interest or working capital take a big share.","Margin, working-capital discipline and investment intensity."],
-"Cash conversion":["Definitions vary (free cash flow to net income, or operating cash flow to EBITDA), so check which one is meant. Around 100% over several years means earnings are real cash. Well below suggests growth absorbing working capital or aggressive profit recognition. Well above for one year often comes from stretching payables.","Inventory and receivables management, supplier terms, capital spending."],
+"Cash conversion":["Definitions vary (operating cash flow to EBITDA as here, or free cash flow to net income), so check which one is meant. On this definition tax and interest always take a share, so values of roughly 70% to 85% are normal for a profitable company. A falling trend means working capital is absorbing the earnings; a sudden jump often comes from stretching payables.","Inventory and receivables management, supplier terms, capital spending."],
 "Capex ratio":["Compare with depreciation: persistently below it means the asset base is ageing; well above means expansion. Low is not good by itself.","Capacity additions, automation, replacement policy, lease-or-buy, maintenance versus renewal."],
 "Days sales outstanding (DSO)":["Compare with agreed payment terms. DSO far above terms means late payers or disputed invoices. A rise can also come from strong sales late in the period, which is harmless.","Payment terms agreed by sales, invoice accuracy and timing, follow-up of overdue accounts, customer mix by country."],
 "Days inventory outstanding (DIO)":["Judge the trend against sales. Rising before a launch or for confirmed orders is planned; rising at flat sales is a problem. Very low values risk missed deliveries.","Batch sizes, safety stock, lead times, forecast quality, part variety, bulk purchases, consignment stock, write-downs."],
@@ -1828,14 +1829,13 @@ const INTERP={
 "Cost of capital (WACC)":["The minimum return investors expect, used as the hurdle for investments. It is an estimate, so treat results close to the hurdle as uncertain.","Set by capital markets (interest rates, the risk investors see in the business) and by the mix of debt and equity. No operating role moves it. Individual projects can justify a higher or lower hurdle than the company average when their risk differs."],
 "Economic value added (EVA)":["Positive means the unit earns more than its capital costs. Unlike a ratio it rewards every investment above the hurdle, even one that lowers the average return.","Profit increases and capital reductions both raise it; growth that needs more capital than it earns lowers it."],
 "Earnings per share (EPS)":["Affected by one-offs, tax and share count. Ask where a change came from: operations, financing or fewer shares.","Operating profit, debt and interest, tax, buybacks, one-off gains and losses."],
-"Adjusted EPS":["Smoother than reported EPS and closer to ongoing performance, but it depends on management's choice of adjustments. A persistent large gap to reported EPS needs explaining.","As for EPS, without the items defined as one-off or acquisition-related."],
 "Price/earnings ratio (P/E)":["High means investors expect growth; it is not a statement that the company is good or bad. The expectation has to be met through future profit.","Not decided inside the company. It reflects the market's view of growth, risk and interest rates."],
 "Market capitalisation":["The value of the equity today. Moves with expectations and the general market as much as with results.","Indirectly: sustained profit growth, cash generation and credible guidance."],
 "Enterprise value (EV)":["Use it, not market capitalisation, when comparing companies with different debt levels.","As for market capitalisation, plus changes in net debt."],
 "EV/EBITDA":["A valuation yardstick also used for acquisition prices. Buying at a multiple above one's own only pays off if the target grows faster or brings synergies.","The market sets it. Management influences it only through growth, margin stability and cash conversion."],
 "Dividend per share":["Stability matters more than level: companies avoid cutting it, so a rise signals confidence in future cash flow.","The board's distribution policy, based on expected free cash flow."],
 "Dividend yield":["Low yield in a growing company means cash is reinvested. A very high yield can signal a falling share price and doubt about the dividend.","Dividend policy and the share price."],
-"Payout ratio":["Low leaves room for investment and makes the dividend safe. Above 100% is being paid from reserves or debt and cannot continue. One-off charges distort it: here the reported ratio is inflated by the loss on a disposal, so the adjusted ratio and the dividend cover from free cash flow give the truer picture.","Dividend decisions relative to earnings."],
+"Payout ratio":["Low leaves room for investment and makes the dividend safe. Above 100% is being paid from reserves or debt and cannot continue. One-off charges distort it: here the reported ratio is inflated by the loss on a disposal, so the dividend cover from free cash flow gives the truer picture.","Dividend decisions relative to earnings."],
 "Payback period":["Shorter means less risk, but it ignores all income after payback, so it favours short-lived projects. Use it as a risk check beside NPV.","Investment size, time to market, ramp-up speed, price and margin achieved."],
 "Net present value (NPV)":["Positive means the project earns more than the cost of capital. The result is only as good as the assumptions: test price, volume and timing, and prefer projects that stay positive under stress.","Selling price and unit cost first, then volume and launch date; the development budget usually matters least."],
 "Internal rate of return (IRR)":["Compare with the cost of capital. A small project can have a spectacular IRR and add little value; rank by NPV when choosing between projects.","As for NPV; front-loaded cash and early launch raise it strongly."],
@@ -1870,8 +1870,8 @@ const ROLEHOW={
 "Gross margin":{sales:"Sets net prices and discounts and steers the product and customer mix.",ops:"Controls scrap, yield, labour hours, purchase prices, freight and plant utilisation.",rd:"Fixes most of the product cost through material choice, tolerances and number of process steps.",mgr:"Decides on make-or-buy, site footprint and price increases, and holds the functions to cost targets."},
 "SG&A ratio":{sales:"Spends the selling budget: field force, travel, trade fairs, commissions.",rd:"Spends the development budget, which sits in this line when it is not shown separately.",mgr:"Decides headcount and structure of the support functions and whether cost grows more slowly than sales."},
 "Operating margin (EBIT margin)":{sales:"Through price, mix and selling cost.",ops:"Through cost of sales and, via equipment decisions, through depreciation.",rd:"Through product cost, development spending and the tooling that is depreciated later.",mgr:"Through the overall balance of price, cost and investment in the unit."},
-"EBITDA margin (adjusted)":{sales:"Price realisation and mix have the largest effect per decision.",ops:"Every dollar of scrap, overtime, freight or purchase price saved arrives in full.",rd:"Development spending lowers it today; product cost and differentiation raise it later.",mgr:"Decides how much growth spending the margin carries and when it must pay back."},
-"Adjusted segment EBITDA margin":{sales:"Price and mix within the segment's product lines and channels.",ops:"Plant cost and efficiency of the segment's sites.",rd:"Margin level of the segment's new products compared with its existing ones.",mgr:"Frames requests for people and capital by their effect on this measure, because resources are allocated on it."},
+"EBITDA margin":{sales:"Price realisation and mix have the largest effect per decision.",ops:"Every dollar of scrap, overtime, freight or purchase price saved arrives in full.",rd:"Development spending lowers it today; product cost and differentiation raise it later.",mgr:"Decides how much growth spending the margin carries and when it must pay back."},
+"Segment EBITDA margin":{sales:"Price and mix within the segment's product lines and channels.",ops:"Plant cost and efficiency of the segment's sites.",rd:"Margin level of the segment's new products compared with its existing ones.",mgr:"Frames requests for people and capital by their effect on this measure, because resources are allocated on it."},
 "Net margin (return on sales)":{_:"Operating roles reach it only through operating profit. Interest, tax and one-off items, which often dominate it, are decided by group finance and the board."},
 "Effective tax rate":{_:"No operating lever. It follows from where profits arise and from the legal and tax structure, which group finance manages."},
 "Contribution margin":{sales:"Net price and the mix of products and customers sold.",ops:"Variable cost per unit: material use, direct labour efficiency, energy, freight.",rd:"Variable cost designed into the product, and features that support a higher price.",mgr:"Make-or-buy and pricing policy; uses it to decide which business to accept."},
@@ -1910,7 +1910,6 @@ const ROLEHOW={
 "Cost of capital (WACC)":{_:"Set by capital markets and the financing mix. R&D and managers apply it as the hurdle rate in business cases but do not set it."},
 "Economic value added (EVA)":{sales:"Profit from price and mix, less the capital charge on receivables.",ops:"Profit from cost, less the capital charge on stock and equipment.",mgr:"Grows the unit only where the return exceeds the cost of capital."},
 "Earnings per share (EPS)":{_:"No single role manages it. Every role contributes through operating profit: about 3 cents a year per $1 million of sustained profit in the example group. Interest, tax and share count are decided centrally."},
-"Adjusted EPS":{_:"As for EPS: operating roles contribute through operating profit; what counts as an adjustment is decided by group finance."},
 "Price/earnings ratio (P/E)":{_:"Set by investors. The company influences it only indirectly through reliable growth and delivering on its guidance."},
 "Market capitalisation":{_:"Set by the share price. No operating lever beyond sustained results."},
 "Enterprise value (EV)":{_:"Market value plus net debt. No operating lever beyond sustained results and cash generation."},
@@ -1956,8 +1955,8 @@ KPIS.forEach(k=>{k.h=ROLEHOW[k.n]||{}; k.r=ALL.filter(r=>k.h[r]);});
 "Gross margin":`Of every $100 invoiced, $${n0(100-Q.gm)} is used up making and delivering the product and $${n0(Q.gm)} is left for sales, development, administration, interest, tax and profit. When a part that cost $${n0(100-Q.gm)} to make is scrapped, about $${n0((100-Q.gm)/Q.gm*100)} of additional sales are needed to earn the loss back.`,
 "SG&A ratio":`Of every $100 of sales, $${n0(Q.sgaPct)} pays for everything outside production: sales force, development, IT, finance, management and the amortisation of acquired businesses. About ${n0(Q.sgaPct/Q.gm*100)}% of the gross margin is spent here before any profit appears.`,
 "Operating margin (EBIT margin)":`After all operating costs about $${n0(Q.opMargin)} of every $100 of sales remains. An unplanned cost of $1 million, such as a warranty case or a failed launch batch, takes about $${n1(100/Q.opMargin)} million of additional sales to make good.`,
-"EBITDA margin (adjusted)":`Before charging for the wear of equipment and for past acquisitions, the group keeps about $${n0(Q.adjEbitdaMargin)} of every $100 of sales. This is the pool from which new machines, interest, tax, dividends and acquisitions all have to be paid.`,
-"Adjusted segment EBITDA margin":`$1 million of sales carries on average about ${k$(A.margin/100)} of segment earnings in Segment A and ${k$(Bg.margin/100)} in Segment B. This is why the same request for people or equipment is weighed differently in the two segments.`,
+"EBITDA margin":`Before charging for the wear of equipment and for past acquisitions, the group keeps about $${n0(Q.ebitdaMargin)} of every $100 of sales. This is the pool from which new machines, interest, tax, dividends and acquisitions all have to be paid.`,
+"Segment EBITDA margin":`$1 million of sales carries on average about ${k$(A.margin/100)} of segment earnings in Segment A and ${k$(Bg.margin/100)} in Segment B. This is why the same request for people or equipment is weighed differently in the two segments.`,
 "Net margin (return on sales)":`Once lenders and the tax office have also been paid, about $${n0(C.netMargin)} of every $100 of sales belongs to the shareholders. Only this amount is available for dividends and for building up the company's own funds.`,
 "Effective tax rate":`About ${Math.round(C.taxRate)===25?"a ":""}${Math.round(C.taxRate)===25?"quarter":n0(C.taxRate)+"%"} of pre-tax profit goes to tax. A cost saving of $1 million in a plant therefore ends up as roughly $${n2(1-C.taxRate/100)} million of net income.`,
 "Contribution margin":`An additional order of $100,000 adds about ${k$(E.cmPct/100*0.1)} of profit while capacity is free, because rent, salaries and depreciation are already paid. A lost order removes the same amount: far more than the ${k$(E.ebitMargin/100*0.1)} that the plant's average profit margin would suggest.`,
@@ -1969,8 +1968,8 @@ KPIS.forEach(k=>{k.h=ROLEHOW[k.n]||{}; k.r=ALL.filter(r=>k.h[r]);});
 "Budget variance":`The plant shipped $${n1(E.varSales)} million more than planned and earned $${n1(E.varEbit)} million more. During the year the plan is the yardstick for hiring releases, investment approvals and bonuses, so the variance decides what the unit is allowed to do next.`,
 "Operating cash flow":`In nine months the day-to-day business took in $${n0(Y.cfo)} million more cash than it paid out for material, wages, suppliers, interest and tax, about $${n0(Y.cfo/9)} million a month. This is the only internal source of money for machines, debt repayment and dividends.`,
 "Free cash flow":`After paying for machines and buildings as well, $${n0(Y.fcf)} million was left over in nine months. Together with cash already on hand, this is the money that repaid $${n0(Q.revolverYtd)} million of debt and paid $${n1(Y.div)} million of dividends this year.`,
-"Free cash flow margin":`Of every $100 of sales about $${n0(C.fcfMargin)} ended up as freely available cash. Set against $${n0(Q.adjEbitdaMargin)} of EBITDA, roughly half is consumed on the way by investment, tax, interest and growing stock and receivables.`,
-"Cash conversion":`Of every $100 of adjusted profit reported, $${n0(Y.fcfConv)} arrived in the bank account in nine months. The missing $${n0(100-Y.fcfConv)} sits mostly in the higher receivables and inventories that growth has required.`,
+"Free cash flow margin":`Of every $100 of sales about $${n0(C.fcfMargin)} ended up as freely available cash. Set against $${n0(Q.ebitdaMargin)} of EBITDA, roughly half is consumed on the way by investment, tax, interest and growing stock and receivables.`,
+"Cash conversion":`Of every $100 of EBITDA, $${n0(Y.fcfConv)} arrived as cash from operations in nine months. The other $${n0(100-Y.fcfConv)} went to tax, interest and the higher receivables and inventories that growth has required.`,
 "Capex ratio":`About $${n0(C.capexPct)} of every $100 of sales is put back into machines, buildings and systems. Applied to a plant with $${n0(E.sales)} million of sales, that corresponds to an investment budget of about $${n1(E.sales*C.capexPct/100)} million a year.`,
 "Days sales outstanding (DSO)":`On average the group waits ${n0(W.dso)} days, about ${wk(W.dso)} weeks, for its money after sending the invoice. Wages and suppliers for those goods are paid long before. At any moment $${n0(B.ar)} million is outstanding with customers.`,
 "Days inventory outstanding (DIO)":`Material arriving at the dock today leaves as a sold product in about ${wk(W.dio)} weeks. In the meantime $${n0(B.inv)} million of goods already paid for sit on shelves and on the shop floor.`,
@@ -1989,21 +1988,20 @@ KPIS.forEach(k=>{k.h=ROLEHOW[k.n]||{}; k.r=ALL.filter(r=>k.h[r]);});
 "Cash flow return on invested capital (CFROIC)":`Each $100 invested in the group returned about $${n0(R.cfroic)} in free cash last year: money that really arrived and could repay debt or be paid out. At that rate the invested capital is earned back in cash in about ${n0(100/R.cfroic)} years.`,
 "Cash flow return on investment (CFROI)":`For every $100 originally spent on the plant's machines, buildings and working capital, operations bring in about $${n0(E.cfroi)} of cash a year. The plant earns back its full original cost in about ${n0(100/E.cfroi)} years.`,
 "Return on capital employed (ROCE)":`Every $100 tied up in the plant's machines, stock and receivables earns about $${n0(E.roce)} of operating profit a year. Seen the other way: $1 million of additional inventory has to bring ${k$(E.roce/100)} more profit a year just to keep the plant's return where it is.`,
-"Return on equity (ROE)":`The owners earned $${n2(C.roe)} on each $100 of their capital in the year, or $${n2(C.roeAdj)} without one-off items. This is what their money earned by being left in the business instead of somewhere else.`,
+"Return on equity (ROE)":`The owners earned $${n2(C.roe)} on each $100 of their capital in the year, held down by the one-time loss on the sale of a business. This is what their money earned by being left in the business instead of somewhere else.`,
 "Return on assets (ROA)":`Everything the group owns, from plants and stock to receivables and acquired goodwill, earned $${n2(C.roa)} per $100. About ${n0(B.gwIntPct)}% of those assets are goodwill and intangibles from acquisitions; the plants themselves earn far more on what they use.`,
 "Asset turnover":`Each $1 of assets produces about ${n0(C.assetTurn*100)} cents of sales a year. It takes roughly ${n0(1/C.assetTurn)} years of sales to equal the value of the asset base.`,
 "DuPont return tree":`The plant earns ${n1(E.ebitMargin)} cents on each dollar of sales and turns its capital over ${n1(E.capTurn)} times a year, which gives ${n0(E.roce)}%. A plant with half that margin would reach the same return only by getting along with half the capital.`,
 "Cost of capital (WACC)":`Lenders and owners expect about $${n0(E.wacc)} a year for every $100 they leave in the business. A $1 million machine must therefore bring at least ${k$(E.wacc/100)} a year after tax on top of its own depreciation before it adds anything, and $1 million of extra stock costs the same amount every year it stays.`,
 "Economic value added (EVA)":`After paying a ${n0(E.wacc)}% charge on the $${n0(E.ce)} million of capital it uses, about $${n1(E.ce*E.wacc/100)} million, the plant has $${n1(E.eva)} million left. That is what it contributes beyond the minimum its financiers expect.`,
 "Earnings per share (EPS)":`Each share earned $${n2(Q.eps)} in the quarter. With about ${n0(Q.shares)} million shares, a plant that improves its profit by $1 million a year adds about ${n0((1-C.taxRate/100)/Q.shares*100)} cents per share per year.`,
-"Adjusted EPS":`Leaving aside one-offs and the amortisation from acquisitions, each share earned $${n2(Q.adjEps)}. This is the figure the company's guidance refers to: the whole guidance range of ${n0((D.mkt.guideEpsHigh-D.mkt.guideEpsLow)*100)} cents corresponds to only about $${n0((D.mkt.guideEpsHigh-D.mkt.guideEpsLow)*Q.shares/(1-C.taxRate/100))} million of pre-tax profit.`,
 "Price/earnings ratio (P/E)":`Investors pay about $${n0(C.pe)} for each $1 of this year's expected earnings. They are paying for profits many years ahead, so a disappointment about growth moves the share price far more than the missed profit itself.`,
 "Market capitalisation":`Buying every share at today's price would cost about $${n1(C.mcap/1000)} billion. Employees with shares or share-based pay see movements of this figure directly in their own account.`,
 "Enterprise value (EV)":`To own the whole business free of debt, a buyer would pay about $${n1(C.ev/1000)} billion: $${n1(C.mcap/1000)} billion to the shareholders and $${n1(C.netDebt/1000)} billion to repay the lenders.`,
 "EV/EBITDA":`The business is valued at about ${n0(C.evEbitda)} times one year's operating earnings. At that multiple each lasting $1 million of EBITDA a site adds is worth around $${n0(C.evEbitda)} million of company value.`,
 "Dividend per share":`A holder of 100 shares receives $${n0(Q.divPerShare*100)} each quarter, $${n0(C.divAnnual*100)} a year. In total the dividend costs the group about $${n0(FY.div)} million a year, roughly ${n0(FY.div/fcfYear*12)} months of free cash flow.`,
 "Dividend yield":`$100 invested in the shares pays ${n0(C.divYield*100)} cents a year in dividends. Owners are relying on the business growing in value, not on the payout.`,
-"Payout ratio":`Of each $100 of adjusted profit, $${n0(C.payout)} is paid out and $${n0(100-C.payout)} stays in the business for investment, acquisitions and debt repayment.`,
+"Payout ratio":`Of each $100 of free cash flow in 2025, $${n0(C.payoutFcf)} went to dividends; the rest stayed available for debt repayment and acquisitions. Measured against the net income of that year the dividend took $${n0(C.payoutRep)}, because the loss on a disposal had cut the profit.`,
 "Payback period":`The $${n1(P.invest)} million put into the project is back in the bank after about ${n1(P.payback)} years. Until then the money is exposed: if the product fails in its second year, part of it is lost.`,
 "Net present value (NPV)":`After repaying the money invested and the ${n0(E.wacc)}% a year its financiers expect, the project leaves $${n2(P.npv)} million in today's money. Doing the project makes the business that much more valuable than not doing it.`,
 "Internal rate of return (IRR)":`The project behaves like a deposit paying about ${n0(P.irr)}% interest a year on the money tied up in it. It would still be worth doing if financing cost ${n0(Math.floor(P.irr/E.wacc))} times the assumed ${n0(E.wacc)}%.`,
@@ -2045,7 +2043,7 @@ KPIS.forEach(k=>{k.h=ROLEHOW[k.n]||{}; k.r=ALL.filter(r=>k.h[r]);});
   head("m0",0,"What it means in practice");
   put("m0",0,"Sales",`Everything shipped and invoiced in three months: about $${n1(Q.sales/91.25)} million on every day of the quarter.`);
   put("m0",0,"Operating margin",`After all operating costs, about $${n0(Q.opMargin)} of every $100 invoiced remains.`);
-  put("m0",0,"Adjusted EBITDA margin",`Before charging for wear of equipment and past acquisitions, about $${n0(Q.adjEbitdaMargin)} of every $100 stays in the business to pay for investment, interest, tax and dividends.`);
+  put("m0",0,"EBITDA margin",`Before charging for wear of equipment and past acquisitions, about $${n0(Q.ebitdaMargin)} of every $100 stays in the business to pay for investment, interest, tax and dividends.`);
   put("m0",0,"Diluted earnings per share",`What one share earned in the quarter. $1 million more profit a year in any plant adds about ${n0((1-C.taxRate/100)/Q.shares*100)} cents a year.`);
   put("m0",0,"Free cash flow (nine months)",`Money left after paying all running costs and new machines. It is what repaid debt and paid the dividend.`);
   put("m0",0,"Net leverage",`All operating earnings of about ${n1(Q.netLeverage)} years would be needed to clear the debt.`);
@@ -2110,7 +2108,7 @@ KPIS.forEach(k=>{k.h=ROLEHOW[k.n]||{}; k.r=ALL.filter(r=>k.h[r]);});
 })();
 
 /* ===================== decision lab ===================== */
-const LABK=[["S","Sales",1],["GM","Gross margin %",1],["EB","EBITDA (adjusted)",1],["EI","Operating profit (EBIT)",1],["EPS","Net income / EPS",1],["FCF","Free cash flow",1],["WC","Working capital tied up",-1],["ROC","Return on capital",1],["LEV","Net leverage",-1]];
+const LABK=[["S","Sales",1],["GM","Gross margin %",1],["EB","EBITDA",1],["EI","Operating profit (EBIT)",1],["EPS","Net income / EPS",1],["FCF","Free cash flow",1],["WC","Working capital tied up",-1],["ROC","Return on capital",1],["LEV","Net leverage",-1]];
 // effect codes: + up, - down, 0 no direct effect, ~ depends
 const DECISIONS=[
  {n:"Give a 3% discount to win more volume",r:["sales","mgr"],e:"S:~ GM:- EB:~ EI:~ EPS:~ FCF:~ WC:+ ROC:~ LEV:0",
@@ -2164,9 +2162,9 @@ const DECISIONS=[
  {n:"Hire additional permanent staff",r:["mgr"],e:"S:~ GM:0 EB:- EI:- EPS:- FCF:- WC:0 ROC:- LEV:+",
   w:"Fixed cost rises from the first month. Profit falls until the new people generate more contribution than they cost.",
   t:"Translate the cost into the sales needed to cover it: annual cost divided by the contribution margin. The break-even point of the whole unit moves up."},
- {n:"Restructure: close a line and pay severance",r:["mgr"],e:"S:~ GM:0 EB:0 EI:- EPS:- FCF:- WC:0 ROC:~ LEV:+",
-  w:"The one-time cost reduces reported profit and cash now. Adjusted EBITDA excludes it, so that figure does not move until the savings arrive and lift it.",
-  t:"Shows why reported and adjusted figures must be read together. The cash is real even where the adjusted figure looks untouched."},
+ {n:"Restructure: close a line and pay severance",r:["mgr"],e:"S:~ GM:0 EB:- EI:- EPS:- FCF:- WC:0 ROC:~ LEV:+",
+  w:"Severance and closure costs are operating costs, so EBITDA, profit and cash all fall in the period of the decision. The savings arrive afterwards and lift the same figures for years.",
+  t:"Treat it like an investment: a one-time cost against a yearly saving, with a payback period. When you later compare periods, remember that the weak one contained this cost."},
  {n:"Postpone maintenance and replacement investment",r:["ops","mgr"],e:"S:0 GM:+ EB:+ EI:+ EPS:+ FCF:+ WC:0 ROC:+ LEV:-",
   w:"Maintenance cost and capital spending fall, so profit, cash and return all improve this year.",
   t:"Nothing in the financial figures shows the damage. It appears later in OEE, scrap, delivery and a larger investment. Compare capital spending with depreciation over several years."},
@@ -2174,7 +2172,7 @@ const DECISIONS=[
   w:"The book value of the stock is charged to cost of sales in one step. No cash moves, because the cash was spent when the stock was made. Inventory days improve.",
   t:"A KPI can improve through a loss. Lower DIO after a write-down is not better stock management; the decision that caused it was taken long before."},
  {n:"Acquire a company with borrowed money",r:["mgr"],e:"S:+ GM:~ EB:+ EI:~ EPS:~ FCF:0 WC:+ ROC:- LEV:+",
-  w:"Sales and EBITDA rise from the first day. Amortisation of acquired intangibles and interest reduce reported profit, so adjusted EPS rises more than reported EPS. The purchase price enters capital employed in full.",
+  w:"Sales and EBITDA rise from the first day. Amortisation of acquired intangibles, interest and deal costs reduce net income, so EPS rises much less than EBITDA and can fall at first. The purchase price enters capital employed in full.",
   t:"Total growth is bought, not earned. The return on capital falls at first and recovers only if the acquired business grows and synergies are realised."},
  {n:"Buy back shares",r:[],e:"S:0 GM:0 EB:0 EI:0 EPS:+ FCF:0 WC:0 ROC:0 LEV:+",
   w:"The same profit is divided by fewer shares, so EPS rises. No operating figure changes. Cash leaves and net debt rises.",
@@ -2231,7 +2229,7 @@ const SIGNALS=[
   c:"Compare production volume with sales volume. Look at the age of the finished goods and at open orders covering them.",
   d:"Production planning, batch sizes, the wish to keep utilisation and monthly profit up."},
  {h:"Excellent margin, ageing plant",s:[
-   {k:"EBITDA margin (adjusted)",v:"up three years running",a:"The business is steadily improving.",p:"Cannot see what was not spent: it excludes depreciation and rewards every dollar of maintenance saved."},
+   {k:"EBITDA margin",v:"up three years running",a:"The business is steadily improving.",p:"Cannot see what was not spent: it excludes depreciation and rewards every dollar of maintenance saved."},
    {k:"Capex ratio",v:"below depreciation every year",a:"Capital discipline.",p:"Shows that equipment is wearing out faster than it is replaced. This is where the margin gain comes from.",key:1},
    {k:"Overall equipment effectiveness (OEE)",v:"slipping, with on-time delivery",a:"An operational problem on the shop floor.",p:"The physical consequence is appearing: more stoppages and late orders from ageing machines."},
    {k:"Scrap and rework rate",v:"rising",a:"A quality problem.",p:"Shows process capability eroding. The cost will soon reach the margin that looked so good."}],
@@ -2246,14 +2244,6 @@ const SIGNALS=[
   m:"Current sales are being delivered from the backlog. Unless intake recovers, sales will fall in the coming quarters, and fixed costs will then weigh on the margin.",
   c:"Order intake by market and customer; quotation activity and win rate; whether prices or lead times lost the orders.",
   d:"Capacity, hiring and stock should already follow intake, not sales."},
- {h:"Adjusted profit up, reported profit down",s:[
-   {k:"EBITDA margin (adjusted)",v:"adjusted EBITDA +10%",a:"Operations are improving.",p:"Is the figure after management has removed what it considers unusual, so it depends on that judgement."},
-   {k:"Net margin (return on sales)",v:"net income −15%",a:"A bad year for shareholders.",p:"Shows what was actually left. The widening gap to the adjusted figure is the thing to explain."},
-   {k:"Adjustments: restructuring",v:"charged for the fourth year running",a:"One more reorganisation.",p:"Shows the 'one-off' is a regular cost. Removing it every year overstates what the business earns.",key:1},
-   {k:"Adjustments: acquisition costs",v:"every year",a:"The price of a deal.",p:"Same point: for a company that acquires continuously, deal costs are part of the strategy's running cost."}],
-  m:"The adjustments are not exceptional any more; they are a regular cost of how the company operates. The adjusted figure overstates sustainable earnings.",
-  c:"List the adjustments for five years. Add back only those that truly do not recur. Compare cumulative free cash flow with cumulative adjusted net income.",
-  d:"The frequency of restructuring and acquisitions is itself a management decision."},
  {h:"Return falls after an investment",s:[
    {k:"Return on capital employed (ROCE)",v:"down from 34% to 33%",a:"The plant has got worse.",p:"Says only that capital grew faster than profit. As an average it cannot judge a single investment."},
    {k:"Operating margin (EBIT margin)",v:"EBIT up",a:"The plant has got better.",p:"Shows the new machine is earning: profit rose even after its depreciation."},
@@ -2263,8 +2253,8 @@ const SIGNALS=[
   c:"The investment's own return against the cost of capital, and whether the planned savings are arriving.",
   d:"Approving it was right. Rejecting it to protect the ratio would have destroyed value."},
  {h:"Group margin down, every segment up",s:[
-   {k:"Adjusted segment EBITDA margin",v:"Segment A +0.4 points, Segment B +4 points",a:"Both businesses improved.",p:"Shows that performance inside each segment is better, so the group figure cannot be a performance problem."},
-   {k:"EBITDA margin (adjusted)",v:"group margin lower than expected",a:"The company is doing worse.",p:"Is a weighted average of the segments and reacts to their weights as well as to their margins."},
+   {k:"Segment EBITDA margin",v:"Segment A +0.4 points, Segment B +4 points",a:"Both businesses improved.",p:"Shows that performance inside each segment is better, so the group figure cannot be a performance problem."},
+   {k:"EBITDA margin",v:"group margin lower than expected",a:"The company is doing worse.",p:"Is a weighted average of the segments and reacts to their weights as well as to their margins."},
    {k:"Sales growth",v:"Segment B growing much faster",a:"Good news for Segment B.",p:"Explains the puzzle: the lower-margin segment now weighs more in the average and pulls it down.",key:1}],
   m:"A mix effect. The faster-growing segment has the lower margin, so it pulls the weighted average down even though both segments improved.",
   c:"Recalculate the group margin at last year's sales mix. The difference from the actual figure is the mix effect.",
@@ -2280,7 +2270,7 @@ const SIGNALS=[
  {h:"Leverage down at the top of the cycle",s:[
    {k:"Net leverage",v:"down from 2.4× to 1.6×",a:"The debt has been brought under control.",p:"Is a ratio of debt to earnings. It falls when either part moves, so the two must be looked at separately."},
    {k:"Net debt",v:"almost unchanged",a:"Nothing happened.",p:"Shows that nothing was repaid. The improvement cannot have come from this side.",key:1},
-   {k:"EBITDA margin (adjusted)",v:"EBITDA +45% in a boom year",a:"A record year.",p:"Shows the whole improvement came from earnings, and from a peak level."},
+   {k:"EBITDA margin",v:"EBITDA +45% in a boom year",a:"A record year.",p:"Shows the whole improvement came from earnings, and from a peak level."},
    {k:"Order intake",v:"starting to fall",a:"A first soft patch.",p:"Signals that the peak is passing. As earnings normalise, leverage returns towards its old level."}],
   m:"The ratio improved because earnings peaked, not because debt was repaid. When earnings return to normal the leverage returns with them.",
   c:"Net debt in dollars; leverage on average earnings over a full cycle.",
@@ -2366,18 +2356,19 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
   const H=y; const name=Object.fromEntries(N.map(n=>[n[0],n[1]])), desc=Object.fromEntries(N.map(n=>[n[0],n[3]]));
   const s=mk("kmap",W,H,"Map of how decisions and KPIs connect");
   const eEls=Ed.map(([a,b,sign])=>{const p=pos[a],q=pos[b];const x1=p.x+BW/2,y1=p.y+BH,x2=q.x+BW/2,y2=q.y;const my=(y1+y2)/2;
-    const e=S("path",{d:`M${x1} ${y1} C ${x1} ${my}, ${x2} ${my}, ${x2} ${y2}`,fill:"none",class:"ke"+(sign<0?" neg":"")});s.appendChild(e);return e;});
+    const e=S("path",{d:`M${x1} ${y1} C ${x1} ${my}, ${x2} ${my}, ${x2} ${y2}`,fill:"none",class:"ke"+(sign<0?" neg":"")});s.appendChild(e);const dn=y2>=my?1:-1;const h=S("path",{d:`M${x2} ${y2} L ${x2-4.5} ${y2-8*dn} L ${x2+4.5} ${y2-8*dn} Z`,class:"ka"});s.appendChild(h);e._head=h;return e;});
   rows.forEach(r=>T(s,W/2,r.y+14,r.label.toUpperCase(),"lay","middle"));
-  const nEls={};
+  const nEls={};let firstNode=null;
   N.forEach(([id,label])=>{const p=pos[id];const g=S("g",{class:"kn",tabindex:0,role:"button","aria-label":label});
     g.appendChild(S("rect",{x:p.x,y:p.y,width:BW,height:BH,rx:7}));const ls=wrap(label,17);
     ls.forEach((l,i)=>g.appendChild(S("text",{x:p.x+BW/2,y:p.y+(ls.length===1?21:14)+i*13,"text-anchor":"middle"},l)));
     g.addEventListener("click",()=>pick(id));g.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();pick(id);}});
-    s.appendChild(g);nEls[id]=g;});
+    s.appendChild(g);nEls[id]=g;if(!firstNode)firstNode=g;});
   function reach(start,dir){const seen=new Set([start]),edges=new Set();const q=[start];while(q.length){const c=q.shift();Ed.forEach((e,i)=>{const from=dir>0?e[0]:e[1],to=dir>0?e[1]:e[0];if(from===c){edges.add(i);if(!seen.has(to)){seen.add(to);q.push(to);}}});}return{seen,edges};}
   function pick(id){
     const up=reach(id,-1),down=reach(id,1);
-    eEls.forEach((e,i)=>{e.classList.toggle("up",up.edges.has(i));e.classList.toggle("down",down.edges.has(i));});
+    eEls.forEach((e,i)=>{[e,e._head].forEach(el=>{el.classList.toggle("up",up.edges.has(i));el.classList.toggle("down",down.edges.has(i));});});
+    eEls.forEach((e,i)=>{if(up.edges.has(i)||down.edges.has(i)){s.insertBefore(e,firstNode);s.insertBefore(e._head,firstNode);}});
     N.forEach(([n])=>{const g=nEls[n];g.classList.toggle("sel",n===id);g.classList.toggle("dim",!(up.seen.has(n)||down.seen.has(n)));g.classList.toggle("isup",n!==id&&up.seen.has(n));g.classList.toggle("isdown",n!==id&&down.seen.has(n));});
     const arr=x=>x>0?"▲":"▼";
     const ins=Ed.filter(e=>e[1]===id).map(e=>`<li><b>${name[e[0]]} ▲ → ${name[id]} ${arr(e[2])}</b> ${e[3]}</li>`).join("");
