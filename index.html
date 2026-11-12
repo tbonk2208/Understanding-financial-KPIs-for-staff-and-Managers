@@ -195,7 +195,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
     <li><b>Each module follows one pattern:</b> a number from the examples → what it means → what drives it → what you can influence → a self-test.</li>
     <li><b>Work top-down.</b> We start from the published result and drill into its causes, instead of memorising formulas first.</li>
     <li><b>Two data sets.</b> Modules 1 to 10 use an example group: a listed industrial company with two segments. Plant-level figures (scrap, orders, customer margins, projects) come from an invented example plant introduced in Module 11, always labelled <span class="tag ill">illustrative</span>.</li>
-    <li><b>Interpretation comes first.</b> Every core module has a "How to read it" part and a table of the decisions that move the figure. Module 13 turns this round: pick a decision and see what it does to all the figures. Module 14 trains reading several figures together. Module 15 shows how the figures hang together: a map of the connections and five labs in which you move one figure and watch the others follow.</li>
+    <li><b>Interpretation comes first.</b> Every core module has a "How to read it" part and a table of the decisions that move the figure. Module 13 turns this round: pick a decision and see what it does to all the figures. Module 14 trains reading several figures together. Module 15 shows how the figures hang together: a map of the connections and six labs in which you move one figure and watch the others follow.</li>
     <li><b>Apply it.</b> Use the quarterly routine (Module 10) on the next earnings release and redo the role exercises with your own unit's numbers.</li>
   </ol>
 
@@ -1096,7 +1096,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
 <section class="mod" id="connect" data-title="15 · How the KPIs connect: map and labs">
   <div class="kicker">Module 15</div>
   <h2>How the KPIs connect: map and labs</h2>
-  <p class="lead">No KPI stands alone. A decision enters at one point and travels through the others. The map shows the routes; the five labs let you move one figure and watch the rest follow.</p>
+  <p class="lead">No KPI stands alone. A decision enters at one point and travels through the others. The map shows the routes; the six labs let you move one figure and watch the rest follow.</p>
 
   <h3>The KPI map</h3>
   <p>Tap any box. Orange lines show everything that drives it, blue lines everything it drives in turn. A dashed line means the two move in opposite directions.</p>
@@ -1105,7 +1105,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
   <div class="calc" id="kmapInfo" aria-live="polite"></div>
 
   <h3>Lab 1 · The return tree, live</h3>
-  <p>The example plant's return on capital, taken apart into its drivers. Move a lever and see which boxes change, and by how much. Try to raise ROCE by two points using only the capital side.</p>
+  <p>The example plant's return on capital, taken apart into its drivers. Move a lever and see which boxes change, and by how much. Try to raise ROCE by two points using only the capital side. Then add new equipment and compare what happens to ROCE and to CFROI.</p>
   <div class="calc">
     <div class="grid2">
       <label>Price <output id="tPo"></output><input type="range" id="tP" min="-5" max="5" step="0.5" value="0"></label>
@@ -1173,6 +1173,21 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
     <div class="vz" id="mix"></div>
     <div class="res" id="mixRes"></div>
     <p class="vzcap">Example group, segment margins of the third quarter of 2026 held constant.</p>
+  </div>
+
+  <h3>Lab 6 · ROCE and CFROI as a machine ages</h3>
+  <p>One machine, bought for $100, doing the same work and earning the same cash every year. The two return figures tell very different stories about it.</p>
+  <div class="calc">
+    <div class="grid2">
+      <label>Cash the machine earns each year <output id="aCo"></output><input type="range" id="aC" min="8" max="35" step="1" value="20"></label>
+      <label>Useful life <output id="aLo"></output><input type="range" id="aL" min="5" max="15" step="1" value="10"></label>
+    </div>
+    <div class="vzlegend"><span><i class="sw s1"></i> ROCE (profit ÷ book value)</span><span><i class="sw s2"></i> CFROI (cash ÷ original cost)</span></div>
+    <div class="vz" id="age"></div>
+    <div class="vzread" id="ageRead"></div>
+    <div class="res" id="ageRes"></div>
+    <details><summary>Show the figures as a table</summary><div class="tblwrap"><table id="ageTable"></table></div></details>
+    <p class="vzcap">Illustration with one asset, before tax, straight-line depreciation, book value at the start of each year. The chart is capped at 100%.</p>
   </div>
 
   <button class="markdone" data-done="connect">Mark module complete</button>
@@ -2333,7 +2348,7 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
    ["ar","Receivables (DSO)",1,"Invoices not yet paid."],["invt","Inventory (DIO)",1,"Material and goods paid for but not yet sold."],["ap","Payables (DPO)",1,"Supplier invoices not yet paid."],
    ["ebitda","EBITDA",2,"Operating result before depreciation and amortisation."],["ebit","EBIT",2,"Operating profit after depreciation."],["wc","Working capital (CCC)",2,"Receivables plus inventory minus payables."],
    ["ocf","Operating cash flow",3,"Cash produced by day-to-day business."],["ce","Capital employed",3,"Fixed assets plus working capital: the money tied up in the unit."],
-   ["fcf","Free cash flow",4,"Cash left after investment."],["roce","ROCE",4,"Operating profit per dollar of capital employed."],["eva","EVA",4,"Profit left after charging for the capital used."],
+   ["fcf","Free cash flow",4,"Cash left after investment."],["roce","ROCE",4,"Operating profit per dollar of capital employed."],["eva","EVA",4,"Profit left after charging for the capital used."],["cfroi","CFROI",4,"Cash earned by operations per dollar originally invested, before any depreciation is deducted."],
    ["lev","Net leverage",5,"Net debt in years of EBITDA."],["eps","Earnings per share",5,"Net income per share."]];
   const Ed=[["price","sales",1,"A higher price raises sales at once, as long as volume holds."],["price","cm",1,"Price has no cost attached, so nearly all of it becomes contribution."],
    ["vol","sales",1,"More units shipped means more invoiced."],["vol","cm",1,"Each extra unit adds its price minus its variable cost."],["vol","ar",1,"More sales leave more invoices open at the same payment terms."],["vol","invt",1,"More volume needs more material and finished goods."],
@@ -2345,7 +2360,7 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
    ["wc","ce",1,"Working capital is part of the capital the unit uses."],["fa","ce",1,"Fixed assets are the other part of capital employed."],
    ["ebitda","ocf",1,"EBITDA is the starting point of operating cash flow."],["wc","ocf",-1,"A rise in working capital absorbs cash; a fall releases it."],["ocf","fcf",1,"Free cash flow is operating cash flow less investment."],
    ["ebit","roce",1,"More profit on the same capital raises the return."],["ce","roce",-1,"More capital for the same profit lowers the return."],["ebit","eva",1,"Profit after tax is the positive side of value added."],["ce","eva",-1,"Every dollar of capital carries a yearly charge at the cost of capital."],
-   ["fcf","lev",-1,"Free cash flow can repay debt."],["ebitda","lev",-1,"Higher earnings make the same debt lighter."],["ebit","eps",1,"Operating profit is the main source of net income."],["lev","eps",-1,"More debt means more interest, deducted before net income."]];
+   ["ebitda","cfroi",1,"The cash earned by operations is the numerator: operating profit after tax plus depreciation."],["inv","cfroi",-1,"Every dollar invested enters the base at its full cost and stays there; depreciation does not shrink it."],["wc","cfroi",-1,"Working capital is part of the gross investment the cash is measured against."],["fcf","lev",-1,"Free cash flow can repay debt."],["ebitda","lev",-1,"Higher earnings make the same debt lighter."],["ebit","eps",1,"Operating profit is the main source of net income."],["lev","eps",-1,"More debt means more interest, deducted before net income."]];
   const W=360,BW=108,BH=34,GX=12,RH=44,LH=22; const pos={}; let y=4; const rows=[];
   LAYERS.forEach((ln,L)=>{const ns=N.filter(n=>n[2]===L);rows.push({y,label:ln});y+=LH;for(let i=0;i<ns.length;i+=3){const r=ns.slice(i,i+3);const tw=r.length*BW+(r.length-1)*GX;let x=(W-tw)/2;r.forEach(n=>{pos[n[0]]={x,y};x+=BW+GX;});y+=RH;}y+=6;});
   const H=y; const name=Object.fromEntries(N.map(n=>[n[0],n[1]])), desc=Object.fromEntries(N.map(n=>[n[0],n[3]]));
@@ -2384,9 +2399,10 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
   const base=calc({p:0,v:0,c:0,f:0,ds:0,di:0,dp:0,k:0});
   function calc(o){const sales=E.sales*(1+o.v)*(1+o.p), vc=E.varCost*(1+o.v)*(1+o.c), cm=sales-vc, fixed=E.fixed*(1+o.f)+o.k/10, ebit=cm-fixed;
     const cogs=E.cogs*(1+o.v), ar=sales*(E.dso+o.ds)/365, inv=cogs*(E.dio+o.di)/365, ap=cogs*(E.dpo+o.dp)/365, wc=ar+inv-ap, fa=E.fixedAssets+o.k, ce=fa+wc;
-    return{sales,cm,fixed,ebit,ar,inv,ap,wc,fa,ce,margin:ebit/sales*100,turn:sales/ce,roce:ebit/ce*100,eva:ebit*(1-E.taxRate/100)-ce*E.wacc/100,be:fixed/(cm/sales)};}
+    const gcf=ebit*(1-E.taxRate/100)+E.da+o.k/10, ginv=ce+E.accDepr;
+    return{sales,cm,fixed,ebit,ar,inv,ap,wc,fa,ce,cfroi:gcf/ginv*100,margin:ebit/sales*100,turn:sales/ce,roce:ebit/ce*100,eva:ebit*(1-E.taxRate/100)-ce*E.wacc/100,be:fixed/(cm/sales)};}
   // boxes: key, label, row, col (0..cols-1), cols in row, good direction, format
-  const B=[["roce","ROCE",0,0,1,1,"p"],["margin","EBIT margin",1,0,2,1,"p"],["turn","Capital turnover",1,1,2,1,"x"],
+  const B=[["roce","ROCE",0,0,2,1,"p"],["cfroi","CFROI",0,1,2,1,"p"],["margin","EBIT margin",1,0,2,1,"p"],["turn","Capital turnover",1,1,2,1,"x"],
     ["ebit","EBIT",2,0,3,1,"m"],["sales","Sales",2,1,3,1,"m"],["ce","Capital employed",2,2,3,-1,"m"],
     ["cm","Contribution",3,0,4,1,"m"],["fixed","Fixed cost",3,1,4,-1,"m"],["fa","Fixed assets",3,2,4,-1,"m"],["wc","Working capital",3,3,4,-1,"m"],
     ["ar","Receivables",4,1,4,-1,"m"],["inv","Inventory",4,2,4,-1,"m"],["ap","Payables",4,3,4,1,"m"]];
@@ -2405,7 +2421,7 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
       if(chg){const t=S("text",{x:p.x+p.w/2,y:p.y+41,"text-anchor":"middle",class:"sm"});const a=S("tspan",{class:good?"good":"bad"},(d>0?(good?"▲":"△"):(good?"▼":"▽"))+" ");t.appendChild(a);t.appendChild(S("tspan",{},sg(d,f==="x"?2:1)+(f==="p"?" pts":"")));s.appendChild(t);}});
     const cash=-(n.wc-base.wc)-o.k;
     $("treeRes").innerHTML=`ROCE ${nf(base.roce,1)}% → <b>${nf(n.roce,1)}%</b> = margin ${nf(n.margin,1)}% × turnover ${nf(n.turn,2)}<br>`+
-      `EVA $${nf(base.eva,1)}M → <b>$${nf(n.eva,1)}M</b> · break-even sales $${nf(base.be,1)}M → <b>$${nf(n.be,1)}M</b><br>`+
+      `CFROI ${nf(base.cfroi,1)}% → <b>${nf(n.cfroi,1)}%</b> (cash earned on the original cost of all assets; not part of the tree, shown for comparison)<br>EVA $${nf(base.eva,1)}M → <b>$${nf(n.eva,1)}M</b> · break-even sales $${nf(base.be,1)}M → <b>$${nf(n.be,1)}M</b><br>`+
       `One-time cash effect from working capital and equipment: <b>${sg(cash,1)} $M</b>`;
   }
   ids.forEach(i=>$(i).addEventListener("input",draw));
@@ -2492,6 +2508,33 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
       `EBIT at today's volume: $${nf(E.ebit,1)}M → <b>$${nf(ebit,1)}M</b>`+(ebit<0?" (loss)":"")+`<br>The cost line starts at the fixed cost of $${nf(F1,1)}M; its slope is the variable cost, and the widening gap to the sales line is the contribution.`;
   }
   ["bP","bC","bF"].forEach(i=>$(i).addEventListener("input",draw));draw();
+})();
+
+/* ---------- Lab 6: ROCE and CFROI as an asset ages ---------- */
+(function(){
+  let hover=1;
+  function draw(){
+    const cf=+$("aC").value,life=+$("aL").value;$("aCo").textContent=cf+"% of its cost";$("aLo").textContent=life+" years";
+    if(hover>life)hover=life;
+    const dep=100/life,roce=[],cfroi=[];for(let t=1;t<=life;t++){const nbv=100-dep*(t-1);roce.push((cf-dep)/nbv*100);cfroi.push(cf);}
+    const Wd=360,H=220,X0=34,X1=318,Y0=184,Y1=14,cap=100,lo=Math.min(0,...roce),x=t=>X0+(t-1)/(life-1)*(X1-X0),y=v=>Y0-(Math.max(lo,Math.min(cap,v))-lo)/(cap-lo)*(Y0-Y1);
+    const s=mk("age",Wd,H,"ROCE and CFROI of one machine over its life");
+    for(let v=Math.ceil(lo/25)*25;v<=cap;v+=25){s.appendChild(S("line",{x1:X0,y1:y(v),x2:X1,y2:y(v),class:"grid"}));T(s,X0-5,y(v)+4,v+"%","mut","end");}
+    for(let t=1;t<=life;t+=life>10?2:1)T(s,x(t),Y0+16,t,"mut","middle");T(s,X1,H-4,"year of the machine's life","mut","end");
+    const line=(arr,cls)=>s.appendChild(S("path",{d:arr.map((v,i)=>(i?"L":"M")+x(i+1)+" "+y(v)).join(" "),class:"ln2 "+cls,fill:"none"}));
+    line(roce,"ss1");line(cfroi,"ss2");
+    s.appendChild(S("line",{x1:x(hover),y1:Y1,x2:x(hover),y2:Y0,class:"cross"}));
+    [[roce,"fs1"],[cfroi,"fs2"]].forEach(([a,c])=>s.appendChild(S("circle",{cx:x(hover),cy:y(a[hover-1]),r:4.5,class:c+" ring"})));
+    T(s,X1+5,y(roce[life-1])+4,roce[life-1]>cap?">"+cap+"%":nf(roce[life-1],0)+"%","b");T(s,X1+5,y(cf)+4,cf+"%","b");
+    const hit=S("rect",{x:X0-10,y:0,width:X1-X0+20,height:Y0+4,fill:"transparent"});s.appendChild(hit);
+    const move=ev=>{const r=s.getBoundingClientRect(),px=(ev.clientX-r.left)/r.width*Wd;const t=Math.max(1,Math.min(life,Math.round((px-X0)/(X1-X0)*(life-1))+1));if(t!==hover){hover=t;draw();}};
+    hit.addEventListener("pointermove",move);hit.addEventListener("pointerdown",move);
+    $("ageRead").innerHTML=`Year ${hover}: book value at the start $${nf(100-dep*(hover-1),0)} per $100 paid · ROCE <b>${nf(roce[hover-1],0)}%</b> · CFROI <b>${cf}%</b>`;
+    $("ageRes").innerHTML=cf<=dep?`The machine brings in ${cf}% of its cost a year but loses ${nf(dep,1)}% in value: it does not even earn back its own wear. ROCE is ${cf<dep?"negative":"zero"} throughout; CFROI still shows ${cf}% because it does not deduct depreciation, which is why it must be compared with a hurdle that includes recovering the investment.`
+      :`The machine does exactly the same work every year and brings in the same cash. ROCE nevertheless climbs from <b>${nf(roce[0],0)}%</b> in year 1 to <b>${nf(roce[life-1],0)}%</b> in year ${life}, only because depreciation shrinks the book value it is measured against. CFROI stays at <b>${cf}%</b> of the original cost.<br>A plant full of old machines therefore shows a high ROCE just before it needs replacing, and a newly equipped plant a low one. CFROI makes the two comparable.`;
+    $("ageTable").innerHTML="<tr><th>Year</th><th class='n'>Book value at start</th><th class='n'>ROCE</th><th class='n'>CFROI</th></tr>"+roce.map((v,i)=>`<tr><td>${i+1}</td><td class="n">${nf(100-dep*i,0)}</td><td class="n">${nf(v,0)}%</td><td class="n">${cf}%</td></tr>`).join("");
+  }
+  ["aC","aL"].forEach(i=>$(i).addEventListener("input",draw));draw();
 })();
 
 /* ---------- Lab 5: mix effect ---------- */
