@@ -182,6 +182,9 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
 .vz .kn text.ksub{font-size:8.5px;fill:var(--muted)}.vz .kn text.kmain{font-weight:700}
 .vz .kn.sel text.ksub{fill:var(--card);font-weight:400}
 .abbrkey{font-size:.82rem;color:var(--muted);margin:.3rem 0 0}
+abbr.ab{text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:2px;cursor:help}
+#abtip{position:fixed;z-index:50;max-width:min(300px,calc(100vw - 16px));background:var(--ink);color:var(--card);padding:.35rem .6rem;border-radius:8px;font-size:.82rem;line-height:1.35;box-shadow:0 2px 8px rgba(0,0,0,.25);pointer-events:none}
+#abtip[hidden]{display:none}
 </style>
 </head>
 <body data-active="mgr">
@@ -1440,7 +1443,7 @@ const ABBR={"CFROIC":"cash flow return on invested capital","CFROI":"cash flow r
  "SG&A":"selling, general and administrative expenses","WACC":"weighted average cost of capital","NPV":"net present value","IRR":"internal rate of return",
  "OEE":"overall equipment effectiveness","NOPAT":"net operating profit after tax","P/E":"price/earnings ratio","EV":"enterprise value","CAGR":"compound annual growth rate",
  "GAAP":"generally accepted accounting principles","R&D":"research and development","KPI":"key performance indicator"};
-const ABBR_RX=new RegExp("(?<![A-Za-z/&])("+Object.keys(ABBR).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[/&]/g,"\\$&")).join("|")+")(s?)(?![A-Za-z&])","g");
+const ABBR_RX=new RegExp("(?<![A-Za-z&])("+Object.keys(ABBR).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[/&]/g,"\\$&")).join("|")+")(s?)(?![A-Za-z&])","g");
 // abbreviations used in a text whose long name the text does not already give
 function abbrKey(text){const low=text.toLowerCase(),out=[];let m;ABBR_RX.lastIndex=0;while((m=ABBR_RX.exec(text))){const k=m[1];if(!out.includes(k)&&!low.includes(ABBR[k].toLowerCase().slice(0,18)))out.push(k);}return out.map(k=>`${k} = ${ABBR[k]}`);}
 
@@ -2351,7 +2354,7 @@ document.addEventListener("click",ev=>{const a=ev.target.closest("a.kl"); if(!a)
 const NS="http://www.w3.org/2000/svg";
 function S(tag,at,txt){const e=document.createElementNS(NS,tag);for(const k in at)e.setAttribute(k,at[k]);if(txt!=null)e.textContent=txt;return e;}
 function mk(id,w,h,label){const host=$(id);host.innerHTML="";const s=S("svg",{viewBox:`0 0 ${w} ${h}`,width:"100%",role:"img","aria-label":label||""});host.appendChild(s);return s;}
-const T=(s,x,y,t,cls,anchor)=>s.appendChild(S("text",{x,y,class:cls||"","text-anchor":anchor||"start"},t));
+const T=(s,x,y,t,cls,anchor)=>{const e=s.appendChild(S("text",{x,y,class:cls||"","text-anchor":anchor||"start"},t));const k=typeof t==="string"?abbrKey(t):[];if(k.length)e.appendChild(S("title",{},k.join(" · ")));return e;};
 const sg=(x,d)=>(x>=0?"+":"−")+nf(Math.abs(x),d==null?1:d);
 function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(label.length/2);let i=label.lastIndexOf(" ",m+3);if(i<0)i=label.indexOf(" ");return i<0?[label]:[label.slice(0,i),label.slice(i+1)];}
 
@@ -2722,25 +2725,34 @@ setRole(store.get("kpi.role","mgr"));
 const tocd=$("tocd");
 tocd.open=window.matchMedia("(min-width:821px)").matches;
 $("toc").addEventListener("click",()=>{if(!window.matchMedia("(min-width:821px)").matches)tocd.open=false;});
-/* ===================== spell out each abbreviation at its first use in every module ===================== */
+/* ===================== abbreviations: long name on hover, focus or tap ===================== */
 (function(){
-  const SKIP="svg,script,style,nav,button,select,option,h1,h2,h3,h4,th,summary,code,.formula,.tag,.kicker,.res,.vzread,.vzlegend,.fb,.dirbtn,#kmapInfo,#catList,#labOut,#labMatrix,a.kl,abbr,.abbrkey,output,label";
-  let kpiDone=false;
-  document.querySelectorAll("section.mod").forEach(sec=>{
-    if(sec.id==="glossary"||sec.id==="sources"||sec.id==="catalogue")return;
-    const done=new Set(), w=document.createTreeWalker(sec,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest(SKIP)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
+  const SKIP="script,style,svg,button,select,option,input,textarea,code,abbr,.abbrkey,#abtip";
+  function abbrify(root){
+    if(root.nodeType!==1||root.closest(SKIP))return;
+    const w=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest(SKIP)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
     const nodes=[];while(w.nextNode())nodes.push(w.currentNode);
-    nodes.forEach(node=>{
-      const block=(node.parentElement.closest("p,li,td,div")||node.parentElement).textContent.toLowerCase();
-      ABBR_RX.lastIndex=0;let m,txt=node.nodeValue,res="",last=0,changed=false;
-      while((m=ABBR_RX.exec(txt))){const k=m[1];
-        if(done.has(k)||(k==="KPI"&&kpiDone))continue;
-        done.add(k);if(k==="KPI")kpiDone=true;
-        if(block.includes(ABBR[k].toLowerCase().slice(0,18)))continue; // the sentence already gives the long name
-        const end=m.index+m[0].length;res+=txt.slice(last,end)+" ("+ABBR[k]+(m[2]?"s":"")+")";last=end;changed=true;}
-      if(changed)node.nodeValue=res+txt.slice(last);
-    });
-  });
+    nodes.forEach(node=>{const txt=node.nodeValue;ABBR_RX.lastIndex=0;let m,last=0,frag=null;
+      while((m=ABBR_RX.exec(txt))){if(!frag)frag=document.createDocumentFragment();
+        frag.appendChild(document.createTextNode(txt.slice(last,m.index)));
+        const a=document.createElement("abbr");a.className="ab";a.textContent=m[0];a.dataset.long=ABBR[m[1]]+(m[2]?"s":"");a.setAttribute("aria-label",m[0]+", "+a.dataset.long);frag.appendChild(a);last=m.index+m[0].length;}
+      if(frag){frag.appendChild(document.createTextNode(txt.slice(last)));node.parentNode.replaceChild(frag,node);}});
+  }
+  const tip=document.createElement("div");tip.id="abtip";tip.setAttribute("role","tooltip");tip.hidden=true;document.body.appendChild(tip);
+  let shown=null;
+  function show(a){shown=a;tip.textContent=a.textContent+" = "+a.dataset.long;tip.hidden=false;
+    const r=a.getBoundingClientRect(),tw=tip.offsetWidth,th=tip.offsetHeight;
+    let left=Math.max(8,Math.min(r.left,window.innerWidth-tw-8)),top=r.bottom+6;if(top+th>window.innerHeight-8)top=r.top-th-6;
+    tip.style.left=left+"px";tip.style.top=Math.max(4,top)+"px";}
+  function hide(){shown=null;tip.hidden=true;}
+  document.addEventListener("mouseover",ev=>{const a=ev.target.closest&&ev.target.closest("abbr.ab");if(a)show(a);});
+  document.addEventListener("mouseout",ev=>{const a=ev.target.closest&&ev.target.closest("abbr.ab");if(a&&!a.contains(ev.relatedTarget))hide();});
+  document.addEventListener("click",ev=>{const a=ev.target.closest&&ev.target.closest("abbr.ab");if(a){if(shown===a&&ev.detail===0)hide();else show(a);}else hide();});
+  window.addEventListener("scroll",hide,{passive:true});window.addEventListener("resize",hide);
+  document.addEventListener("keydown",ev=>{if(ev.key==="Escape")hide();});
+  abbrify(document.body);
+  new MutationObserver(list=>list.forEach(mu=>mu.addedNodes.forEach(n=>{if(n.nodeType===1)abbrify(n);else if(n.nodeType===3&&n.parentElement&&!n.parentElement.closest(SKIP)&&ABBR_RX.test(n.nodeValue)){ABBR_RX.lastIndex=0;abbrify(n.parentElement);}})))
+    .observe(document.body,{childList:true,subtree:true});
 })();
 </script>
 </body>
