@@ -1112,6 +1112,8 @@ abbr.ab{text-decoration:underline dotted;text-decoration-thickness:1px;text-unde
   <div class="kicker">Module 14</div>
   <h2>Reading the signals: what is really going on?</h2>
   <p class="lead">A single KPI rarely means anything by itself. Interpretation starts when you read several together. Each case shows a pattern; decide what it means before you open the answer. The answer then shows, figure by figure, what each KPI would suggest if you saw it alone and what it contributes to the conclusion, and marks the one that decides the interpretation. Tap a KPI name to open it in the catalogue.</p>
+  <div class="catbar"><label class="chk"><input type="checkbox" id="sigMine" checked> Only cases typical for my role</label></div>
+  <p id="sigCount" class="lead" style="font-size:.85rem"></p>
   <div id="sigList"></div>
   <div class="box key"><h4>A routine for interpreting any figure</h4>
   <ol>
@@ -2234,7 +2236,37 @@ const DECISIONS=[
   t:"EPS growth from buybacks says nothing about the business. It creates value for remaining owners only if the shares are bought below their worth."},
  {n:"Repay debt from free cash flow",r:[],e:"S:0 GM:0 EB:0 EI:0 EPS:+ FCF:0 WC:0 ROC:0 LEV:-",
   w:"Interest expense falls, so net income and EPS rise a little. Leverage falls and financial room grows.",
-  t:"Safe but modest. The alternative uses of the same cash (investment, acquisitions, dividends) must be judged against it."}
+  t:"Safe but modest. The alternative uses of the same cash (investment, acquisitions, dividends) must be judged against it."},
+ {n:"Introduce a minimum order value or a small-order surcharge",r:["sales","ops"],e:"S:~ GM:+ EB:+ EI:+ EPS:+ FCF:+ WC:0 ROC:+ LEV:-",
+  w:"Picking, packing, shipping and invoicing cost about the same for a small order as for a large one. A surcharge covers that cost, and a minimum value makes customers bundle their orders, so the plant handles fewer, larger shipments.",
+  t:"A few small customers will leave or complain. Check first which of them are small because they are new and growing; those deserve an exception."},
+ {n:"Offer 2% discount for payment within 10 days instead of 30",r:["sales","mgr"],e:"S:- GM:- EB:- EI:- EPS:- FCF:~ WC:- ROC:~ LEV:~",
+  w:"Customers who accept pay twenty days sooner, which releases cash once and lowers receivables for good. In return every such invoice is 2% smaller, and that reduction comes straight out of margin every time.",
+  t:"Giving up 2% to receive money twenty days earlier corresponds to an interest rate of more than 30% a year. It is rarely cheaper than borrowing; it can still make sense to reduce the risk of a doubtful customer not paying at all."},
+ {n:"Steer the sales incentive towards the higher-margin product line",r:["sales","mgr"],e:"S:~ GM:+ EB:+ EI:+ EPS:+ FCF:+ WC:0 ROC:+ LEV:-",
+  w:"The same sales effort lands on products that keep more of each dollar. The average margin rises through mix alone, without a price increase and without a cost saving.",
+  t:"Sales of the lower-margin line may fall. If that line was filling capacity, its fixed cost now has to be carried by the rest, so check plant utilisation before changing the incentive."},
+ {n:"Specify a tighter tolerance or a premium material than the application needs",r:["rd"],e:"S:0 GM:- EB:- EI:- EPS:- FCF:- WC:+ ROC:- LEV:+",
+  w:"The unit cost rises for the whole life of the product: more expensive material, slower machining, more scrap, and a special material that needs its own stock. None of it appears in the project budget.",
+  t:"Right where function, safety or a price premium demand it. Otherwise it is the most common way to lose margin unnoticed, because the cost is fixed on the drawing long before production starts."},
+ {n:"Stop a weak development project at the gate review",r:["rd","mgr"],e:"S:0 GM:0 EB:+ EI:+ EPS:+ FCF:+ WC:0 ROC:+ LEV:-",
+  w:"The spending still to come is saved and the engineers move to projects with a better business case. What has already been spent is gone either way and must not influence the decision.",
+  t:"The gain is real only if the freed capacity goes to stronger projects. Stopping too easily empties the pipeline; the vitality index shows it a few years later."},
+ {n:"Introduce an engineering change at once instead of when old stock runs out",r:["rd","ops"],e:"S:0 GM:- EB:- EI:- EPS:- FCF:0 WC:- ROC:~ LEV:0",
+  w:"Parts and finished goods made to the old design can no longer be used and are written off. The loss goes to cost of sales in one step; no cash moves, and inventory looks leaner afterwards.",
+  t:"Necessary for safety or quality problems. For improvements, timing the change to the run-out of the old stock gives the same product without the write-off."},
+ {n:"Add product variants to meet individual customer requests",r:["rd","sales"],e:"S:+ GM:~ EB:~ EI:~ EPS:~ FCF:- WC:+ ROC:~ LEV:0",
+  w:"Each variant wins or keeps an order. Each one also needs its own drawings, set-ups, safety stock and spare parts, so batches get smaller and inventory grows faster than sales.",
+  t:"The cost of variety is spread over all products and is invisible in the variant's own calculation. Price variants for their complexity and remove slow sellers regularly."},
+ {n:"Add a second shift instead of buying another machine",r:["ops","mgr"],e:"S:+ GM:~ EB:+ EI:+ EPS:+ FCF:+ WC:+ ROC:+ LEV:-",
+  w:"The existing machines produce for more hours, so output rises without new capital. Labour costs more per hour because of the shift premium, but capital turnover improves and no purchase price has to be paid.",
+  t:"Only worth it if the extra output is sold. Machines wear faster and maintenance windows shrink. Unlike a machine, a shift can be taken out again when demand falls."},
+ {n:"Qualify a second supplier for a critical material",r:["ops","rd"],e:"S:0 GM:~ EB:- EI:- EPS:- FCF:- WC:~ ROC:~ LEV:0",
+  w:"Testing, approval and trial batches cost money now. Afterwards the plant can negotiate prices, hold less safety stock and keep running if one supplier fails.",
+  t:"Most of the benefit is insurance: it shows in no figure until the day a supply failure does not stop the line. Judge it by the cost of one week of lost production."},
+ {n:"Pay for a customer's tooling and recover it through the piece price",r:["mgr","sales"],e:"S:~ GM:~ EB:~ EI:~ EPS:~ FCF:- WC:0 ROC:- LEV:+",
+  w:"The tooling is paid for at the start and becomes part of fixed assets. It is earned back in small amounts with every piece sold, so cash and return are weak at first and recover over the life of the contract.",
+  t:"If volumes fall short of the plan, part of the tooling is never recovered. Agree a minimum volume or a payment for the unrecovered amount before accepting."}
 ];
 DECISIONS.forEach(d=>{d.x={};d.e.split(" ").forEach(p=>{const[a,b]=p.split(":");d.x[a]=b;});});
 function arrow(code,sense){
@@ -2267,7 +2299,7 @@ $("labMatrix").innerHTML="<tr><th>Decision</th>"+LABK.map(k=>`<th title="${k[1]}
 // each signal: k = KPI (catalogue name where one exists), v = observation, a = what it suggests seen alone,
 // p = what it contributes to the pattern, key = the clue that decides the interpretation
 const SIGNALS=[
- {h:"Growth with a falling margin",s:[
+ {h:"Growth with a falling margin",r:["sales","mgr"],s:[
    {k:"Sales growth",v:"+8%",a:"The business is winning.",p:"Shows only that more was invoiced. It says nothing about what the extra sales cost to win."},
    {k:"Gross margin",v:"−2 points",a:"Something got more expensive: material, mix or price.",p:"Shows that each dollar of sales now earns less, so the growth did not come with its normal profit. Narrows the cause to price, input cost or mix."},
    {k:"Price realisation (discount rate)",v:"average discount up",a:"Sales is conceding price.",p:"Identifies price as the cause of the margin fall and rules out material cost and mix.",key:1},
@@ -2275,7 +2307,7 @@ const SIGNALS=[
   m:"The growth was bought. Price concessions and longer terms won the volume, so more sales produced little or no additional profit and tied up more cash.",
   c:"Split the sales change into price, volume and mix. Compare gross profit in dollars, not sales, with last year.",
   d:"Discount approvals, payment terms, which customers and products were pushed."},
- {h:"Profit on plan, stock rising",s:[
+ {h:"Profit on plan, stock rising",r:["ops","mgr"],s:[
    {k:"Budget variance",v:"EBIT on budget",a:"Everything is going to plan.",p:"Gives only the result. It cannot show how the profit was produced."},
    {k:"Capacity utilisation",v:"production above sales for three months",a:"The plant is running efficiently.",p:"Shows that part of the output was not sold. Its share of fixed overhead went into inventory instead of the income statement, which lifted profit.",key:1},
    {k:"Days inventory outstanding (DIO)",v:"inventory +20%",a:"Stock is being built, perhaps for a reason.",p:"Confirms where the unsold production went and how much profit is parked there."},
@@ -2283,7 +2315,7 @@ const SIGNALS=[
   m:"Part of the profit comes from fixed overhead absorbed into stock. It has been moved from future periods and will reverse when stock is reduced or written down.",
   c:"Compare production volume with sales volume. Look at the age of the finished goods and at open orders covering them.",
   d:"Production planning, batch sizes, the wish to keep utilisation and monthly profit up."},
- {h:"Excellent margin, ageing plant",s:[
+ {h:"Excellent margin, ageing plant",r:["ops","mgr"],s:[
    {k:"EBITDA margin",v:"up three years running",a:"The business is steadily improving.",p:"Cannot see what was not spent: it excludes depreciation and rewards every dollar of maintenance saved."},
    {k:"Capex ratio",v:"below depreciation every year",a:"Capital discipline.",p:"Shows that equipment is wearing out faster than it is replaced. This is where the margin gain comes from.",key:1},
    {k:"Overall equipment effectiveness (OEE)",v:"slipping, with on-time delivery",a:"An operational problem on the shop floor.",p:"The physical consequence is appearing: more stoppages and late orders from ageing machines."},
@@ -2291,7 +2323,7 @@ const SIGNALS=[
   m:"The margin is being supported by under-investment. EBITDA cannot show it because it excludes depreciation and ignores what was not spent.",
   c:"Capital expenditure against depreciation over five years; maintenance spending; age of key machines.",
   d:"Postponed maintenance and replacement; return targets that reward not investing."},
- {h:"Sales on plan, order book shrinking",s:[
+ {h:"Sales on plan, order book shrinking",r:["sales","ops","mgr"],s:[
    {k:"Sales growth",v:"+2%",a:"Stable business.",p:"Describes the past: these shipments were ordered months ago."},
    {k:"Order intake",v:"−9%",a:"A weak quarter for orders.",p:"Shows the work arriving for the coming months is shrinking. This is the figure about the future.",key:1},
    {k:"Book-to-bill ratio",v:"0.9 for two quarters",a:"Slightly below one.",p:"Quantifies the gap: the plant ships a tenth more than it books. Two quarters in a row rule out a one-off."},
@@ -2299,7 +2331,7 @@ const SIGNALS=[
   m:"Current sales are being delivered from the backlog. Unless intake recovers, sales will fall in the coming quarters, and fixed costs will then weigh on the margin.",
   c:"Order intake by market and customer; quotation activity and win rate; whether prices or lead times lost the orders.",
   d:"Capacity, hiring and stock should already follow intake, not sales."},
- {h:"Return falls after an investment",s:[
+ {h:"Return falls after an investment",r:["mgr","ops"],s:[
    {k:"Return on capital employed (ROCE)",v:"down from 34% to 33%",a:"The plant has got worse.",p:"Says only that capital grew faster than profit. As an average it cannot judge a single investment."},
    {k:"Operating margin (EBIT margin)",v:"EBIT up",a:"The plant has got better.",p:"Shows the new machine is earning: profit rose even after its depreciation."},
    {k:"Capex ratio",v:"new machine installed",a:"Money was spent.",p:"Explains why capital employed rose and therefore why the ratio fell."},
@@ -2307,14 +2339,14 @@ const SIGNALS=[
   m:"Nothing is wrong. The investment earns more than the cost of capital but less than the plant's very high average, so the ratio falls while value rises.",
   c:"The investment's own return against the cost of capital, and whether the planned savings are arriving.",
   d:"Approving it was right. Rejecting it to protect the ratio would have destroyed value."},
- {h:"Group margin down, every segment up",s:[
+ {h:"Group margin down, every segment up",r:["mgr"],s:[
    {k:"Segment EBITDA margin",v:"Segment A +0.4 points, Segment B +4 points",a:"Both businesses improved.",p:"Shows that performance inside each segment is better, so the group figure cannot be a performance problem."},
    {k:"EBITDA margin",v:"group margin lower than expected",a:"The company is doing worse.",p:"Is a weighted average of the segments and reacts to their weights as well as to their margins."},
    {k:"Sales growth",v:"Segment B growing much faster",a:"Good news for Segment B.",p:"Explains the puzzle: the lower-margin segment now weighs more in the average and pulls it down.",key:1}],
   m:"A mix effect. The faster-growing segment has the lower margin, so it pulls the weighted average down even though both segments improved.",
   c:"Recalculate the group margin at last year's sales mix. The difference from the actual figure is the mix effect.",
   d:"None is needed to 'fix' it. Judge each segment on its own margin and return."},
- {h:"Strong cash flow that will not repeat",s:[
+ {h:"Strong cash flow that will not repeat",r:["ops","mgr"],s:[
    {k:"Cash conversion",v:"free cash flow well above net income",a:"Excellent cash generation.",p:"Shows more cash than profit arrived, which means it came from the balance sheet. The question is from where."},
    {k:"Days payables outstanding (DPO)",v:"+15 days",a:"Better supplier terms were negotiated.",p:"Locates the source: the cash is money owed to suppliers and not yet paid.",key:1},
    {k:"Days inventory outstanding (DIO)",v:"unchanged, as are receivables days",a:"Nothing to report.",p:"Rules out the sustainable explanation: stock and collection did not improve."},
@@ -2322,7 +2354,7 @@ const SIGNALS=[
   m:"The cash came from paying suppliers later, which can be done once. It is a loan from suppliers, not a result of operations.",
   c:"Cash flow before working-capital changes; overdue payables; lost early-payment discounts; year-end against average balances.",
   d:"Payment runs held back before the balance sheet date; agreed terms versus actual behaviour."},
- {h:"Leverage down at the top of the cycle",s:[
+ {h:"Leverage down at the top of the cycle",r:["mgr"],s:[
    {k:"Net leverage",v:"down from 2.4× to 1.6×",a:"The debt has been brought under control.",p:"Is a ratio of debt to earnings. It falls when either part moves, so the two must be looked at separately."},
    {k:"Net debt",v:"almost unchanged",a:"Nothing happened.",p:"Shows that nothing was repaid. The improvement cannot have come from this side.",key:1},
    {k:"EBITDA margin",v:"EBITDA +45% in a boom year",a:"A record year.",p:"Shows the whole improvement came from earnings, and from a peak level."},
@@ -2330,22 +2362,109 @@ const SIGNALS=[
   m:"The ratio improved because earnings peaked, not because debt was repaid. When earnings return to normal the leverage returns with them.",
   c:"Net debt in dollars; leverage on average earnings over a full cycle.",
   d:"How the boom-year cash was used: debt repayment would have made the improvement last."},
- {h:"Spending steady, renewal fading",s:[
+ {h:"Spending steady, renewal fading",r:["rd","mgr"],s:[
    {k:"R&D intensity",v:"constant at 3%",a:"Development is funded as before.",p:"Measures money going in. It shows that the budget is not the cause of what follows."},
    {k:"Vitality index",v:"down from 25% to 12%",a:"Fewer new products in the mix.",p:"Measures what comes out: the same spending now yields half the share of new-product sales.",key:1},
    {k:"Time to market",v:"up from 18 to 30 months",a:"Projects are running late.",p:"Shows where the output is being lost: projects take two-thirds longer, so fewer finish each year."},
    {k:"Price realisation (discount rate)",v:"price pressure on older lines",a:"A tough market.",p:"Shows the commercial consequence of an ageing portfolio: older products have to be defended with price."}],
   m:"The same money produces fewer successful launches. The problem is development effectiveness or project selection, not the budget.",
   c:"Number of projects per engineer, share of projects stopped early, causes of launch delays, margins of new against old products.",
-  d:"Too many parallel projects, late target-cost checks, weak business cases at approval."}
+  d:"Too many parallel projects, late target-cost checks, weak business cases at approval."},
+ {h:"Delivery saved at any price",r:["ops","mgr"],s:[
+   {k:"On-time delivery",v:"up from 91% to 96%",a:"Operations has fixed its delivery problem.",p:"Shows the result customers see. It does not show how it was achieved."},
+   {k:"Gross margin",v:"−1.5 points",a:"Material or wages have become more expensive.",p:"Shows that delivering on time is costing more per unit than before."},
+   {k:"Capacity utilisation",v:"97%",a:"The plant is well used.",p:"Explains both figures: with no slack left, every disturbance is absorbed by overtime and express freight.",key:1},
+   {k:"Overtime and express freight",v:"doubled",a:"A busy quarter.",p:"Names where the lost margin went: delivery is being bought, not planned."}],
+  m:"The plant is at its limit and meets its dates through premium cost. The service level is real but not sustainable at this margin.",
+  c:"Overtime hours and freight cost per order; which products or machines are the bottleneck; order intake for the coming months.",
+  d:"Capacity (second shift, outsourcing, investment), lead times quoted by sales, or prices that reflect the scarcity."},
+ {h:"Purchasing savings, growing warehouse",r:["ops"],s:[
+   {k:"Purchase price variance",v:"$0.4 million favourable",a:"Purchasing has negotiated well.",p:"Shows only the price paid per unit, which is the figure buyers are measured on."},
+   {k:"Days inventory outstanding (DIO)",v:"+12 days",a:"Stock was built for some reason.",p:"Shows how the better prices were obtained: by ordering larger quantities.",key:1},
+   {k:"Excess and obsolete inventory",v:"rising",a:"Some old stock needs clearing.",p:"Shows that part of the bulk-bought material already has no foreseeable use."},
+   {k:"Free cash flow",v:"below plan",a:"A timing matter.",p:"Shows the bill: the cash for months of material has been paid in advance."}],
+  m:"The price savings were bought with volume. After the cost of holding the stock and the write-down risk, little or nothing of them is left.",
+  c:"The saving against the carrying cost of the extra stock (capital, storage, shelf life); order quantities against monthly usage.",
+  d:"Order quantities and bulk deals; whether buyers are measured on price alone or on total cost."},
+ {h:"Scrap down, complaints up",r:["ops","rd"],s:[
+   {k:"Scrap and rework rate",v:"down from 1.5% to 1.0%",a:"Quality has improved.",p:"Counts only the defects found inside the plant."},
+   {k:"Cost of poor quality",v:"unchanged",a:"No progress overall.",p:"Shows that the total bill for defects has not fallen: the cost has moved, not disappeared.",key:1},
+   {k:"Customer complaints",v:"up by a third",a:"Customers have become more demanding.",p:"Shows where the cost went: defects that used to be caught inside now reach the customer."},
+   {k:"On-time delivery",v:"unchanged",a:"Nothing to report.",p:"Rules out a delivery problem as the cause of the complaints."}],
+  m:"Fewer defects are being caught, not fewer made. Inspection was relaxed or limits were widened, so the scrap figure improved while failures moved to the customer, where each one costs far more.",
+  c:"Inspection plans and acceptance limits before and after; complaint reasons; returns and credit notes.",
+  d:"Inspection steps removed to save cost or time; tolerances widened; pressure on the scrap figure alone."},
+ {h:"Record sales, weaker order quality",r:["sales","mgr"],s:[
+   {k:"Sales growth",v:"+10%",a:"A strong year for sales.",p:"Shows the volume won, not the terms it was won on."},
+   {k:"Win rate",v:"up from 31% to 45%",a:"The offers have become more convincing.",p:"A jump of this size means the offers have become cheaper: too few quotations are being lost.",key:1},
+   {k:"Price realisation (discount rate)",v:"average discount up from 11.8% to 14%",a:"Prices are under pressure in the market.",p:"Confirms the reading of the win rate: the orders were won with price."},
+   {k:"Customer concentration",v:"top five customers up from 38% to 46% of sales",a:"The large accounts are growing well.",p:"Shows where the growth came from: a few large buyers with the strongest negotiating position."}],
+  m:"Growth was achieved by conceding price to large customers. Sales look their best just as margin and independence weaken.",
+  c:"Gross profit in dollars against last year; discounts by customer; what share of quotations is lost on price.",
+  d:"Discount authority, volume targets without margin targets, dependence on few accounts."},
+ {h:"The quarter-end rush",r:["sales","ops"],s:[
+   {k:"Sales growth",v:"on target; 40% of the quarter invoiced in its last two weeks",a:"A strong finish.",p:"Shows that the target was met by timing, not by an even flow of business."},
+   {k:"Days sales outstanding (DSO)",v:"+9 days",a:"Customers are paying more slowly.",p:"Shows that the late invoices came with longer terms or were shipped before the customer needed them.",key:1},
+   {k:"Credit notes and returns",v:"up in the following month",a:"A few delivery errors.",p:"Shows that part of the shipped goods was not wanted yet and comes back."},
+   {k:"Forecast accuracy",v:"down",a:"Demand has become harder to predict.",p:"Shows the damage to planning: the plant sees a peak that is not real demand."}],
+  m:"Sales were pulled forward from the next quarter to meet the target. Nothing was gained over the two quarters together, while cash, planning and customer goodwill suffered.",
+  c:"Sales by week within the quarter; terms granted on the last shipments; the opening weeks of the next quarter.",
+  d:"Quarter-end incentives, special terms for early acceptance, shipping ahead of the customer's schedule."},
+ {h:"A profitable customer who pays late",r:["sales","mgr"],s:[
+   {k:"Gross margin",v:"38% on this account",a:"One of the best customers.",p:"Shows what the account earns before the cost of serving and financing it."},
+   {k:"Days sales outstanding (DSO)",v:"95 days against agreed terms of 45",a:"A slow payer.",p:"Shows that more than three months of this customer's sales are permanently unpaid, half of it overdue.",key:1},
+   {k:"Customer profitability",v:"much lower after cost of capital",a:"Still positive.",p:"Puts a price on the delay: the margin is partly spent on financing the customer."},
+   {k:"Customer concentration",v:"12% of sales",a:"An important account.",p:"Shows the size of the exposure if the late payment is a sign of financial trouble."}],
+  m:"The margin is good on paper, but the company is acting as this customer's bank and carries a large credit risk. A customer who cannot pay is not profitable at any margin.",
+  c:"Age of the overdue invoices, disputed items, the customer's creditworthiness, the amount at risk.",
+  d:"Enforcing terms, credit limit, advance payment or securities, and whether sales staff are measured on collected cash."},
+ {h:"On budget, off target",r:["rd"],s:[
+   {k:"Budget variance",v:"development spending exactly on plan",a:"The project is under control.",p:"Measures only what the project costs, the smallest part of its business case."},
+   {k:"Target cost gap",v:"12% above the allowable unit cost at design freeze",a:"Production will optimise it later.",p:"Shows that every unit will earn less than planned for the product's whole life. After design freeze little of it can be recovered.",key:1},
+   {k:"Time to market",v:"five months late",a:"A normal delay.",p:"Pushes all income back and shortens the selling period."},
+   {k:"Net present value (NPV)",v:"from +$1.6 million to below zero",a:"A calculation detail.",p:"Combines the two effects: at this unit cost and launch date the project no longer earns its cost of capital."}],
+  m:"The project was steered by the figure that matters least. Unit cost and timing, which decide the result, drifted while the budget stayed green.",
+  c:"Unit cost estimate and launch date at every gate review, against the business case that was approved.",
+  d:"Which figures the project reviews report; whether target cost is checked before design freeze."},
+ {h:"A launch that costs margin",r:["rd","sales"],s:[
+   {k:"Vitality index",v:"up from 18% to 30%",a:"Development is delivering.",p:"Shows that new products are selling. It does not show what they replace or what they earn."},
+   {k:"Sales growth",v:"flat",a:"A weak market.",p:"Shows that the new products are not additional business: they are replacing existing sales.",key:1},
+   {k:"Gross margin",v:"−1 point",a:"Costs have risen.",p:"Shows that the new products earn less than the ones they replace, at least while volumes are low."},
+   {k:"Excess and obsolete inventory",v:"rising on the old products",a:"Old stock needs clearing.",p:"Shows the second cost of the replacement: stock of the superseded products is left over."}],
+  m:"The new products are cannibalising the old ones at a lower margin. A high vitality index is an achievement only when the new sales are additional or more profitable.",
+  c:"Margin of new against replaced products; sales won from competitors against sales moved within the portfolio; phase-out plan for the old stock.",
+  d:"Pricing of the new generation, timing of the phase-out, target cost of the new products."},
+ {h:"Better margin, thinner safety",r:["mgr","ops"],s:[
+   {k:"Operating margin (EBIT margin)",v:"up two points",a:"The unit has become more profitable.",p:"Shows the result at today's volume only."},
+   {k:"Contribution margin",v:"up from 43% to 52%",a:"Each sale earns more.",p:"Shows that variable cost was replaced by fixed cost: automation and own production instead of labour and bought-in parts."},
+   {k:"Margin of safety",v:"down from 41% to 28%",a:"Still comfortable.",p:"Shows the other side: the break-even point has moved up, so a smaller fall in sales now produces a loss.",key:1},
+   {k:"Order intake",v:"−8%",a:"A soft quarter.",p:"Makes the lower safety relevant now: volume is about to test the new cost structure."}],
+  m:"The unit earns more in good times and is more fragile in bad ones. The margin gain came from higher operating leverage, just as demand turns down.",
+  c:"Break-even sales before and after; which fixed costs can be reduced within a year; scenarios at 10% and 20% lower volume.",
+  d:"Automation and insourcing decisions, permanent against flexible capacity."},
+ {h:"Return up, nothing improved",r:["mgr","ops"],s:[
+   {k:"Return on capital employed (ROCE)",v:"up from 34% to 38%",a:"The plant is getting better.",p:"Is profit divided by book value, so it rises when either part moves."},
+   {k:"Operating margin (EBIT margin)",v:"EBIT unchanged",a:"A stable year.",p:"Shows the improvement did not come from profit."},
+   {k:"Capex ratio",v:"below depreciation for the third year",a:"Careful spending.",p:"Shows where it did come from: the asset base is shrinking through depreciation."},
+   {k:"Cash flow return on investment (CFROI)",v:"unchanged at 20%",a:"No change.",p:"Measures cash against the original cost of the assets and confirms that the plant is earning exactly what it earned before.",key:1}],
+  m:"The return rose because the machines got older, not because the plant got better. The figure will fall sharply when the equipment has to be replaced.",
+  c:"Age and condition of the main machines; replacement plan; ROCE recalculated at replacement value.",
+  d:"Investment postponed; targets that reward a rising ratio regardless of its cause."}
 ];
 const kpiLink=k=>KPIS.some(x=>x.n===k)?`<a href="#catalogue" class="kl" data-kpi="${k}">${k}</a>`:k;
-$("sigList").innerHTML=SIGNALS.map((x,i)=>`<div class="kpi"><h4><span>Case ${i+1}: ${x.h}</span></h4>
+SIGNALS.forEach((x,i)=>x.no=i+1);
+function renderSig(){
+  const role=document.body.dataset.active,mine=$("sigMine").checked,list=SIGNALS.filter(x=>!mine||x.r.includes(role));
+  $("sigCount").textContent=list.length+" of "+SIGNALS.length+" cases shown.";
+  $("sigList").innerHTML=list.map(x=>`<div class="kpi${x.r.includes(role)?" mine":""}"><h4><span>Case ${x.no}: ${x.h}</span></h4>
+  <div class="meta">Typical for: ${x.r.map(r=>ROLE[r]).join(", ")}</div>
   <ul class="sigs">${x.s.map(v=>`<li><b>${kpiLink(v.k)}</b>: ${v.v}</li>`).join("")}</ul>
   <details><summary>What does it mean, and which figure tells you what?</summary>
   <div class="tblwrap"><table class="contrib"><tr><th>KPI and observation</th><th>Seen alone, it suggests</th><th>What it contributes here</th></tr>
   ${x.s.map(v=>`<tr${v.key?' class="keyrow"':""}><td><b>${v.k}</b><br>${v.v}${v.key?'<br><span class="tag keytag">key clue</span>':""}</td><td>${v.a}</td><td>${v.p}</td></tr>`).join("")}</table></div>
-  <p><b>Taken together.</b> ${x.m}</p><p><b>Check next.</b> ${x.c}</p><p><b>Decisions behind it.</b> ${x.d}</p></details></div>`).join("");
+  <p><b>Taken together.</b> ${x.m}</p><p><b>Check next.</b> ${x.c}</p><p><b>Decisions behind it.</b> ${x.d}</p></details></div>`).join("")||"<p>No case for this selection.</p>";
+}
+$("sigMine").addEventListener("input",renderSig);
 document.addEventListener("click",ev=>{const a=ev.target.closest("a.kl"); if(!a)return;
   $("catQ").value=a.dataset.kpi; $("catCat").value=""; $("catMine").checked=false; renderCat();});
 
@@ -2715,7 +2834,7 @@ function setRole(r){
   document.body.dataset.active=r;
   document.querySelectorAll(".roles button").forEach(b=>b.setAttribute("aria-pressed",b.dataset.pick===r));
   $("roleName").textContent=ROLE[r]; $("roleLink").href="#t-"+r;
-  store.set("kpi.role",r); paint(); renderCat(); labOptions();
+  store.set("kpi.role",r); paint(); renderCat(); labOptions(); renderSig();
 }
 document.querySelectorAll(".roles button").forEach(b=>b.addEventListener("click",()=>setRole(b.dataset.pick)));
 document.querySelectorAll(".markdone").forEach(b=>b.addEventListener("click",()=>{
