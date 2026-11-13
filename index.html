@@ -179,6 +179,9 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
 .g3list{margin:.3rem 0 0;padding-left:1.4rem;font-size:.9rem}
 .vz .band{fill:var(--bg)}.vz .flow{stroke:var(--muted);stroke-width:2}.vz .flowh{fill:var(--muted)}
 .vzlegend .bx.rd{border-radius:6px}.vzlegend .bx.sq{border-radius:1px}
+.vz .kn text.ksub{font-size:8.5px;fill:var(--muted)}.vz .kn text.kmain{font-weight:700}
+.vz .kn.sel text.ksub{fill:var(--card);font-weight:400}
+.abbrkey{font-size:.82rem;color:var(--muted);margin:.3rem 0 0}
 </style>
 </head>
 <body data-active="mgr">
@@ -1152,6 +1155,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
     <button type="button" class="markdone" id="tReset" style="margin-top:.4rem">Reset</button>
     <div class="vz" id="tree"></div>
     <div class="res" id="treeRes"></div>
+    <p class="abbrkey">ROCE = return on capital employed · CFROI = cash flow return on investment · EBIT = earnings before interest and taxes · EVA = economic value added · DSO, DIO, DPO = days sales, days inventory and days payables outstanding</p>
     <p class="vzcap">Illustrative, example plant, $ million. ▲▼ show the change against today; coloured filled symbols are favourable, hollow ones unfavourable, plain ones neutral. Fixed cost includes depreciation, so contribution minus fixed cost is EBIT. Capital expenditure is depreciated over ten years and is shown with its cost only: combine it with a lower variable cost or more volume to model what it is bought for.</p>
   </div>
 
@@ -1165,6 +1169,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
     </div>
     <div class="vz" id="ccc"></div>
     <div class="res" id="cccRes"></div>
+    <p class="abbrkey">DIO = days inventory outstanding · DSO = days sales outstanding · DPO = days payables outstanding · CCC = cash conversion cycle</p>
     <p class="vzcap">Starting values: the example group in the third quarter of 2026.</p>
   </div>
 
@@ -1176,6 +1181,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
     <div class="vz" id="pvc"></div>
     <div class="vzread" id="pvcRead"></div>
     <div class="res" id="pvcRes"></div>
+    <p class="abbrkey">EBIT = earnings before interest and taxes</p>
     <details><summary>Show the figures as a table</summary><div class="tblwrap"><table id="pvcTable"></table></div></details>
     <p class="vzcap">Illustrative, example plant, before tax and interest. Fixed production overhead is charged to each unit produced, so units that go into inventory take their share of overhead with them.</p>
   </div>
@@ -1191,6 +1197,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
     <div class="vzlegend"><span><i class="sw s1"></i> sales</span><span><i class="sw s2"></i> total cost (fixed + variable)</span><span><i class="sw s3"></i> profit (EBIT)</span></div>
     <div class="vz" id="bep"></div>
     <div class="res" id="bepRes"></div>
+    <p class="abbrkey">EBIT = earnings before interest and taxes</p>
     <p class="vzcap">Illustrative, example plant. Horizontal axis: volume as a percentage of today's volume. Fixed cost includes depreciation, so the gap between the lines is EBIT.</p>
   </div>
 
@@ -1204,6 +1211,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
     <div class="vzlegend"><span><i class="sw s1"></i> Segment A</span><span><i class="sw s2"></i> Segment B</span></div>
     <div class="vz" id="mix"></div>
     <div class="res" id="mixRes"></div>
+    <p class="abbrkey">EBITDA = earnings before interest, taxes, depreciation and amortisation</p>
     <p class="vzcap">Example group, segment EBITDA margins of the third quarter of 2026 held constant. The combined margin is before corporate cost, which is why it is higher than the group's EBITDA margin in Module 5.</p>
   </div>
 
@@ -1218,6 +1226,7 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
     <div class="vz" id="age"></div>
     <div class="vzread" id="ageRead"></div>
     <div class="res" id="ageRes"></div>
+    <p class="abbrkey">ROCE = return on capital employed · CFROI = cash flow return on investment</p>
     <details><summary>Show the figures as a table</summary><div class="tblwrap"><table id="ageTable"></table></div></details>
     <p class="vzcap">Illustration with one asset, before tax, straight-line depreciation, book value at the start of each year. The chart is capped at 100%.</p>
   </div>
@@ -1423,6 +1432,17 @@ function project(o){ // o: delay (months), devOver, costOver, price, vol (all in
   c.divAnnual=q.divPerShare*4; c.divYield=c.divAnnual/m.price*100; c.payoutFcf=fy.div/fy.fcf*100; c.payoutRep=fy.div/fy.ni*100;
   c.cashConvFy=fy.cfo/fy.ebitda*100;
 })();
+
+/* ===================== abbreviations: long names ===================== */
+const ABBR={"CFROIC":"cash flow return on invested capital","CFROI":"cash flow return on investment","EBITDA":"earnings before interest, taxes, depreciation and amortisation","EBIT":"earnings before interest and taxes",
+ "ROCE":"return on capital employed","ROIC":"return on invested capital","ROE":"return on equity","ROA":"return on assets","EVA":"economic value added",
+ "DSO":"days sales outstanding","DIO":"days inventory outstanding","DPO":"days payables outstanding","CCC":"cash conversion cycle","EPS":"earnings per share",
+ "SG&A":"selling, general and administrative expenses","WACC":"weighted average cost of capital","NPV":"net present value","IRR":"internal rate of return",
+ "OEE":"overall equipment effectiveness","NOPAT":"net operating profit after tax","P/E":"price/earnings ratio","EV":"enterprise value","CAGR":"compound annual growth rate",
+ "GAAP":"generally accepted accounting principles","R&D":"research and development","KPI":"key performance indicator"};
+const ABBR_RX=new RegExp("(?<![A-Za-z/&])("+Object.keys(ABBR).sort((a,b)=>b.length-a.length).map(k=>k.replace(/[/&]/g,"\\$&")).join("|")+")(s?)(?![A-Za-z&])","g");
+// abbreviations used in a text whose long name the text does not already give
+function abbrKey(text){const low=text.toLowerCase(),out=[];let m;ABBR_RX.lastIndex=0;while((m=ABBR_RX.exec(text))){const k=m[1];if(!out.includes(k)&&!low.includes(ABBR[k].toLowerCase().slice(0,18)))out.push(k);}return out.map(k=>`${k} = ${ABBR[k]}`);}
 
 /* ===================== formatting ===================== */
 const nf=(x,d)=>x.toLocaleString("en-US",{minimumFractionDigits:d,maximumFractionDigits:d});
@@ -1805,6 +1825,7 @@ function renderCat(){
     <p><span class="lbl">What it means in practice.</span> ${k.t}</p>
     <p><span class="lbl">How to read it.</span> ${(INTERP[k.n]||["",""])[0]}</p>
     <p><span class="lbl">Decisions that move it.</span> ${(INTERP[k.n]||["",""])[1]}</p>
+    ${(a=>a.length?`<div class="meta">Abbreviations: ${a.join(" · ")}</div>`:"")(abbrKey(k.n+" "+k.f))}
     <div class="rolehow"><span class="lbl">How each role influences it.</span>${k.r.length?"<ul>"+k.r.map(r=>`<li class="${r===role?"me":""}"><b>${ROLE[r]}:</b> ${k.h[r]}</li>`).join("")+"</ul>":" "+(k.h._||"No direct lever in operating roles.")}</div>
   </div>`).join("")||"<p>No indicator matches.</p>";
 }
@@ -2139,7 +2160,7 @@ KPIS.forEach(k=>{k.h=ROLEHOW[k.n]||{}; k.r=ALL.filter(r=>k.h[r]);});
 })();
 
 /* ===================== decision lab ===================== */
-const LABK=[["S","Sales",1],["GM","Gross margin %",1],["EB","EBITDA",1],["EI","Operating profit (EBIT)",1],["EPS","Net income / EPS",1],["FCF","Free cash flow",1],["WC","Working capital tied up",-1],["ROC","Return on capital",1],["LEV","Net leverage",-1]];
+const LABK=[["S","Sales",1],["GM","Gross margin %",1],["EB","EBITDA",1],["EI","Operating profit (EBIT)",1],["EPS","Net income / earnings per share",1],["FCF","Free cash flow",1],["WC","Working capital tied up",-1],["ROC","Return on capital",1],["LEV","Net leverage",-1]];
 // effect codes: + up, - down, 0 no direct effect, ~ depends
 const DECISIONS=[
  {n:"Give a 3% discount to win more volume",r:["sales","mgr"],e:"S:~ GM:- EB:~ EI:~ EPS:~ FCF:~ WC:+ ROC:~ LEV:0",
@@ -2237,7 +2258,7 @@ function labShow(){
 $("labSel").addEventListener("input",labShow); $("labMine").addEventListener("input",labOptions);
 $("labMatrix").innerHTML="<tr><th>Decision</th>"+LABK.map(k=>`<th title="${k[1]}">${k[0]}</th>`).join("")+"</tr>"+
   DECISIONS.map(d=>`<tr><td>${d.n}</td>${LABK.map(([k,,s])=>`<td class="c">${arrow(d.x[k],s)}</td>`).join("")}</tr>`).join("")+
-  `<tr><td colspan="${LABK.length+1}" class="meta">${LABK.map(k=>k[0]+" = "+k[1]).join(" · ")}</td></tr>`;
+  `<tr><td colspan="${LABK.length+1}" class="meta">${LABK.map(k=>k[0]+" = "+k[1]).join(" · ")} · EBITDA = ${ABBR.EBITDA} · EBIT = ${ABBR.EBIT}</td></tr>`;
 
 /* ===================== reading the signals ===================== */
 // each signal: k = KPI (catalogue name where one exists), v = observation, a = what it suggests seen alone,
@@ -2376,9 +2397,9 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
    ["sales","Sales",1,"Everything shipped and invoiced: price times volume.",["rise","fall"],1],
    ["cm","Contribution",2,"Sales minus variable cost: what is left to cover fixed cost and profit.",["rises","falls"],1],
    ["fa","Fixed assets",2,"Machines, buildings and tooling at book value.",["rise","fall"],0],
-   ["ar","Receivables",2,"Invoices not yet paid, in dollars. Expressed in days of sales this is DSO; note that more sales raise the amount but not the days.",["rise","fall"],-1],
-   ["invt","Inventory",2,"Material and goods paid for but not yet sold, in dollars. Expressed in days of cost of sales this is DIO.",["rises","falls"],-1],
-   ["ap","Payables",2,"Supplier invoices not yet paid, in dollars. Expressed in days of cost of sales this is DPO.",["rise","fall"],0],
+   ["ar","Receivables",2,"Invoices not yet paid, in dollars. Expressed in days of sales this is DSO (days sales outstanding); note that more sales raise the amount but not the days.",["rise","fall"],-1],
+   ["invt","Inventory",2,"Material and goods paid for but not yet sold, in dollars. Expressed in days of cost of sales this is DIO (days inventory outstanding).",["rises","falls"],-1],
+   ["ap","Payables",2,"Supplier invoices not yet paid, in dollars. Expressed in days of cost of sales this is DPO (days payables outstanding).",["rise","fall"],0],
    ["ebitda","EBITDA",3,"Operating income plus depreciation and amortisation.",["rises","falls"],1],
    ["ebit","EBIT",3,"Operating income: EBITDA minus depreciation and amortisation.",["rises","falls"],1],
    ["wc","Working capital",3,"Receivables plus inventory minus payables, in dollars. Expressed in days this is the cash conversion cycle (CCC).",["rises","falls"],-1],
@@ -2389,7 +2410,7 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
    ["eva","EVA",5,"Profit left after charging for the capital used.",["rises","falls"],1],
    ["cfroi","CFROI",5,"Cash earned by operations per dollar originally invested.",["rises","falls"],1],
    ["lev","Net leverage",6,"Net debt in years of EBITDA.",["rises","falls"],-1],
-   ["eps","Earnings per share",7,"Net income per share.",["rise","fall"],1]];
+   ["eps","Earnings per share (EPS)",7,"Net income per share.",["rise","fall"],1]];
   // from, to, sign (+1 same direction, -1 opposite), strength (1 main route, 0.5 side effect), why
   const Ed=[["price","sales",1,1,"Sales are price times volume."],["vol","sales",1,1,"Sales are price times volume."],
    ["sales","cm",1,1,"Every dollar of sales carries its contribution: price minus variable cost."],
@@ -2426,17 +2447,24 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
    {t:"Serve lenders and owners",d:"Debt is carried or repaid; the rest belongs to shareholders.",rows:[["lev","eps"]]}];
   const order=BANDS.flatMap(b=>b.rows.flat());N.sort((a,b)=>order.indexOf(a[0])-order.indexOf(b[0]));
   const isDec=id=>!Ed.some(e=>e[1]===id);
+  const LONG={ebitda:ABBR.EBITDA,ebit:ABBR.EBIT,roce:ABBR.ROCE,eva:ABBR.EVA,cfroi:ABBR.CFROI};
+  const wrapN=(text,max)=>{const out=[];let c="";text.split(" ").forEach(x=>{if(c&&(c+" "+x).length>max){out.push(c);c=x;}else c=c?c+" "+x:x;});if(c)out.push(c);return out;};
+  const nameOf=Object.fromEntries(N.map(n=>[n[0],n[1]]));
+  const lay=(id,mainMax,subMax)=>{const main=wrap(nameOf[id],mainMax),sub=LONG[id]?wrapN(LONG[id],subMax):[];return{main,sub,h:sub.length?14+13*(main.length-1)+12+10*(sub.length-1)+9:34};};
+  function drawBox(g,x,y0,w,h,id,L){g.appendChild(S("rect",{x,y:y0,width:w,height:h,rx:isDec(id)?17:4}));
+    if(L.sub.length){const hh=14+13*(L.main.length-1)+12+10*(L.sub.length-1)+9,o=(h-hh)/2;L.main.forEach((l,i)=>g.appendChild(S("text",{x:x+w/2,y:y0+o+14+i*13,"text-anchor":"middle",class:"kmain"},l)));
+      L.sub.forEach((l,i)=>g.appendChild(S("text",{x:x+w/2,y:y0+o+14+13*(L.main.length-1)+12+i*10,"text-anchor":"middle",class:"ksub"},l)));}
+    else{const o=(h-34)/2;L.main.forEach((l,i)=>g.appendChild(S("text",{x:x+w/2,y:y0+o+(L.main.length===1?21:14)+i*13,"text-anchor":"middle"},l)));}}
   const W=360,BW=104,BH=34,GX=10,RH=42; const pos={},bands=[]; let y=2;
-  BANDS.forEach(b=>{const top=y;y+=36;b.rows.forEach(r=>{const tw=r.length*BW+(r.length-1)*GX;let x=(W-tw)/2;r.forEach(id=>{pos[id]={x,y};x+=BW+GX;});y+=RH;});bands.push({top,h:y-top});y+=20;});
+  BANDS.forEach(b=>{const top=y;y+=36;b.rows.forEach(r=>{const tw=r.length*BW+(r.length-1)*GX;let x=(W-tw)/2;const hs=r.map(id=>lay(id,16,22)),h=Math.max(...hs.map(z=>z.h));r.forEach((id,i)=>{pos[id]={x,y,h,L:hs[i]};x+=BW+GX;});y+=h+8;});bands.push({top,h:y-top});y+=20;});
   const H=y-18, meta=Object.fromEntries(N.map(n=>[n[0],{name:n[1],desc:n[3],words:n[4],judge:n[5]}]));
   const s=mk("kmap",W,H,"The business in seven steps, from the sale to the shareholder, with the decisions and KPIs of each step");s.setAttribute("viewBox",`-6 0 ${W+12} ${H}`);
   BANDS.forEach((b,i)=>{const bd=bands[i];s.appendChild(S("rect",{x:0,y:bd.top,width:W,height:bd.h,rx:10,class:"band"}));
     T(s,10,bd.top+15,(i+1)+" · "+b.t,"b");T(s,10,bd.top+28,b.d,"mut");
     if(i<BANDS.length-1){const y1=bd.top+bd.h+3,y2=bd.top+bd.h+17;s.appendChild(S("path",{d:`M${W/2} ${y1} L ${W/2} ${y2-7}`,class:"flow",fill:"none"}));s.appendChild(S("path",{d:`M${W/2} ${y2} L ${W/2-5} ${y2-8} L ${W/2+5} ${y2-8} Z`,class:"flowh"}));}});
   const nEls={},bEls={};let firstNode=null;
-  N.forEach(([id,label])=>{const p=pos[id];const g=S("g",{class:"kn",tabindex:0,role:"button","aria-label":label});
-    g.appendChild(S("rect",{x:p.x,y:p.y,width:BW,height:BH,rx:isDec(id)?17:4}));const ls=wrap(label,16);
-    ls.forEach((l,i)=>g.appendChild(S("text",{x:p.x+BW/2,y:p.y+(ls.length===1?21:14)+i*13,"text-anchor":"middle"},l)));
+  N.forEach(([id,label])=>{const p=pos[id];const g=S("g",{class:"kn",tabindex:0,role:"button","aria-label":label+(LONG[id]?", "+LONG[id]:"")});
+    drawBox(g,p.x,p.y,BW,p.h,id,p.L);
     const b=S("g",{class:"kb"});b.appendChild(S("circle",{cx:p.x+BW-3,cy:p.y+3,r:8.5}));b.appendChild(S("text",{x:p.x+BW-3,y:p.y+7,"text-anchor":"middle"},""));g.appendChild(b);bEls[id]=b;
     g.addEventListener("click",()=>pick(id,dir));g.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();pick(id,dir);}});
     s.appendChild(g);nEls[id]=g;if(!firstNode)firstNode=g;});
@@ -2450,12 +2478,12 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
     Object.values(st).forEach(r=>{r.net=r.up>r.down?1:r.down>r.up?-1:0;r.offset=r.up>0&&r.down>0;});return st;}
   // connection view: direct drivers on the left, the selected figure in the middle, direct effects on the right
   function drawEgo(id,d){
-    const ins=Ed.filter(e=>e[1]===id),outs=Ed.filter(e=>e[0]===id),rowsN=Math.max(ins.length,outs.length,1),RW=48,EW=100,EH=34,top=24;
+    const ins=Ed.filter(e=>e[1]===id),outs=Ed.filter(e=>e[0]===id),rowsN=Math.max(ins.length,outs.length,1),EW=100,top=24;
+    const Ls={};[id,...ins.map(e=>e[0]),...outs.map(e=>e[1])].forEach(n=>Ls[n]=lay(n,16,21));const EH=Math.max(...Object.values(Ls).map(z=>z.h)),RW=EH+14;
     const Hh=top+rowsN*RW+4,g=mk("kego",W,Hh,"Direct drivers and direct effects of "+meta[id].name),cx=[2,130,258];g.setAttribute("viewBox",`-6 0 ${W+12} ${Hh}`);
     T(g,cx[0]+EW/2,12,ins.length?"MOVES IT":"","lay","middle");T(g,cx[1]+EW/2,12,"SELECTED","lay","middle");T(g,cx[2]+EW/2,12,outs.length?"IS MOVED BY IT":"","lay","middle");
     const yOf=(i,n)=>top+(rowsN-n)*RW/2+i*RW+(RW-EH)/2, yc=top+(rowsN*RW-EH)/2;
-    const box=(x,y0,nid,cls,badge,bcls)=>{const gg=S("g",{class:"kn "+cls,tabindex:0,role:"button","aria-label":meta[nid].name});gg.appendChild(S("rect",{x,y:y0,width:EW,height:EH,rx:isDec(nid)?17:4}));
-      const ls=wrap(meta[nid].name,16);ls.forEach((l,i)=>gg.appendChild(S("text",{x:x+EW/2,y:y0+(ls.length===1?21:14)+i*13,"text-anchor":"middle"},l)));
+    const box=(x,y0,nid,cls,badge,bcls)=>{const gg=S("g",{class:"kn "+cls,tabindex:0,role:"button","aria-label":meta[nid].name+(LONG[nid]?", "+LONG[nid]:"")});drawBox(gg,x,y0,EW,EH,nid,Ls[nid]);
       const b=S("g",{class:"kb on "+bcls});b.appendChild(S("circle",{cx:x+EW-3,cy:y0+3,r:8.5}));b.appendChild(S("text",{x:x+EW-3,y:y0+7,"text-anchor":"middle"},badge));gg.appendChild(b);
       gg.addEventListener("click",()=>pick(nid,nid===id?dir:1));gg.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();pick(nid,nid===id?dir:1);}});g.appendChild(gg);};
     const arrow=(x1,y1,x2,y2,neg,cls)=>{const len=Math.hypot(x2-x1,y2-y1),ux=(x2-x1)/len,uy=(y2-y1)/len,bx=x2-ux*8,by=y2-uy*8;
@@ -2487,7 +2515,7 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
       return `<li><span class="eg ${cls}">${glyph(r.net)}</span> <b>${nm(n)}</b>${word?" · "+word:""}${r.offset&&r.net!==0?" on balance":""}<br><span class="meta">${why}</span></li>`;}).join("");
     const drivers=Ed.filter(e=>e[1]===id).map(e=>`<b>${nm(e[0])}</b> ${glyph(d*e[2])}`);
     const roots=[...up.seen].filter(n=>n!==id&&!Ed.some(e=>e[1]===n)).map(nm);
-    $("kmapInfo").innerHTML=`<b>${m.name}</b><br>${m.desc}
+    $("kmapInfo").innerHTML=`<b>${m.name}</b>${LONG[id]?" · "+LONG[id]:""}<br>${m.desc}
       <div class="dirbtn" role="group" aria-label="Direction"><button type="button" data-d="1" aria-pressed="${d>0}">▲ ${m.name} ${m.words[0]}</button><button type="button" data-d="-1" aria-pressed="${d<0}">▼ ${m.name} ${m.words[1]}</button></div>`+
       (effects?`<p style="margin:.6rem 0 .2rem"><b>If ${m.name.toLowerCase()} ${m.words[d>0?0:1]}, this follows:</b></p><ul class="efflist">${effects}</ul>`:`<p style="margin:.6rem 0 .2rem">Nothing on the map follows from this figure; it is an end result.</p>`)+
       (drivers.length?`<p style="margin:.6rem 0 .2rem"><b>What makes ${m.name.toLowerCase()} ${d>0?"go up":"go down"}:</b> ${drivers.join(", ")}.</p>`:"")+
@@ -2694,6 +2722,26 @@ setRole(store.get("kpi.role","mgr"));
 const tocd=$("tocd");
 tocd.open=window.matchMedia("(min-width:821px)").matches;
 $("toc").addEventListener("click",()=>{if(!window.matchMedia("(min-width:821px)").matches)tocd.open=false;});
+/* ===================== spell out each abbreviation at its first use in every module ===================== */
+(function(){
+  const SKIP="svg,script,style,nav,button,select,option,h1,h2,h3,h4,th,summary,code,.formula,.tag,.kicker,.res,.vzread,.vzlegend,.fb,.dirbtn,#kmapInfo,#catList,#labOut,#labMatrix,a.kl,abbr,.abbrkey,output,label";
+  let kpiDone=false;
+  document.querySelectorAll("section.mod").forEach(sec=>{
+    if(sec.id==="glossary"||sec.id==="sources"||sec.id==="catalogue")return;
+    const done=new Set(), w=document.createTreeWalker(sec,NodeFilter.SHOW_TEXT,{acceptNode:n=>n.parentElement.closest(SKIP)?NodeFilter.FILTER_REJECT:NodeFilter.FILTER_ACCEPT});
+    const nodes=[];while(w.nextNode())nodes.push(w.currentNode);
+    nodes.forEach(node=>{
+      const block=(node.parentElement.closest("p,li,td,div")||node.parentElement).textContent.toLowerCase();
+      ABBR_RX.lastIndex=0;let m,txt=node.nodeValue,res="",last=0,changed=false;
+      while((m=ABBR_RX.exec(txt))){const k=m[1];
+        if(done.has(k)||(k==="KPI"&&kpiDone))continue;
+        done.add(k);if(k==="KPI")kpiDone=true;
+        if(block.includes(ABBR[k].toLowerCase().slice(0,18)))continue; // the sentence already gives the long name
+        const end=m.index+m[0].length;res+=txt.slice(last,end)+" ("+ABBR[k]+(m[2]?"s":"")+")";last=end;changed=true;}
+      if(changed)node.nodeValue=res+txt.slice(last);
+    });
+  });
+})();
 </script>
 </body>
 </html>
