@@ -21,8 +21,8 @@ Open `index.html` in any browser (download the file, or clone the repository and
 | 1 to 10 | Shared core: three statements, growth, margins, EBITDA, segment EBITDA, working capital and cash, leverage, EPS, return on capital, reading a quarterly report | Example group |
 | 11 | The example plant: a consistent invented data set for plant-level KPIs | Example plant |
 | 12 | Role track, written separately for each of the four roles: line of sight to the group result, role KPIs, worked cases, calculator, exercises with solutions, self-test | Example plant |
-| 13 | Decision lab: pick one of 33 everyday decisions, filtered by role, and see which indicators move, in which direction, why, and what the trade-off is | Qualitative |
-| 14 | Reading the signals: 19 cases of several figures read together, filtered by role; each answer shows per KPI what it suggests alone and what it contributes to the conclusion, marks the key clue, and lists what to check next and the decisions behind it | Illustrative |
+| 13 | Decision lab: pick one of 38 everyday decisions, filtered by role, and see which indicators move, in which direction, why, and what the trade-off is | Qualitative |
+| 14 | Reading the signals: 23 cases of several figures read together, filtered by role; each answer shows per KPI what it suggests alone and what it contributes to the conclusion, marks the key clue, and lists what to check next and the decisions behind it | Illustrative |
 | 15 | How the KPIs connect: an interactive map that follows the business in seven steps from the sale to the shareholder, in which any figure can be set to rise or fall to see what follows, and six labs (live return tree with CFROI, cash-cycle timeline, profit versus cash when stock is built, break-even chart, mix effect, ROCE versus CFROI as a machine ages) | Both, labelled |
 | 16 | KPI catalogue: 76 indicators with formula, worked value, what the value means in practice (computed from the data), how to read it, which decisions move it and how each role influences it; searchable, filterable by topic and by role | Both, labelled |
 

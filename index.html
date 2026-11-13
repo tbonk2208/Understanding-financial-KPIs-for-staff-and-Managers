@@ -2266,7 +2266,22 @@ const DECISIONS=[
   t:"Most of the benefit is insurance: it shows in no figure until the day a supply failure does not stop the line. Judge it by the cost of one week of lost production."},
  {n:"Pay for a customer's tooling and recover it through the piece price",r:["mgr","sales"],e:"S:~ GM:~ EB:~ EI:~ EPS:~ FCF:- WC:0 ROC:- LEV:+",
   w:"The tooling is paid for at the start and becomes part of fixed assets. It is earned back in small amounts with every piece sold, so cash and return are weak at first and recover over the life of the contract.",
-  t:"If volumes fall short of the plan, part of the tooling is never recovered. Agree a minimum volume or a payment for the unrecovered amount before accepting."}
+  t:"If volumes fall short of the plan, part of the tooling is never recovered. Agree a minimum volume or a payment for the unrecovered amount before accepting."},
+ {n:"Recommend a standard product instead of designing a special one",tag:"Application engineering",r:["rd","sales"],e:"S:~ GM:+ EB:+ EI:+ EPS:+ FCF:+ WC:- ROC:+ LEV:-",
+  w:"A standard product is made in volume, has known cost and needs no new drawing, tooling, test or stock. The order earns the normal margin, ships faster and ties up no additional inventory.",
+  t:"If the application really needs a special solution, the standard part fails in service or the order goes to a competitor. The engineer's skill is knowing which case it is, and saying so to the customer."},
+ {n:"Offer a free on-site trial to win a new application",tag:"Application engineering",r:["rd","sales"],e:"S:~ GM:0 EB:- EI:- EPS:- FCF:- WC:0 ROC:- LEV:+",
+  w:"Engineer days, samples and travel are spent now and appear as cost. Sales follow only if the trial succeeds and the customer then orders, often months later.",
+  t:"Worth it where the potential is large and the decision-maker has agreed what counts as success. Without that, trials become free consulting. Track how many trials turn into orders."},
+ {n:"Charge for engineering work on small custom enquiries",tag:"Application engineering",r:["rd","sales"],e:"S:~ GM:+ EB:+ EI:+ EPS:+ FCF:+ WC:0 ROC:+ LEV:-",
+  w:"Engineering hours are the scarcest resource in the quotation process. A fee, credited against the order if it comes, pays for the work and filters out enquiries that were never likely to become business.",
+  t:"Some enquiries will go elsewhere, which is partly the purpose. Waive the fee for customers with real potential, and make that a conscious decision."},
+ {n:"Find the root cause of a field failure instead of replacing parts free of charge",tag:"Application engineering",r:["rd","sales","ops"],e:"S:~ GM:+ EB:+ EI:+ EPS:+ FCF:+ WC:0 ROC:+ LEV:-",
+  w:"Free replacements repeat for as long as the cause remains: wrong material for the medium, wrong installation or operation outside the limits. An analysis costs engineer time once and ends the recurring cost; the arrows show the effect after that first effort.",
+  t:"Takes longer than sending new parts, and the customer wants the line running now. Usually both are needed: replace at once, then analyse, and agree who pays if the product was used outside its specification."},
+ {n:"Rank enquiries by potential and chance of winning instead of working them in order of arrival",tag:"Application engineering",r:["rd","sales"],e:"S:+ GM:+ EB:+ EI:+ EPS:+ FCF:+ WC:0 ROC:+ LEV:-",
+  w:"The same engineering hours go to the enquiries with the highest expected value. Fewer quotations are written, more of them are won, and response time improves where it matters.",
+  t:"Small or uncertain enquiries wait longer or get a standard answer. Needs honest qualification by sales: potential volume, competitors, decision date."}
 ];
 DECISIONS.forEach(d=>{d.x={};d.e.split(" ").forEach(p=>{const[a,b]=p.split(":");d.x[a]=b;});});
 function arrow(code,sense){
@@ -2278,7 +2293,7 @@ function arrow(code,sense){
 function labOptions(){
   const role=document.body.dataset.active, mine=$("labMine").checked, keep=$("labSel").value;
   const list=DECISIONS.map((d,i)=>[d,i]).filter(([d])=>!mine||d.r.includes(role));
-  $("labSel").innerHTML=list.map(([d,i])=>`<option value="${i}">${d.n}</option>`).join("");
+  $("labSel").innerHTML=list.map(([d,i])=>`<option value="${i}">${d.tag?d.tag+": ":""}${d.n}</option>`).join("");
   if(list.some(([d,i])=>String(i)===keep))$("labSel").value=keep;
   labShow();
 }
@@ -2288,7 +2303,7 @@ function labShow(){
   $("labOut").innerHTML=`<div class="kpi"><h4><span>${d.n}</span></h4>
     <div class="effgrid">${LABK.map(([k,name,sense])=>`<div>${arrow(d.x[k],sense)} <b>${name}</b><br><span class="meta">${word(d.x[k])}</span></div>`).join("")}</div>
     <p><b>Why.</b> ${d.w}</p><p><b>Trade-off.</b> ${d.t}</p>
-    <div class="meta">Typically decided by: ${d.r.length?d.r.map(r=>ROLE[r]).join(", "):"the board and group finance"}</div></div>`;
+    <div class="meta">Typically decided by: ${d.tag?"<b>"+d.tag+"</b> · shown under ":""}${d.r.length?d.r.map(r=>ROLE[r]).join(", "):"the board and group finance"}</div></div>`;
 }
 $("labSel").addEventListener("input",labShow); $("labMine").addEventListener("input",labOptions);
 $("labMatrix").innerHTML="<tr><th>Decision</th>"+LABK.map(k=>`<th title="${k[1]}">${k[0]}</th>`).join("")+"</tr>"+
@@ -2449,7 +2464,39 @@ const SIGNALS=[
    {k:"Cash flow return on investment (CFROI)",v:"unchanged at 20%",a:"No change.",p:"Measures cash against the original cost of the assets and confirms that the plant is earning exactly what it earned before.",key:1}],
   m:"The return rose because the machines got older, not because the plant got better. The figure will fall sharply when the equipment has to be replaced.",
   c:"Age and condition of the main machines; replacement plan; ROCE recalculated at replacement value.",
-  d:"Investment postponed; targets that reward a rising ratio regardless of its cause."}
+  d:"Investment postponed; targets that reward a rising ratio regardless of its cause."},
+ {h:"Busy application engineers, few orders",tag:"Application engineering",r:["rd","sales"],s:[
+   {k:"Quotations per engineer",v:"up 40%",a:"The team has become more productive.",p:"Counts activity only. It says nothing about what the activity produced."},
+   {k:"Win rate",v:"12% for custom quotations, against 31% overall",a:"Custom business is hard to win.",p:"Shows that seven out of eight custom quotations bring nothing: the hours are going to enquiries that were never likely to convert.",key:1},
+   {k:"SG&A ratio",v:"rising",a:"Overheads are growing.",p:"Shows who pays for the unsuccessful quotations: engineering time is a cost whether or not an order follows."},
+   {k:"Sales growth",v:"flat",a:"A quiet market.",p:"Confirms that the extra effort has not turned into business."}],
+  m:"The team is measured on how much it quotes, not on what it wins. Enquiries are worked in order of arrival, so the best opportunities wait behind hopeless ones.",
+  c:"Win rate by customer type and enquiry size; hours per quotation; how many quotations had a confirmed budget and decision date.",
+  d:"Qualifying enquiries before engineering starts, ranking them by potential, charging for small custom work."},
+ {h:"Specials are taking over",tag:"Application engineering",r:["rd","sales","ops"],s:[
+   {k:"Share of custom designs",v:"up from 20% to 35% of sales",a:"We are close to our customers.",p:"Shows a shift in what the business is: more one-off solutions, fewer repeatable products.",key:1},
+   {k:"Gross margin",v:"−2 points",a:"Costs have gone up.",p:"Shows that the specials are not priced for the engineering, set-up and small batches they need."},
+   {k:"Days inventory outstanding (DIO)",v:"+10 days",a:"Stock has been built.",p:"Shows the hidden cost: every special design brings its own material, spare parts and leftovers."},
+   {k:"On-time delivery",v:"down from 91% to 86%",a:"A problem in the plant.",p:"Shows the effect on everyone else: small special batches interrupt the flow of standard products."}],
+  m:"Each special solution was a reasonable yes to a customer. Together they have lowered margin, raised stock and slowed delivery, because variety has a cost that no single quotation shows.",
+  c:"Margin of special against standard products after engineering hours; number of active part numbers; how often a standard product would have done the job.",
+  d:"Recommending standard products first, pricing specials for their complexity, a clear rule on when a special design is offered."},
+ {h:"Complaints from one application only",tag:"Application engineering",r:["rd","sales","ops"],s:[
+   {k:"Cost of poor quality",v:"up by half",a:"The plant has a quality problem.",p:"Shows that failures have become more expensive, not where they come from."},
+   {k:"Scrap and rework rate",v:"unchanged",a:"Nothing new.",p:"Rules out production: the parts leave the plant as good as before."},
+   {k:"Customer complaints",v:"three quarters come from one industry",a:"A difficult group of customers.",p:"Locates the cause: the product is being used in conditions it was not selected for.",key:1},
+   {k:"Sales growth",v:"+30% in that same industry",a:"A successful new market.",p:"Explains why it is happening now: a new application was opened faster than its requirements were understood."}],
+  m:"A misapplication, not a manufacturing fault. The product is sound but is being recommended for media, temperatures or loads beyond its limits, and warranty cost is eating the new sales.",
+  c:"Operating conditions at the failing sites against the product's limits; what was asked and recorded before quoting; who approved the recommendation.",
+  d:"Recording operating conditions before every recommendation, application limits in the documentation, an approval step for new applications."},
+ {h:"Free engineering for a customer who buys elsewhere",tag:"Application engineering",r:["rd","sales"],s:[
+   {k:"Engineering hours for the account",v:"highest of all customers",a:"A demanding but important customer.",p:"Shows where the scarce resource is going."},
+   {k:"Sales growth",v:"sales to this customer −15%",a:"Their business is weak.",p:"Shows that the support is not turning into orders.",key:1},
+   {k:"Win rate",v:"one quotation in ten at this account",a:"A tough negotiator.",p:"Shows the pattern: the customer takes the technical solution and places the order with a cheaper supplier."},
+   {k:"Customer profitability",v:"negative after engineering time",a:"A temporary dip.",p:"Puts a figure on it: the account costs more than it earns once the hours are counted."}],
+  m:"The customer is using the company as a free engineering office. The relationship feels close because of the frequent contact, while the business goes elsewhere.",
+  c:"Hours, quotations and orders for the account over two years; what was specified in our favour and what was bought from others.",
+  d:"Charging for design work, releasing drawings and calculations only with an order, or agreeing a supply contract before further support."}
 ];
 const kpiLink=k=>KPIS.some(x=>x.n===k)?`<a href="#catalogue" class="kl" data-kpi="${k}">${k}</a>`:k;
 SIGNALS.forEach((x,i)=>x.no=i+1);
@@ -2457,7 +2504,7 @@ function renderSig(){
   const role=document.body.dataset.active,mine=$("sigMine").checked,list=SIGNALS.filter(x=>!mine||x.r.includes(role));
   $("sigCount").textContent=list.length+" of "+SIGNALS.length+" cases shown.";
   $("sigList").innerHTML=list.map(x=>`<div class="kpi${x.r.includes(role)?" mine":""}"><h4><span>Case ${x.no}: ${x.h}</span></h4>
-  <div class="meta">Typical for: ${x.r.map(r=>ROLE[r]).join(", ")}</div>
+  <div class="meta">Typical for: ${x.tag?"<b>"+x.tag+"</b> · shown under ":""}${x.r.map(r=>ROLE[r]).join(", ")}</div>
   <ul class="sigs">${x.s.map(v=>`<li><b>${kpiLink(v.k)}</b>: ${v.v}</li>`).join("")}</ul>
   <details><summary>What does it mean, and which figure tells you what?</summary>
   <div class="tblwrap"><table class="contrib"><tr><th>KPI and observation</th><th>Seen alone, it suggests</th><th>What it contributes here</th></tr>
