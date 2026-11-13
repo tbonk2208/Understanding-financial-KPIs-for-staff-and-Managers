@@ -185,6 +185,22 @@ table.contrib tr.keyrow td{background:var(--accent-soft)}
 abbr.ab{text-decoration:underline dotted;text-decoration-thickness:1px;text-underline-offset:2px;cursor:help}
 #abtip{position:fixed;z-index:50;max-width:min(300px,calc(100vw - 16px));background:var(--ink);color:var(--card);padding:.35rem .6rem;border-radius:8px;font-size:.82rem;line-height:1.35;box-shadow:0 2px 8px rgba(0,0,0,.25);pointer-events:none}
 #abtip[hidden]{display:none}
+.vz .kn.dec rect{fill:var(--accent-soft);stroke:var(--accent)}
+.vz .kn.dec.isup rect{stroke:var(--s2)}.vz .kn.dec.sel rect{fill:var(--ink);stroke:var(--ink)}
+.vz .divl{stroke:var(--line);stroke-width:1}.vz .nodec{font-style:italic;font-size:9px}
+.vzlegend .bx.rd{border-radius:6px;background:var(--accent-soft);border-color:var(--accent)}
+table.dep{font-size:.78rem;width:100%;border-collapse:collapse;margin:.4rem 0}
+table.dep th,table.dep td{border-bottom:1px solid var(--line);padding:.2rem .1rem;text-align:center;vertical-align:middle}
+table.dep tr>th:first-child{text-align:left;font-weight:400;padding-left:.2rem}
+table.dep th.corner{font-size:.68rem;color:var(--muted);font-weight:400;vertical-align:bottom;text-align:left}
+table.dep th.vh{vertical-align:bottom;height:9.2rem;background:var(--accent-soft)}
+table.dep th.vh button{writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap}
+table.dep button{background:none;border:0;color:var(--ink);font:inherit;cursor:pointer;padding:.1rem;text-align:left}
+table.dep button:hover{text-decoration:underline}
+table.dep tr.grp td{text-align:left;font-weight:700;font-size:.72rem;background:var(--bg);color:var(--muted);padding:.25rem .3rem}
+table.dep td.good{color:var(--good)}table.dep td.bad{color:var(--bad)}table.dep td.mix{color:var(--warn)}table.dep td.neu{color:var(--muted)}table.dep td.e{color:var(--line)}
+table.dep .selc{background:var(--accent-soft);box-shadow:inset 2px 0 0 var(--accent),inset -2px 0 0 var(--accent)}
+table.dep tr.selr>*{background:var(--accent-soft)}
 </style>
 </head>
 <body data-active="mgr">
@@ -1133,16 +1149,23 @@ abbr.ab{text-decoration:underline dotted;text-decoration-thickness:1px;text-unde
   <p class="lead">No KPI stands alone. A decision enters at one point and travels through the others. The map shows the routes; the six labs let you move one figure and watch the rest follow.</p>
 
   <h3>The KPI map</h3>
-  <p>The map follows the business in seven steps, from the sale to the shareholder. Each step shows the decisions taken there (rounded boxes) and the figures that result (square boxes). Tap a box to select it. Boxes outlined in orange can move the selected figure; boxes outlined in blue are moved by it, and each of those carries a ▲ or ▼ for the direction it takes.</p>
+  <p>The map follows the business in seven steps, from the sale to the shareholder. In every step the <b>decisions</b> stand on the left (tinted, rounded) and the <b>KPIs they affect</b> on the right (white, square). The last three steps have no decisions of their own: they follow from the first four.</p>
+  <p>Tap any box to select it. A box outlined in orange can move the selected figure; a box outlined in blue is moved by it and carries a ▲ or ▼ for the direction it takes.</p>
   <div class="vz" id="kmap"></div>
-  <div class="vzlegend"><span><i class="bx rd"></i> decision</span><span><i class="bx sq"></i> resulting figure</span><span><i class="bx sq s2"></i> can move the selected figure</span><span><i class="bx sq s1"></i> is moved by it</span><span>▲ goes up · ▼ goes down · ◆ depends</span></div>
+  <div class="vzlegend"><span><i class="bx rd"></i> decision</span><span><i class="bx sq"></i> KPI</span><span><i class="bx sq s2"></i> can move the selected figure</span><span><i class="bx sq s1"></i> is moved by it</span><span>▲ goes up · ▼ goes down · ◆ depends</span></div>
   <h3>Connections of the selected figure</h3>
   <p>Its direct drivers are on the left, its direct effects on the right. Tap any of them to follow the chain one step further.</p>
   <div class="vz" id="kego"></div>
   <div class="vzlegend"><span><i class="ln s2"></i> solid arrow: both move the same way</span><span><i class="ln dash"></i> dashed arrow: they move in opposite ways</span></div>
   <p class="vzcap">The symbol on a driver shows which way it has to move to push the selected figure in the chosen direction; the symbol on an effect shows which way it then moves.</p>
   <div class="calc" id="kmapInfo" aria-live="polite"></div>
-  <p class="vzcap">The overview shows direction, not size, over the whole chain. Where two routes pull a figure in opposite directions, it shows the usually stronger one and the list names the other as a partial offset; ◆ marks cases that depend on the amounts. Use Lab 1 for the amounts.</p>
+  <p class="vzcap">The map shows direction, not size, over the whole chain. Where two routes pull a figure in opposite directions, it shows the usually stronger one and the list names the other as a partial offset; ◆ marks cases that depend on the amounts. Use Lab 1 for the amounts.</p>
+
+  <h3>All decisions against all KPIs</h3>
+  <p>The whole map in one table: each column is a decision, each row a KPI. A symbol shows which way the KPI moves when the decision goes up: a higher price, more volume, a richer mix, a higher cost, more investment, more stock, longer payment terms. Tap a column or row heading to select it in the map.</p>
+  <div class="tblwrap"><table class="dep" id="kdep"></table></div>
+  <div class="vzlegend"><span>▲ ▼ up or down, favourable</span><span>△ ▽ up or down, unfavourable</span><span>◆ depends on the amounts</span><span>· no effect</span></div>
+  <p class="vzcap">For a decision that goes down, every symbol in its column reverses. Plain grey symbols mark figures that are neither good nor bad in themselves, such as fixed assets and payables.</p>
 
   <h3>Lab 1 · The return tree, live</h3>
   <p>The example plant's return on capital, taken apart into its drivers. Move a lever and see which boxes change, and by how much. Try to raise ROCE by two points using only the capital side. Then add capital expenditure and compare what happens to ROCE and to CFROI.</p>
@@ -2624,17 +2647,23 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
     if(L.sub.length){const hh=14+13*(L.main.length-1)+12+10*(L.sub.length-1)+9,o=(h-hh)/2;L.main.forEach((l,i)=>g.appendChild(S("text",{x:x+w/2,y:y0+o+14+i*13,"text-anchor":"middle",class:"kmain"},l)));
       L.sub.forEach((l,i)=>g.appendChild(S("text",{x:x+w/2,y:y0+o+14+13*(L.main.length-1)+12+i*10,"text-anchor":"middle",class:"ksub"},l)));}
     else{const o=(h-34)/2;L.main.forEach((l,i)=>g.appendChild(S("text",{x:x+w/2,y:y0+o+(L.main.length===1?21:14)+i*13,"text-anchor":"middle"},l)));}}
-  const W=360,BW=104,BH=34,GX=10,RH=42; const pos={},bands=[]; let y=2;
-  BANDS.forEach(b=>{const top=y;y+=36;b.rows.forEach(r=>{const tw=r.length*BW+(r.length-1)*GX;let x=(W-tw)/2;const hs=r.map(id=>lay(id,16,22)),h=Math.max(...hs.map(z=>z.h));r.forEach((id,i)=>{pos[id]={x,y,h,L:hs[i]};x+=BW+GX;});y+=h+8;});bands.push({top,h:y-top});y+=20;});
+  const W=360,DX=6,DW=106,KX=[127,244],KW=110,DIV=119; const pos={},bands=[]; let y=20;
+  BANDS.forEach(b=>{const ids=b.rows.flat(),ds=ids.filter(isDec),ks=ids.filter(i=>!isDec(i)),top=y;y+=38;const c0=y;
+    let yd=c0;ds.forEach(id=>{pos[id]={x:DX,y:yd,w:DW,h:34,L:lay(id,16,22)};yd+=40;});
+    let yk=c0;for(let i=0;i<ks.length;i+=2){const pr=ks.slice(i,i+2),Ls=pr.map(id=>lay(id,17,23)),h=Math.max(...Ls.map(z=>z.h));pr.forEach((id,j)=>{pos[id]={x:KX[j],y:yk,w:KW,h,L:Ls[j]};});yk+=h+6;}
+    y=Math.max(yd-6,yk-6,c0+34)+8;bands.push({top,h:y-top,c0,hasDec:ds.length>0});y+=20;});
   const H=y-18, meta=Object.fromEntries(N.map(n=>[n[0],{name:n[1],desc:n[3],words:n[4],judge:n[5]}]));
-  const s=mk("kmap",W,H,"The business in seven steps, from the sale to the shareholder, with the decisions and KPIs of each step");s.setAttribute("viewBox",`-6 0 ${W+12} ${H}`);
+  const s=mk("kmap",W,H,"The business in seven steps: in each step the decisions on the left and the KPIs they affect on the right");s.setAttribute("viewBox",`-6 0 ${W+12} ${H}`);
+  T(s,DX+DW/2,12,"DECISIONS","lay","middle");T(s,(KX[0]+KX[1]+KW)/2,12,"KPIs THEY AFFECT","lay","middle");
   BANDS.forEach((b,i)=>{const bd=bands[i];s.appendChild(S("rect",{x:0,y:bd.top,width:W,height:bd.h,rx:10,class:"band"}));
     T(s,10,bd.top+15,(i+1)+" · "+b.t,"b");T(s,10,bd.top+28,b.d,"mut");
+    s.appendChild(S("path",{d:`M${DIV} ${bd.c0-2} L ${DIV} ${bd.top+bd.h-8}`,class:"divl",fill:"none"}));
+    if(!bd.hasDec)["no decision of its own:","it follows from","the steps above"].forEach((l,j)=>T(s,DX+DW/2,bd.c0+10+j*11,l,"mut nodec","middle"));
     if(i<BANDS.length-1){const y1=bd.top+bd.h+3,y2=bd.top+bd.h+17;s.appendChild(S("path",{d:`M${W/2} ${y1} L ${W/2} ${y2-7}`,class:"flow",fill:"none"}));s.appendChild(S("path",{d:`M${W/2} ${y2} L ${W/2-5} ${y2-8} L ${W/2+5} ${y2-8} Z`,class:"flowh"}));}});
   const nEls={},bEls={};let firstNode=null;
-  N.forEach(([id,label])=>{const p=pos[id];const g=S("g",{class:"kn",tabindex:0,role:"button","aria-label":label+(LONG[id]?", "+LONG[id]:"")});
-    drawBox(g,p.x,p.y,BW,p.h,id,p.L);
-    const b=S("g",{class:"kb"});b.appendChild(S("circle",{cx:p.x+BW-3,cy:p.y+3,r:8.5}));b.appendChild(S("text",{x:p.x+BW-3,y:p.y+7,"text-anchor":"middle"},""));g.appendChild(b);bEls[id]=b;
+  N.forEach(([id,label])=>{const p=pos[id];const g=S("g",{class:"kn"+(isDec(id)?" dec":""),tabindex:0,role:"button","aria-label":label+(LONG[id]?", "+LONG[id]:"")});
+    drawBox(g,p.x,p.y,p.w,p.h,id,p.L);
+    const b=S("g",{class:"kb"});b.appendChild(S("circle",{cx:p.x+p.w-3,cy:p.y+3,r:8.5}));b.appendChild(S("text",{x:p.x+p.w-3,y:p.y+7,"text-anchor":"middle"},""));g.appendChild(b);bEls[id]=b;
     g.addEventListener("click",()=>pick(id,dir));g.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();pick(id,dir);}});
     s.appendChild(g);nEls[id]=g;if(!firstNode)firstNode=g;});
   function reach(start,d){const seen=new Set([start]),edges=new Set();const q=[start];while(q.length){const c=q.shift();Ed.forEach((e,i)=>{const from=d>0?e[0]:e[1],to=d>0?e[1]:e[0];if(from===c){edges.add(i);if(!seen.has(to)){seen.add(to);q.push(to);}}});}return{seen,edges};}
@@ -2652,7 +2681,7 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
     const Hh=top+rowsN*RW+4,g=mk("kego",W,Hh,"Direct drivers and direct effects of "+meta[id].name),cx=[2,130,258];g.setAttribute("viewBox",`-6 0 ${W+12} ${Hh}`);
     T(g,cx[0]+EW/2,12,ins.length?"MOVES IT":"","lay","middle");T(g,cx[1]+EW/2,12,"SELECTED","lay","middle");T(g,cx[2]+EW/2,12,outs.length?"IS MOVED BY IT":"","lay","middle");
     const yOf=(i,n)=>top+(rowsN-n)*RW/2+i*RW+(RW-EH)/2, yc=top+(rowsN*RW-EH)/2;
-    const box=(x,y0,nid,cls,badge,bcls)=>{const gg=S("g",{class:"kn "+cls,tabindex:0,role:"button","aria-label":meta[nid].name+(LONG[nid]?", "+LONG[nid]:"")});drawBox(gg,x,y0,EW,EH,nid,Ls[nid]);
+    const box=(x,y0,nid,cls,badge,bcls)=>{const gg=S("g",{class:"kn "+cls+(isDec(nid)?" dec":""),tabindex:0,role:"button","aria-label":meta[nid].name+(LONG[nid]?", "+LONG[nid]:"")});drawBox(gg,x,y0,EW,EH,nid,Ls[nid]);
       const b=S("g",{class:"kb on "+bcls});b.appendChild(S("circle",{cx:x+EW-3,cy:y0+3,r:8.5}));b.appendChild(S("text",{x:x+EW-3,y:y0+7,"text-anchor":"middle"},badge));gg.appendChild(b);
       gg.addEventListener("click",()=>pick(nid,nid===id?dir:1));gg.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();pick(nid,nid===id?dir:1);}});g.appendChild(gg);};
     const arrow=(x1,y1,x2,y2,neg,cls)=>{const len=Math.hypot(x2-x1,y2-y1),ux=(x2-x1)/len,uy=(y2-y1)/len,bx=x2-ux*8,by=y2-uy*8;
@@ -2672,7 +2701,7 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
     return[good?"good":"bad",good?"favourable":"unfavourable"];}
   function pick(id,d){
     cur=id;dir=d;const up=reach(id,-1),down=reach(id,1),st=impact(id,d);
-    drawEgo(id,d);
+    drawEgo(id,d);if($("kdep").rows.length)markDep(id);
     N.forEach(([n])=>{const g=nEls[n];g.classList.toggle("sel",n===id);g.classList.toggle("dim",!(up.seen.has(n)||down.seen.has(n)));g.classList.toggle("isup",n!==id&&up.seen.has(n));g.classList.toggle("isdown",n!==id&&down.seen.has(n));
       const b=bEls[n],v=n===id?d:(st[n]?st[n].net:null);b.setAttribute("class","kb"+(v===null?"":" on "+(n===id?"neu":verdict(n,v)[0])));b.lastChild.textContent=v===null?"":glyph(v);});
     const m=meta[id], nm=x=>meta[x].name;
@@ -2693,6 +2722,22 @@ function wrap(label,max){if(label.length<=max)return[label];const m=Math.floor(l
     $("kmapInfo").querySelectorAll(".dirbtn button").forEach(b=>b.addEventListener("click",()=>pick(cur,+b.dataset.d)));
   }
   pick(cur,dir);
+  // overview table: every decision (columns) against every KPI (rows), for the decision going up
+  (function(){
+    const decs=order.filter(isDec),SH={price:"Price",vol:"Volume",mix:"Product mix",varc:"Variable cost per unit",fix:"Fixed cost",inv:"Capital expenditure",stock:"Stock held",terms:"Customer payment terms",supp:"Supplier payment terms"};
+    const imp=Object.fromEntries(decs.map(dc=>[dc,impact(dc,1)]));
+    const cell=(dc,k)=>{const r=imp[dc][k];if(!r)return `<td class="e" data-c="${dc}">·</td>`;const[cls,word]=verdict(k,r.net);
+      const g=r.net===0?"◆":cls==="bad"?(r.net>0?"△":"▽"):(r.net>0?"▲":"▼");
+      return `<td class="${cls}" data-c="${dc}" title="${SH[dc]} up: ${meta[k].name} ${r.net>0?"up":r.net<0?"down":"depends"}${word?" ("+word+")":""}">${g}</td>`;};
+    let h=`<tr><th class="corner">when this goes up →<br>this KPI moves ↓</th>${decs.map(dc=>`<th class="vh" data-c="${dc}"><button type="button" data-pick="${dc}">${SH[dc]}</button></th>`).join("")}</tr>`;
+    BANDS.forEach((b,i)=>{const ks=b.rows.flat().filter(id=>!isDec(id));h+=`<tr class="grp"><td colspan="${decs.length+1}">${i+1} · ${b.t}</td></tr>`+
+      ks.map(k=>`<tr data-r="${k}"><th><button type="button" data-pick="${k}">${meta[k].name}</button></th>${decs.map(dc=>cell(dc,k)).join("")}</tr>`).join("");});
+    $("kdep").innerHTML=h;
+    $("kdep").addEventListener("click",ev=>{const b=ev.target.closest("button[data-pick]");if(b)pick(b.dataset.pick,isDec(b.dataset.pick)?1:dir);});
+  })();
+  const markDep=id=>{$("kdep").querySelectorAll(".selc,.selr").forEach(e=>e.classList.remove("selc","selr"));
+    if(isDec(id))$("kdep").querySelectorAll(`[data-c="${id}"]`).forEach(e=>e.classList.add("selc"));else{const r=$("kdep").querySelector(`tr[data-r="${id}"]`);if(r)r.classList.add("selr");}};
+  markDep(cur);
   window.KMAP={N,Ed,impact,meta};
 })();
 
