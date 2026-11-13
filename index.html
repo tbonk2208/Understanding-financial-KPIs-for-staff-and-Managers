@@ -2951,7 +2951,8 @@ $("toc").addEventListener("click",()=>{if(!window.matchMedia("(min-width:821px)"
   }
   const tip=document.createElement("div");tip.id="abtip";tip.setAttribute("role","tooltip");tip.hidden=true;document.body.appendChild(tip);
   let shown=null;
-  function show(a){shown=a;tip.textContent=a.textContent+" = "+a.dataset.long;tip.hidden=false;
+  let shownAt=0;
+  function show(a){shown=a;shownAt=Date.now();tip.textContent=a.textContent+" = "+a.dataset.long;tip.hidden=false;
     const r=a.getBoundingClientRect(),tw=tip.offsetWidth,th=tip.offsetHeight;
     let left=Math.max(8,Math.min(r.left,window.innerWidth-tw-8)),top=r.bottom+6;if(top+th>window.innerHeight-8)top=r.top-th-6;
     tip.style.left=left+"px";tip.style.top=Math.max(4,top)+"px";}
@@ -2959,7 +2960,7 @@ $("toc").addEventListener("click",()=>{if(!window.matchMedia("(min-width:821px)"
   document.addEventListener("mouseover",ev=>{const a=ev.target.closest&&ev.target.closest("abbr.ab");if(a)show(a);});
   document.addEventListener("mouseout",ev=>{const a=ev.target.closest&&ev.target.closest("abbr.ab");if(a&&!a.contains(ev.relatedTarget))hide();});
   document.addEventListener("click",ev=>{const a=ev.target.closest&&ev.target.closest("abbr.ab");if(a){if(shown===a&&ev.detail===0)hide();else show(a);}else hide();});
-  window.addEventListener("scroll",hide,{passive:true});window.addEventListener("resize",hide);
+  window.addEventListener("scroll",()=>{if(Date.now()-shownAt>400)hide();},{passive:true});window.addEventListener("resize",hide);
   document.addEventListener("keydown",ev=>{if(ev.key==="Escape")hide();});
   abbrify(document.body);
   new MutationObserver(list=>list.forEach(mu=>mu.addedNodes.forEach(n=>{if(n.nodeType===1)abbrify(n);else if(n.nodeType===3&&n.parentElement&&!n.parentElement.closest(SKIP)&&ABBR_RX.test(n.nodeValue)){ABBR_RX.lastIndex=0;abbrify(n.parentElement);}})))
